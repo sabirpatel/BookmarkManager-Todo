@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookmark Organizer</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+  <style>
+    body { background-color: #f8f9fa; font-size: 14px; }
+    .fancy-title { font-size: 2rem; font-weight: bold; text-align: center;
+      background: linear-gradient(45deg, #007bff, #6610f2);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .category-header { font-size: 14px; padding: 8px; cursor: grab; color: white; }
+    /* Ensure list items align items nicely */
+    .list-group-item {
+        font-size: 12px;
+        padding: 6px;
+        position: relative;
+        /* Use flexbox for alignment */
+        display: flex;
+        align-items: center;
+    }
+    /* Allow title area to grow */
+    .list-group-item .bookmark-content {
+        flex-grow: 1;
+        /* Prevent buttons from overlapping title */
+        margin-right: 110px; /* Adjust based on button group width */
+        overflow: hidden; /* Optional: handle very long titles */
+        text-overflow: ellipsis; /* Optional: handle very long titles */
+        white-space: nowrap; /* Optional: keep title on one line */
+    }
+     /* Ensure checkbox doesn't take too much space */
+    .list-group-item .form-check-input {
+        flex-shrink: 0; /* Prevent checkbox from shrinking */
+        margin-top: 0; /* Align checkbox nicely */
+    }
+    .btn-sm { font-size: 10px; padding: 2px 4px; margin: 0 2px; }
+    .dragging { opacity: 0.5; }
+    /* Strikethrough style is handled by Bootstrap's text-decoration-line-through */
+    #bookmarkNotesEditor { height: 120px; background: white; }
+    .note-button-group {
+      position: absolute;
+      right: 6px;
+      top: 50%; /* Center vertically */
+      transform: translateY(-50%); /* Adjust vertical centering */
+      white-space: nowrap;
+      z-index: 1; /* Ensure buttons are clickable */
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <h2 class="fancy-title">R I B A S બુકમાર્ક</h2>
+      <div>
+        <input type="file" id="importFile" accept=".csv" style="display: none;">
+        <button id="importBtn" class="btn btn-warning me-2">Import</button>
+        <button id="exportBtn" class="btn btn-success me-2">Export</button>
+        <button class="btn btn-info" onclick="sayHello()">Say Hello</button>
+      </div>
+    </div>
+
+    <div class="accordion mt-3" id="bookmarkAccordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm">
+            Add New Bookmark
+          </button>
+        </h2>
+        <div id="collapseForm" class="accordion-collapse collapse" data-bs-parent="#bookmarkAccordion">
+          <div class="accordion-body">
+            <form id="bookmarkForm" onsubmit="saveBookmark(event)">
+              <div class="mb-2">
+                <label for="bookmarkTitle" class="form-label">Title</label>
+                <input type="text" class="form-control" id="bookmarkTitle" required>
+              </div>
+              <div class="mb-2">
+                <label for="bookmarkURL" class="form-label">URL</label>
+                <input type="url" class="form-control" id="bookmarkURL" required>
+              </div>
+              <div class="mb-2">
+                <label for="bookmarkCategory" class="form-label">Category</label>
+                <input type="text" class="form-control" id="bookmarkCategory" list="categorySuggestions" required>
+                <datalist id="categorySuggestions">
+                    <option value="ToDo"></option>
+                    <option value="Work"></option>
+                    <option value="Personal"></option>
+                </datalist>
+              </div>
+              <div class="mb-2">
+                <label for="bookmarkNotesEditor" class="form-label">Notes</label>
+                <div id="bookmarkNotesEditor"></div>
+              </div>
+              <button type="submit" class="btn btn-primary">Add Bookmark</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-3" id="bookmarkList"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script>
+    const toolbarOptions = [
+      ['bold','italic','underline','strike'], ['blockquote','code-block'],
+      [{ header: 1 }, { header: 2 }], [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ indent: '-1' }, { indent: '+1' }], [{ size: ['small', false, 'large', 'huge'] }],
+      [{ color: [] }, { background: [] }], [{ align: [] }], ['clean']
+    ];
+    let quill;
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('exportBtn').addEventListener('click', exportBookmarks);
+      document.getElementById('importBtn').addEventListener('click', handleImportClick);
+      document.getElementById('importFile').addEventListener('change', handleFileSelect);
+
+      quill = new Quill('#bookmarkNotesEditor', { modules: { toolbar: toolbarOptions }, theme: 'snow' });
+      loadBookmarks();
+      initDragAndDrop();
+      updateCategorySuggestions(); // Populate datalist on load
+    });
+
+    function getCategoryColor(cat) {
+        // Use specific color for ToDo, fallback for others
+        if (cat === 'ToDo') return 'bg-secondary';
+        const colors = ['bg-primary','bg-success','bg-danger','bg-warning','bg-info'];
+        let hash = 0; for (let c of cat) hash += c.charCodeAt(0);
+        return colors[hash % colors.length];
+    }
+
+    // --- Updated saveBookmark ---
+    function saveBookmark(e) {
+      e.preventDefault();
+      const t = document.getElementById('bookmarkTitle').value.trim();
+      const u = document.getElementById('bookmarkURL').value.trim();
+      const c = document.getElementById('bookmarkCategory').value.trim();
+      const n = quill.root.innerHTML;
+      if (!t || !u || !c) return alert('Please fill out Title, URL, and Category.');
+
+      // Create bookmark object
+      const newBookmark = { title: t, url: u, category: c, notes: n };
+
+      // Add isDone property if category is ToDo
+      if (c === 'ToDo') {
+        newBookmark.isDone = false; // Default to not done
+      }
+
+      const b = JSON.parse(localStorage.getItem('bookmarks')) || [];
+      b.push(newBookmark); // Push the new object
+      localStorage.setItem('bookmarks', JSON.stringify(b));
+      document.getElementById('bookmarkForm').reset(); quill.setContents([]);
+      renderBookmarks(b);
+      updateCategorySuggestions(); // Update datalist after adding
+    }
+
+    // --- Updated renderBookmarks ---
+    function renderBookmarks(b) {
+      const cats = {};
+      // Group bookmarks by category and store original index
+      b.forEach((bm, i) => {
+          // Ensure each bookmark object has its original index stored for reference
+          const bookmarkWithIndex = { ...bm, originalIndex: i };
+          cats[bm.category] = cats[bm.category] || [];
+          cats[bm.category].push(bookmarkWithIndex);
+      });
+
+      const storedOrder = JSON.parse(localStorage.getItem('categoryOrder')) || [];
+      const existingCategories = storedOrder.filter(cat => cats[cat]);
+      const newCategories = Object.keys(cats).filter(cat => !existingCategories.includes(cat));
+      const sortedCategories = [...existingCategories, ...newCategories];
+
+      const container = document.getElementById('bookmarkList'); container.innerHTML = '';
+      const frag = document.createDocumentFragment();
+
+      sortedCategories.forEach(cat => {
+        const col = document.createElement('div');
+        col.className = 'col-md-4 mb-2 draggable';
+        col.dataset.category = cat;
+        col.setAttribute('draggable','true');
+
+        // Generate list items for the category
+        const items = cats[cat].map((bm, categoryPos) => {
+            let checkboxHTML = '';
+            let titleClasses = '';
+            const originalIndex = bm.originalIndex; // Use the stored original index
+
+            // Check if category is 'ToDo'
+            if (bm.category === 'ToDo') {
+                // Use bm.isDone status which persists in localStorage
+                const isChecked = bm.isDone ? 'checked' : '';
+                checkboxHTML = `<input type="checkbox" class="form-check-input me-2" id="todo-check-${originalIndex}" onclick="toggleToDo(${originalIndex})" ${isChecked}>`;
+                if (bm.isDone) {
+                    titleClasses = 'text-decoration-line-through'; // Apply strikethrough class
+                }
+            }
+
+            // Determine button disabled state based on position within the *category* list
+            const isFirstInCategory = categoryPos === 0;
+            const isLastInCategory = categoryPos === cats[cat].length - 1;
+
+            return `
+                <li class="list-group-item">
+                    ${checkboxHTML} <div class="bookmark-content"> <a href="${bm.url}" target="_blank" class="${titleClasses}" id="todo-title-${originalIndex}">${bm.title}</a>
+                    </div>
+                    <div class="note-button-group">
+                       <button class="btn btn-secondary btn-sm" onclick="moveBookmarkUpInCategory('${cat}', ${originalIndex})" ${isFirstInCategory ? 'disabled' : ''}>↑</button>
+                       <button class="btn btn-secondary btn-sm" onclick="moveBookmarkDownInCategory('${cat}', ${originalIndex})" ${isLastInCategory ? 'disabled' : ''}>↓</button>
+                       <button class="btn btn-warning btn-sm" onclick="editBookmark(${originalIndex})">Edit</button>
+                       <button class="btn btn-danger btn-sm" onclick="deleteBookmark(${originalIndex})">Delete</button>
+                    </div>
+                </li>`;
+        }).join('');
+
+        col.innerHTML = `
+          <div class="card">
+            <div class="card-header ${getCategoryColor(cat)} category-header">${cat}</div>
+            <div class="card-body p-0"><ul class="list-group list-group-flush">${items}</ul></div>
+          </div>`;
+        frag.appendChild(col);
+      });
+      container.appendChild(frag);
+    }
+
+    // --- New toggleToDo function ---
+    function toggleToDo(index) {
+        let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+        // Ensure the bookmark exists and is a ToDo item
+        if (bookmarks[index] && bookmarks[index].category === 'ToDo') {
+            // Toggle the isDone status, initializing if it somehow doesn't exist
+            bookmarks[index].isDone = !bookmarks[index].isDone;
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+            // Re-render the list to reflect the change
+            renderBookmarks(bookmarks);
+        } else {
+             console.warn(`Bookmark at index ${index} not found or not a ToDo item.`);
+        }
+    }
+
+
+    function loadBookmarks() { const b = JSON.parse(localStorage.getItem('bookmarks')) || []; renderBookmarks(b); }
+    function deleteBookmark(i) { let b = JSON.parse(localStorage.getItem('bookmarks')) || []; b.splice(i, 1); localStorage.setItem('bookmarks', JSON.stringify(b)); renderBookmarks(b); updateCategorySuggestions(); } // Update suggestions on delete
+    function editBookmark(i) {
+        let b = JSON.parse(localStorage.getItem('bookmarks')) || [];
+        if (i < 0 || i >= b.length) return; // Check index bounds
+        const bm = b[i];
+        bootstrap.Collapse.getOrCreateInstance(document.getElementById('collapseForm')).show();
+        document.getElementById('bookmarkTitle').value = bm.title;
+        document.getElementById('bookmarkURL').value = bm.url;
+        document.getElementById('bookmarkCategory').value = bm.category;
+        quill.clipboard.dangerouslyPasteHTML(bm.notes || '');
+        // Remove the item being edited - it will be re-added by saveBookmark
+        b.splice(i, 1);
+        localStorage.setItem('bookmarks', JSON.stringify(b));
+        renderBookmarks(b); // Re-render the list without the edited item temporarily
+        // Note: The isDone status will be reset to false by saveBookmark if category remains ToDo
+    }
+
+    // --- Modify move functions to work within category context ---
+    // Helper to get bookmarks grouped by category preserving original index
+    function getGroupedBookmarks() {
+        const b = JSON.parse(localStorage.getItem('bookmarks')) || [];
+        const cats = {};
+        b.forEach((bm, i) => {
+            const bookmarkWithIndex = { ...bm, originalIndex: i };
+            cats[bm.category] = cats[bm.category] || [];
+            cats[bm.category].push(bookmarkWithIndex);
+        });
+        return cats;
+    }
+
+    // Helper function to reorder bookmarks based on category lists
+    function saveReorderedBookmarks(groupedCats) {
+        const orderedBookmarks = [];
+        // Reconstruct the main list based on the order within categories
+        // Maintain overall category order if possible (using storedOrder or current DOM order)
+        const currentOrder = [...document.getElementById('bookmarkList').children].map(c => c.dataset.category);
+        currentOrder.forEach(cat => {
+            if (groupedCats[cat]) {
+                orderedBookmarks.push(...groupedCats[cat]);
+            }
+        });
+        // Add any new categories not captured in currentOrder (shouldn't happen with this logic but safe)
+        Object.keys(groupedCats).forEach(cat => {
+            if (!currentOrder.includes(cat)) {
+                orderedBookmarks.push(...groupedCats[cat]);
+            }
+        });
+
+        // Remove originalIndex before saving if it's not part of the core data structure
+        const bookmarksToSave = orderedBookmarks.map(({ originalIndex, ...rest }) => rest);
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarksToSave));
+        renderBookmarks(bookmarksToSave);
+    }
+
+
+    function moveBookmarkUpInCategory(category, originalIndex) {
+        let groupedCats = getGroupedBookmarks();
+        if (!groupedCats[category]) return;
+
+        const categoryList = groupedCats[category];
+        const currentPos = categoryList.findIndex(bm => bm.originalIndex === originalIndex);
+
+        if (currentPos > 0) {
+            // Swap with the previous item *within the category list*
+            [categoryList[currentPos - 1], categoryList[currentPos]] = [categoryList[currentPos], categoryList[currentPos - 1]];
+            saveReorderedBookmarks(groupedCats);
+        }
+    }
+
+    function moveBookmarkDownInCategory(category, originalIndex) {
+        let groupedCats = getGroupedBookmarks();
+        if (!groupedCats[category]) return;
+
+        const categoryList = groupedCats[category];
+        const currentPos = categoryList.findIndex(bm => bm.originalIndex === originalIndex);
+
+        if (currentPos < categoryList.length - 1) {
+             // Swap with the next item *within the category list*
+            [categoryList[currentPos], categoryList[currentPos + 1]] = [categoryList[currentPos + 1], categoryList[currentPos]];
+            saveReorderedBookmarks(groupedCats);
+        }
+    }
+    // --- End move function modifications ---
+
+
+    function initDragAndDrop() { const c = document.getElementById('bookmarkList'); c.addEventListener('dragstart', e => { const el = e.target.closest('.draggable'); if (el) el.classList.add('dragging'); }); c.addEventListener('dragend', e => { const el = e.target.closest('.draggable'); if (el) el.classList.remove('dragging'); updateCategoryOrder(); }); c.addEventListener('dragover', e => { e.preventDefault(); const d = c.querySelector('.dragging'); if (!d) return; const after = getDragAfterElement(c, e.clientY); if (after) c.insertBefore(d, after); else c.appendChild(d); }); }
+    function getDragAfterElement(container,y) { const items = [...container.querySelectorAll('.draggable:not(.dragging)')]; return items.reduce((cl,child)=>{ const b=child.getBoundingClientRect(), off=y-b.top-b.height/2; return(off<0&&off>cl.offset)?{offset:off,element:child}:cl; },{offset:Number.NEGATIVE_INFINITY}).element; }
+    function updateCategoryOrder() { const cats = [...document.getElementById('bookmarkList').children].map(c=>c.dataset.category); localStorage.setItem('categoryOrder',JSON.stringify(cats)); }
+
+    function exportBookmarks() {
+      // Export should not include originalIndex or isDone unless explicitly desired in CSV
+      const bookmarksToExport = (JSON.parse(localStorage.getItem('bookmarks')) || []).map(bm => ({
+          title: bm.title,
+          url: bm.url,
+          category: bm.category,
+          notes: bm.notes // Exclude isDone and any temporary properties
+      }));
+
+      if (!bookmarksToExport.length) { alert('No bookmarks to export.'); return; }
+      const header = ['Title', 'URL', 'Category', 'Notes'];
+      const rows = bookmarksToExport.map(bm => [
+        `"${(bm.title || '').replace(/"/g, '""')}"`,
+        `"${(bm.url || '').replace(/"/g, '""')}"`,
+        `"${(bm.category || '').replace(/"/g, '""')}"`,
+        `"${(bm.notes || '').replace(/"/g, '""')}"`
+      ].join(','));
+      const csvContent = [header.join(','), ...rows].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'bookmarks.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      } else {
+         alert('Your browser does not support automatic file downloading.');
+      }
+    }
+
+    function handleImportClick() { document.getElementById('importFile').click(); }
+    function handleFileSelect(event) {
+        const file = event.target.files[0]; if (!file) return;
+        if (!file.type.match('text/csv') && !file.name.toLowerCase().endsWith('.csv')) { alert('Please select a valid CSV file.'); event.target.value = null; return; }
+        const reader = new FileReader();
+        reader.onload = function(e) { processImportData(e.target.result); event.target.value = null; };
+        reader.onerror = function(e) { console.error("Error reading file:", e); alert('Error reading the selected file.'); event.target.value = null; };
+        reader.readAsText(file);
+    }
+
+    // --- Updated processImportData ---
+    function processImportData(csvData) {
+        try {
+            const lines = csvData.trim().split('\n'); if (lines.length < 2) { alert('CSV file appears to be empty or only contains a header.'); return; }
+            const header = parseCsvRow(lines[0]);
+            if (header.length < 4 || header[0].toLowerCase() !== 'title' || header[1].toLowerCase() !== 'url' || header[2].toLowerCase() !== 'category' || header[3].toLowerCase() !== 'notes') { if (!confirm('CSV header does not match expected format (Title,URL,Category,Notes). Continue anyway?')) return; }
+
+            let existingBookmarks = JSON.parse(localStorage.getItem('bookmarks')) || []; let importedCount = 0;
+            for (let i = 1; i < lines.length; i++) {
+                if (lines[i].trim() === '') continue; const fields = parseCsvRow(lines[i]);
+                if (fields.length >= 4) {
+                    const newBookmark = { title: fields[0], url: fields[1], category: fields[2], notes: fields[3] };
+                    // Add isDone property if category is ToDo for imported items
+                    if (newBookmark.category === 'ToDo') {
+                        newBookmark.isDone = false; // Default imported ToDo items to not done
+                    }
+                    if (newBookmark.title && newBookmark.url && newBookmark.category) { existingBookmarks.push(newBookmark); importedCount++; }
+                    else { console.warn(`Skipping row ${i + 1} due to missing Title, URL, or Category:`, lines[i]); }
+                } else { console.warn(`Skipping row ${i + 1} due to unexpected number of fields:`, lines[i]); }
+            }
+            localStorage.setItem('bookmarks', JSON.stringify(existingBookmarks)); loadBookmarks(); updateCategorySuggestions(); alert(`${importedCount} bookmarks imported successfully!`);
+        } catch (error) { console.error("Error processing CSV data:", error); alert('An error occurred while processing the CSV file. Check console for details.'); }
+    }
+
+    function parseCsvRow(rowString) { /* ... parser function remains the same ... */
+        const fields = []; let currentField = ''; let inQuotes = false;
+        for (let i = 0; i < rowString.length; i++) {
+            const char = rowString[i]; const nextChar = rowString[i + 1];
+            if (char === '"' && !inQuotes && currentField.length === 0) { inQuotes = true; }
+            else if (char === '"' && inQuotes && nextChar === '"') { currentField += '"'; i++; }
+            else if (char === '"' && inQuotes && (nextChar === ',' || nextChar === undefined)) { inQuotes = false; }
+            else if (char === ',' && !inQuotes) { fields.push(currentField); currentField = ''; }
+            else { currentField += char; }
+        } fields.push(currentField); return fields;
+    }
+
+    // --- Function to update category suggestions ---
+    function updateCategorySuggestions() {
+        const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+        const uniqueCategories = [...new Set(bookmarks.map(bm => bm.category))]; // Get unique categories
+        const datalist = document.getElementById('categorySuggestions');
+        datalist.innerHTML = ''; // Clear existing options
+        uniqueCategories.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat;
+            datalist.appendChild(option);
+        });
+         // Add default ToDo if not present
+        if (!uniqueCategories.includes('ToDo')) {
+             const option = document.createElement('option');
+             option.value = 'ToDo';
+             datalist.appendChild(option);
+        }
+    }
+
+
+    function sayHello() { alert('Hello Afiya'); }
+  </script>
+</body>
+</html>
