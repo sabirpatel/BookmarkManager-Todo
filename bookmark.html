@@ -7,62 +7,660 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    body { background-color: #f8f9fa; font-size: 14px; }
-    .fancy-title { font-size: 2rem; font-weight: bold; text-align: center;
-      background: linear-gradient(45deg, #007bff, #6610f2);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    :root {
+      --bg-primary: #f8f9fc;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-hover: #f0f2f8;
+      --text-primary: #1a1a2e;
+      --text-secondary: #4a4a68;
+      --text-muted: #8888a0;
+      --accent-primary: #7c3aed;
+      --accent-secondary: #8b5cf6;
+      --accent-gradient: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+      --border-color: rgba(0, 0, 0, 0.08);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1400px;
+    }
+
+    /* Fancy title with gradient */
+    .fancy-title {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       margin-bottom: 10px;
+      letter-spacing: -0.02em;
     }
-    .category-header { font-size: 14px; padding: 8px; cursor: grab; color: white; }
-    /* Ensure list items align items nicely */
+
+    /* Header buttons */
+    .header-buttons .btn {
+      border-radius: var(--radius-md);
+      padding: 10px 20px;
+      font-weight: 500;
+      font-size: 13px;
+      border: none;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-warning {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+    }
+
+    .btn-warning:hover {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-info {
+      background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+      color: white;
+    }
+
+    .btn-info:hover {
+      background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+    }
+
+    .btn-primary {
+      background: var(--accent-gradient);
+      border: none;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+    }
+
+    /* Accordion styling */
+    .accordion {
+      background: transparent;
+    }
+
+    .accordion-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg) !important;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .accordion-button {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 15px;
+      padding: 18px 24px;
+      border: none;
+      box-shadow: none !important;
+    }
+
+    .accordion-button:not(.collapsed) {
+      background: var(--bg-hover);
+      color: var(--accent-primary);
+    }
+
+    .accordion-button::after {
+      filter: none;
+    }
+
+    .accordion-body {
+      background: var(--bg-hover);
+      padding: 24px;
+    }
+
+    /* Form styling */
+    .form-label {
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .form-control {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      font-size: 14px;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      background: var(--bg-card);
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+    }
+
+    .form-control::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* Quill editor styling */
+    #bookmarkNotesEditor {
+      height: 150px;
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+    }
+
+    .ql-toolbar.ql-snow {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+    }
+
+    .ql-container.ql-snow {
+      border: 1px solid var(--border-color);
+      border-top: none;
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+    }
+
+    .ql-editor {
+      color: var(--text-primary);
+    }
+
+    .ql-snow .ql-stroke {
+      stroke: var(--text-secondary);
+    }
+
+    .ql-snow .ql-fill {
+      fill: var(--text-secondary);
+    }
+
+    .ql-snow .ql-picker {
+      color: var(--text-secondary);
+    }
+
+    /* Category cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(139, 92, 246, 0.3);
+    }
+
+    .category-header {
+      font-size: 14px;
+      font-weight: 600;
+      padding: 16px 20px;
+      cursor: grab;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .category-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+    }
+
+    /* Modern category colors */
+    .bg-primary { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important; }
+    .bg-success { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; }
+    .bg-danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important; }
+    .bg-warning { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important; }
+    .bg-info { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%) !important; }
+    .bg-secondary { background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%) !important; }
+
+    /* List items */
+    .list-group {
+      background: transparent;
+    }
+
     .list-group-item {
-        font-size: 12px;
-        padding: 6px;
-        position: relative;
-        /* Use flexbox for alignment */
-        display: flex;
-        align-items: center;
-        cursor: grab; /* Indicate draggable */
+      font-size: 13px;
+      padding: 8px 12px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      cursor: grab;
+      background: var(--bg-secondary);
+      border: none;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-primary);
+      transition: var(--transition);
     }
-    /* Allow title area to grow */
+
+    .list-group-item:last-child {
+      border-bottom: none;
+    }
+
+    .list-group-item:hover {
+      background: var(--bg-hover);
+    }
+
     .list-group-item .bookmark-content {
-        flex-grow: 1;
-        /* Prevent buttons from overlapping title */
-        margin-right: 110px; /* Adjust based on button group width */
-        overflow: hidden; /* Optional: handle very long titles */
-        text-overflow: ellipsis; /* Optional: handle very long titles */
-        white-space: nowrap; /* Optional: keep title on one line */
+      flex-grow: 1;
+      margin-right: 110px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
-     /* Ensure checkbox doesn't take too much space */
+
+    .list-group-item .bookmark-content a {
+      color: var(--accent-secondary);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .list-group-item .bookmark-content a:hover {
+      color: var(--accent-primary);
+      text-decoration: underline;
+    }
+
     .list-group-item .form-check-input {
-        flex-shrink: 0; /* Prevent checkbox from shrinking */
-        margin-top: 0; /* Align checkbox nicely */
+      flex-shrink: 0;
+      margin-top: 0;
+      width: 16px;
+      height: 16px;
+      background-color: var(--bg-card);
+      border: 2px solid var(--border-color);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: var(--transition);
     }
-    .btn-sm { font-size: 10px; padding: 2px 4px; margin: 0 2px; }
-    .dragging { opacity: 0.5; } /* For category columns */
-    .dragging-item { opacity: 0.5; } /* For individual bookmark items */
-    /* Strikethrough style is handled by Bootstrap's text-decoration-line-through */
-    #bookmarkNotesEditor { height: 120px; background: white; }
+
+    .list-group-item .form-check-input:checked {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    /* Action buttons */
+    .btn-sm {
+      font-size: 10px;
+      padding: 4px 10px;
+      margin: 0 2px;
+      border-radius: var(--radius-sm);
+      font-weight: 500;
+      border: none;
+      transition: var(--transition);
+    }
+
     .note-button-group {
       position: absolute;
-      right: 6px;
-      top: 50%; /* Center vertically */
-      transform: translateY(-50%); /* Adjust vertical centering */
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
       white-space: nowrap;
-      z-index: 1; /* Ensure buttons are clickable */
+      z-index: 1;
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .list-group-item:hover .note-button-group {
+      opacity: 1;
+    }
+
+    .note-button-group .btn-warning {
+      background: rgba(99, 102, 241, 0.15);
+      color: #6366f1;
+    }
+
+    .note-button-group .btn-warning:hover {
+      background: rgba(99, 102, 241, 0.25);
+      color: #4f46e5;
+    }
+
+    .note-button-group .btn-danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+    }
+
+    .note-button-group .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.4);
+    }
+
+    /* Dragging states */
+    .dragging {
+      opacity: 0.5;
+      transform: rotate(2deg);
+    }
+
+    .dragging-item {
+      opacity: 0.5;
+      background: var(--accent-primary) !important;
+    }
+
+    /* Popover styling */
+    .popover {
+      pointer-events: auto !important;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .popover-body {
+      pointer-events: auto !important;
+      color: var(--text-primary);
+      padding: 16px;
+    }
+
+    .popover-body a {
+      pointer-events: auto !important;
+      color: var(--accent-secondary);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .popover-body a:hover {
+      color: var(--accent-primary);
+    }
+
+    .popover-arrow::before,
+    .popover-arrow::after {
+      border-color: var(--bg-card) transparent transparent transparent !important;
+    }
+
+    /* Bookmark content with notes indicator */
+    .bookmark-content span[data-bs-toggle="popover"] {
+      cursor: help;
+      border-bottom: 1px dotted var(--text-muted);
+      color: var(--text-primary);
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--text-muted);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-secondary);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .fancy-title {
+        font-size: 1.5rem;
+      }
+      
+      .header-buttons .btn {
+        padding: 8px 14px;
+        font-size: 12px;
+      }
+      
+      .note-button-group {
+        opacity: 1;
+      }
+    }
+
+    /* Tab System Styles */
+    .tabs-container {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 8px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tabs-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    .tab-btn {
+      padding: 10px 20px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 13px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .tab-btn.active {
+      background: var(--accent-gradient);
+      color: white;
+    }
+
+    .tab-btn .tab-delete {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      opacity: 0;
+      transition: var(--transition);
+      background: rgba(255,255,255,0.2);
+    }
+
+    .tab-btn:hover .tab-delete {
+      opacity: 1;
+    }
+
+    .tab-btn .tab-delete:hover {
+      background: rgba(239, 68, 68, 0.8);
+    }
+
+    .add-tab-btn {
+      padding: 8px 16px;
+      border: 2px dashed var(--border-color);
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 13px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .add-tab-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      background: rgba(124, 58, 237, 0.05);
+    }
+
+    /* Tab modal styles */
+    .tab-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+
+    .tab-modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .tab-modal {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: var(--shadow-lg);
+      transform: scale(0.9);
+      transition: var(--transition);
+    }
+
+    .tab-modal-overlay.show .tab-modal {
+      transform: scale(1);
+    }
+
+    .tab-modal h3 {
+      margin: 0 0 16px 0;
+      color: var(--text-primary);
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .tab-modal-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .tab-modal-actions .btn {
+      flex: 1;
+    }
+
+    /* Category assignment dropdown in card header */
+    .category-header {
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 16px;
+      cursor: grab;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: visible;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .category-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .category-tab-selector {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 10px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      z-index: 1;
+    }
+
+    .category-tab-selector:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .category-tab-selector option {
+      background: var(--bg-card);
+      color: var(--text-primary);
     }
   </style>
 </head>
 <body>
-  <div class="container mt-3">
-    <div class="d-flex justify-content-between align-items-center">
+  <div class="container py-4 py-md-5">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
       <h2 class="fancy-title">R I B A S બુકમાર્ક</h2>
-      <div>
+      <div class="header-buttons d-flex gap-2">
         <input type="file" id="importFile" accept=".csv" style="display: none;">
-        <button id="importBtn" class="btn btn-warning me-2">Import</button>
-        <button id="exportBtn" class="btn btn-success me-2">Export</button>
+        <button id="importBtn" class="btn btn-warning">Import</button>
+        <button id="exportBtn" class="btn btn-success">Export</button>
         <button class="btn btn-info" onclick="sayHello()">Say Hello</button>
       </div>
     </div>
@@ -82,8 +680,8 @@
                 <input type="text" class="form-control" id="bookmarkTitle" required>
               </div>
               <div class="mb-2">
-                <label for="bookmarkURL" class="form-label">URL</label>
-                <input type="url" class="form-control" id="bookmarkURL" required>
+                <label for="bookmarkURL" class="form-label">URL (optional)</label>
+                <input type="url" class="form-control" id="bookmarkURL">
               </div>
               <div class="mb-2">
                 <label for="bookmarkCategory" class="form-label">Category</label>
@@ -105,6 +703,29 @@
       </div>
     </div>
 
+    <!-- Tab System -->
+    <div class="tabs-container mt-3">
+      <div class="tabs-wrapper" id="tabsWrapper">
+        <!-- Tabs will be rendered here -->
+      </div>
+      <button class="add-tab-btn" onclick="showAddTabModal()">+ New Tab</button>
+    </div>
+
+    <!-- Add/Edit Tab Modal -->
+    <div class="tab-modal-overlay" id="tabModal">
+      <div class="tab-modal">
+        <h3 id="tabModalTitle">Create New Tab</h3>
+        <div class="mb-2">
+          <label for="tabNameInput" class="form-label">Tab Name</label>
+          <input type="text" class="form-control" id="tabNameInput" placeholder="e.g., Personal, Work, Projects">
+        </div>
+        <div class="tab-modal-actions">
+          <button class="btn btn-secondary" onclick="hideTabModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="saveTab()">Create Tab</button>
+        </div>
+      </div>
+    </div>
+
     <div class="row mt-3" id="bookmarkList"></div>
   </div>
 
@@ -118,17 +739,196 @@
       [{ color: [] }, { background: [] }], [{ align: [] }], ['clean']
     ];
     let quill;
+    let currentTab = 'all'; // 'all' shows everything, otherwise shows specific tab
+
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('exportBtn').addEventListener('click', exportBookmarks);
       document.getElementById('importBtn').addEventListener('click', handleImportClick);
       document.getElementById('importFile').addEventListener('change', handleFileSelect);
 
       quill = new Quill('#bookmarkNotesEditor', { modules: { toolbar: toolbarOptions }, theme: 'snow' });
+      initializeTabs();
       loadBookmarks();
       initDragAndDrop(); // For category columns
       initItemDragAndDrop(); // For individual items within categories
       updateCategorySuggestions(); // Populate datalist on load
     });
+
+    // ==================== TAB MANAGEMENT ====================
+
+    /**
+     * Gets all tabs from local storage
+     * @returns {Array<{id: string, name: string}>}
+     */
+    function getTabs() {
+      return JSON.parse(localStorage.getItem('bookmarkTabs')) || [];
+    }
+
+    /**
+     * Saves tabs to local storage
+     * @param {Array<{id: string, name: string}>} tabs
+     */
+    function saveTabs(tabs) {
+      localStorage.setItem('bookmarkTabs', JSON.stringify(tabs));
+    }
+
+    /**
+     * Gets category-to-tab assignments
+     * @returns {Object<string, string>} categoryName -> tabId mapping
+     */
+    function getCategoryTabAssignments() {
+      return JSON.parse(localStorage.getItem('categoryTabAssignments')) || {};
+    }
+
+    /**
+     * Saves category-to-tab assignments
+     * @param {Object<string, string>} assignments
+     */
+    function saveCategoryTabAssignments(assignments) {
+      localStorage.setItem('categoryTabAssignments', JSON.stringify(assignments));
+    }
+
+    /**
+     * Initializes the tab system
+     */
+    function initializeTabs() {
+      renderTabs();
+    }
+
+    /**
+     * Renders all tabs in the tab bar
+     */
+    function renderTabs() {
+      const tabs = getTabs();
+      const wrapper = document.getElementById('tabsWrapper');
+      
+      let tabsHTML = `
+        <button class="tab-btn ${currentTab === 'all' ? 'active' : ''}" onclick="switchTab('all')">
+          All
+        </button>
+      `;
+
+      tabs.forEach(tab => {
+        tabsHTML += `
+          <button class="tab-btn ${currentTab === tab.id ? 'active' : ''}" onclick="switchTab('${tab.id}')">
+            ${tab.name}
+            <span class="tab-delete" onclick="event.stopPropagation(); deleteTab('${tab.id}')">&times;</span>
+          </button>
+        `;
+      });
+
+      wrapper.innerHTML = tabsHTML;
+    }
+
+    /**
+     * Switches to a different tab
+     * @param {string} tabId
+     */
+    function switchTab(tabId) {
+      currentTab = tabId;
+      renderTabs();
+      loadBookmarks();
+    }
+
+    /**
+     * Shows the add tab modal
+     */
+    function showAddTabModal() {
+      document.getElementById('tabModal').classList.add('show');
+      document.getElementById('tabNameInput').value = '';
+      document.getElementById('tabNameInput').focus();
+    }
+
+    /**
+     * Hides the tab modal
+     */
+    function hideTabModal() {
+      document.getElementById('tabModal').classList.remove('show');
+    }
+
+    /**
+     * Saves a new tab
+     */
+    function saveTab() {
+      const name = document.getElementById('tabNameInput').value.trim();
+      if (!name) {
+        console.error('Please enter a tab name');
+        return;
+      }
+
+      const tabs = getTabs();
+      const newTab = {
+        id: 'tab_' + Date.now(),
+        name: name
+      };
+      tabs.push(newTab);
+      saveTabs(tabs);
+      hideTabModal();
+      renderTabs();
+    }
+
+    /**
+     * Deletes a tab
+     * @param {string} tabId
+     */
+    function deleteTab(tabId) {
+      let tabs = getTabs();
+      tabs = tabs.filter(t => t.id !== tabId);
+      saveTabs(tabs);
+
+      // Remove category assignments for this tab
+      const assignments = getCategoryTabAssignments();
+      Object.keys(assignments).forEach(cat => {
+        if (assignments[cat] === tabId) {
+          delete assignments[cat];
+        }
+      });
+      saveCategoryTabAssignments(assignments);
+
+      if (currentTab === tabId) {
+        currentTab = 'all';
+      }
+      renderTabs();
+      loadBookmarks();
+    }
+
+    /**
+     * Assigns a category to a tab
+     * @param {string} category
+     * @param {string} tabId
+     */
+    function assignCategoryToTab(category, tabId) {
+      const assignments = getCategoryTabAssignments();
+      if (tabId === '') {
+        delete assignments[category];
+      } else {
+        assignments[category] = tabId;
+      }
+      saveCategoryTabAssignments(assignments);
+      loadBookmarks();
+    }
+
+    /**
+     * Generates the tab selector dropdown HTML for a category
+     * @param {string} category
+     * @returns {string}
+     */
+    function getTabSelectorHTML(category) {
+      const tabs = getTabs();
+      const assignments = getCategoryTabAssignments();
+      const currentAssignment = assignments[category] || '';
+
+      let options = `<option value="" ${currentAssignment === '' ? 'selected' : ''}>No Tab</option>`;
+      tabs.forEach(tab => {
+        options += `<option value="${tab.id}" ${currentAssignment === tab.id ? 'selected' : ''}>${tab.name}</option>`;
+      });
+
+      return `
+        <select class="category-tab-selector" onchange="assignCategoryToTab('${category}', this.value)" onclick="event.stopPropagation()">
+          ${options}
+        </select>
+      `;
+    }
 
     /**
      * Assigns a distinct background color class based on the category name.
@@ -157,8 +957,8 @@
       const url = document.getElementById('bookmarkURL').value.trim();
       const category = document.getElementById('bookmarkCategory').value.trim();
       const notes = quill.root.innerHTML;
-      if (!title || !url || !category) {
-        console.error('Please fill out Title, URL, and Category.'); // Replaced alert
+      if (!title || !category) {
+        console.error('Please fill out Title and Category.'); // Replaced alert
         return;
       }
 
@@ -175,6 +975,49 @@
       quill.setContents([]);
       renderBookmarks(bookmarks);
       updateCategorySuggestions();
+    }
+
+    /**
+     * Converts plain text URLs (http/https) in HTML content to clickable anchor tags.
+     * Skips URLs that are already inside anchor tags.
+     * @param {string} html - The HTML content to process.
+     * @returns {string} HTML with URLs converted to links.
+     */
+    function linkifyUrls(html) {
+        // Regex to match URLs not already in href attribute
+        const urlRegex = /(https?:\/\/[^\s<>"']+)/gi;
+        
+        // Create a temporary element to parse the HTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        
+        // Process text nodes only (not already inside anchor tags)
+        const walker = document.createTreeWalker(
+            tempDiv,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+        
+        const textNodes = [];
+        let node;
+        while (node = walker.nextNode()) {
+            // Skip if parent is an anchor tag
+            if (node.parentNode.tagName !== 'A') {
+                textNodes.push(node);
+            }
+        }
+        
+        textNodes.forEach(textNode => {
+            const text = textNode.textContent;
+            if (urlRegex.test(text)) {
+                const span = document.createElement('span');
+                span.innerHTML = text.replace(urlRegex, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+                textNode.parentNode.replaceChild(span, textNode);
+            }
+        });
+        
+        return tempDiv.innerHTML;
     }
 
     /**
@@ -201,7 +1044,13 @@
       const storedOrder = JSON.parse(localStorage.getItem('categoryOrder')) || [];
       const existingCategories = storedOrder.filter(cat => cats[cat]);
       const newCategories = Object.keys(cats).filter(cat => !existingCategories.includes(cat));
-      const sortedCategories = [...existingCategories, ...newCategories];
+      let sortedCategories = [...existingCategories, ...newCategories];
+
+      // Filter categories by current tab
+      const categoryAssignments = getCategoryTabAssignments();
+      if (currentTab !== 'all') {
+        sortedCategories = sortedCategories.filter(cat => categoryAssignments[cat] === currentTab);
+      }
 
       const container = document.getElementById('bookmarkList');
       container.innerHTML = '';
@@ -234,25 +1083,26 @@
             let popoverAttributes = '';
             // Only add popover attributes if there are actual notes (not just empty HTML or whitespace)
             if (plainTextNotes.length > 0 && bm.notes && bm.notes.trim() !== '<p><br></p>') { // Check for Quill's empty paragraph
-                const popoverContent = tempDiv.innerHTML.replace(/'/g, '&apos;'); // Escape single quotes for data-bs-content
+                // Convert plain text URLs to clickable links
+                const linkedContent = linkifyUrls(tempDiv.innerHTML);
+                const popoverContent = linkedContent.replace(/'/g, '&apos;'); // Escape single quotes for data-bs-content
                 popoverAttributes = `
                     data-bs-toggle="popover"
-                    data-bs-trigger="hover focus"
+                    data-bs-trigger="manual"
                     data-bs-placement="auto"
                     data-bs-html="true"
-                    data-bs-delay='{"show":0, "hide":1500}'
                     data-bs-content='${popoverContent}'
                 `;
             }
 
+            const titleHTML = bm.url 
+                ? `<a href="${bm.url}" target="_blank" class="${titleClasses}" id="todo-title-${originalIndex}" ${popoverAttributes}>${bm.title}</a>`
+                : `<span class="${titleClasses}" id="todo-title-${originalIndex}" ${popoverAttributes}>${bm.title}</span>`;
+
             return `
                 <li class="list-group-item" draggable="true" data-bookmark-original-index="${originalIndex}">
                     ${checkboxHTML} <div class="bookmark-content">
-                        <a href="${bm.url}" target="_blank"
-                           class="${titleClasses}" id="todo-title-${originalIndex}"
-                           ${popoverAttributes}>
-                           ${bm.title}
-                        </a>
+                        ${titleHTML}
                     </div>
                     <div class="note-button-group">
                        <button class="btn btn-warning btn-sm" onclick="editBookmark(${originalIndex})">Edit</button>
@@ -263,16 +1113,70 @@
 
         col.innerHTML = `
           <div class="card">
-            <div class="card-header ${getCategoryColor(cat)} category-header">${cat}</div>
+            <div class="card-header ${getCategoryColor(cat)} category-header">
+              <span>${cat}</span>
+              ${getTabSelectorHTML(cat)}
+            </div>
             <div class="card-body p-0"><ul class="list-group list-group-flush">${items}</ul></div>
           </div>`;
         frag.appendChild(col);
       });
       container.appendChild(frag);
 
-      // Initialize Bootstrap Popovers after rendering
+      // Initialize Bootstrap Popovers after rendering with interactive behavior
       const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-      const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+      popoverTriggerList.forEach(popoverTriggerEl => {
+          const popover = new bootstrap.Popover(popoverTriggerEl, {
+              sanitize: false // Allow links in popover content
+          });
+          let isOverTrigger = false;
+          let isOverPopover = false;
+          let hideTimeout = null;
+
+          const showPopover = () => {
+              clearTimeout(hideTimeout);
+              popover.show();
+          };
+
+          const hidePopover = () => {
+              hideTimeout = setTimeout(() => {
+                  if (!isOverTrigger && !isOverPopover) {
+                      popover.hide();
+                  }
+              }, 300);
+          };
+
+          popoverTriggerEl.addEventListener('mouseenter', () => {
+              isOverTrigger = true;
+              showPopover();
+          });
+
+          popoverTriggerEl.addEventListener('mouseleave', () => {
+              isOverTrigger = false;
+              hidePopover();
+          });
+
+          popoverTriggerEl.addEventListener('shown.bs.popover', () => {
+              const popoverElement = popover.tip;
+              if (popoverElement) {
+                  popoverElement.style.pointerEvents = 'auto';
+                  popoverElement.addEventListener('mouseenter', () => {
+                      isOverPopover = true;
+                      clearTimeout(hideTimeout);
+                  });
+                  popoverElement.addEventListener('mouseleave', () => {
+                      isOverPopover = false;
+                      hidePopover();
+                  });
+                  // Ensure links inside the popover are clickable
+                  popoverElement.querySelectorAll('a').forEach(link => {
+                      link.style.pointerEvents = 'auto';
+                      link.setAttribute('target', '_blank');
+                      link.setAttribute('rel', 'noopener noreferrer');
+                  });
+              }
+          });
+      });
     }
 
     /**
@@ -379,6 +1283,9 @@
       const container = document.getElementById('bookmarkList');
 
       container.addEventListener('dragstart', e => {
+        // Skip if dragging an individual bookmark item (not a category column)
+        if (e.target.closest('.list-group-item')) return;
+        
         const draggedElement = e.target.closest('.draggable');
         if (draggedElement) {
           draggedElement.classList.add('dragging');
@@ -387,6 +1294,9 @@
       });
 
       container.addEventListener('dragend', e => {
+        // Skip if this was an individual bookmark item drag
+        if (e.target.closest('.list-group-item')) return;
+        
         const draggedElement = e.target.closest('.draggable');
         if (draggedElement) {
           draggedElement.classList.remove('dragging');
@@ -396,6 +1306,9 @@
 
       container.addEventListener('dragover', e => {
         e.preventDefault();
+        // Skip category reordering if dragging an item
+        if (document.querySelector('.dragging-item')) return;
+        
         const draggingElement = container.querySelector('.dragging');
         if (!draggingElement) return;
         const afterElement = getDragAfterElement(container, e.clientY);
@@ -515,8 +1428,8 @@
      */
     function persistItemOrderWithinCategory(category, newOrderedOriginalIndices) {
         let allBookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
-        // Create a map for quick lookup of bookmark objects by their original index
-        let bookmarksLookup = new Map(allBookmarks.map(bm => [bm.originalIndex, bm]));
+        // Create a map for quick lookup of bookmark objects by their array index
+        let bookmarksLookup = new Map(allBookmarks.map((bm, index) => [index, bm]));
 
         // Reconstruct the list of bookmarks for the specific category based on the new order
         let reorderedCategoryBookmarks = newOrderedOriginalIndices.map(originalIndex => bookmarksLookup.get(originalIndex));
@@ -546,6 +1459,7 @@
       const rows = bookmarksToExport.map(bm => [
         `"${(bm.title || '').replace(/"/g, '""')}"`,
         `"${(bm.url || '').replace(/"/g, '""')}"`,
+        `"${(bm.category || '').replace(/"/g, '""')}"`,
         `"${(bm.notes || '').replace(/"/g, '""')}"`
       ].join(','));
       const csvContent = [header.join(','), ...rows].join('\n');
