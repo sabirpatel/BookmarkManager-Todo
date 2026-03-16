@@ -764,7 +764,7 @@
     <div class="row mt-3" id="bookmarkList"></div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
   <script>
     const toolbarOptions = [
@@ -774,54 +774,60 @@
       [{ color: [] }, { background: [] }], [{ align: [] }], ['clean']
     ];
     let quill;
-    let currentTab = 'all'; // Defaults to CIM tab when available, otherwise 'all'
+    let currentTab = 'all';
+    let appState = { bookmarks: [], bookmarkTabs: [], categoryTabAssignments: {}, categoryOrder: [] };
 
-    document.addEventListener('DOMContentLoaded', () => {
+    // ==================== FILE STORAGE ====================
+
+    async function openOrCreateFile() {
+      try {
+        const res = await fetch('./bookmarks.json');
+        if (res.ok) {
+          const data = await res.json();
+          appState.bookmarks = data.bookmarks || [];
+          appState.bookmarkTabs = data.bookmarkTabs || [];
+          appState.categoryTabAssignments = data.categoryTabAssignments || {};
+          appState.categoryOrder = data.categoryOrder || [];
+        }
+      } catch (e) {
+        console.warn('Could not load bookmarks.json:', e);
+      }
+    }
+
+    async function saveToFile() {
+      try {
+        await fetch('./bookmarks.json', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(appState, null, 2),
+        });
+      } catch (e) {
+        console.error('Error saving bookmarks.json:', e);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('exportBtn').addEventListener('click', exportBookmarks);
       document.getElementById('importBtn').addEventListener('click', handleImportClick);
       document.getElementById('importFile').addEventListener('change', handleFileSelect);
 
       quill = new Quill('#bookmarkNotesEditor', { modules: { toolbar: toolbarOptions }, theme: 'snow' });
+      initDragAndDrop();
+      initItemDragAndDrop();
+
+      await openOrCreateFile();
+
       initializeTabs();
       loadBookmarks();
-      initDragAndDrop(); // For category columns
-      initItemDragAndDrop(); // For individual items within categories
-      updateCategorySuggestions(); // Populate datalist on load
+      updateCategorySuggestions();
     });
 
     // ==================== TAB MANAGEMENT ====================
 
-    /**
-     * Gets all tabs from local storage
-     * @returns {Array<{id: string, name: string}>}
-     */
-    function getTabs() {
-      return JSON.parse(localStorage.getItem('bookmarkTabs')) || [];
-    }
-
-    /**
-     * Saves tabs to local storage
-     * @param {Array<{id: string, name: string}>} tabs
-     */
-    function saveTabs(tabs) {
-      localStorage.setItem('bookmarkTabs', JSON.stringify(tabs));
-    }
-
-    /**
-     * Gets category-to-tab assignments
-     * @returns {Object<string, string>} categoryName -> tabId mapping
-     */
-    function getCategoryTabAssignments() {
-      return JSON.parse(localStorage.getItem('categoryTabAssignments')) || {};
-    }
-
-    /**
-     * Saves category-to-tab assignments
-     * @param {Object<string, string>} assignments
-     */
-    function saveCategoryTabAssignments(assignments) {
-      localStorage.setItem('categoryTabAssignments', JSON.stringify(assignments));
-    }
+    function getTabs() { return appState.bookmarkTabs || []; }
+    function saveTabs(tabs) { appState.bookmarkTabs = tabs; saveToFile().catch(console.error); }
+    function getCategoryTabAssignments() { return appState.categoryTabAssignments || {}; }
+    function saveCategoryTabAssignments(assignments) { appState.categoryTabAssignments = assignments; saveToFile().catch(console.error); }
 
     /**
      * Initializes the tab system
@@ -1006,9 +1012,10 @@
         newBookmark.isDone = false; // Default to not done
       }
 
-      const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+      const bookmarks = appState.bookmarks;
       bookmarks.push(newBookmark);
-      localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+      appState.bookmarks = bookmarks;
+      saveToFile().catch(console.error);
       document.getElementById('bookmarkForm').reset();
       quill.setContents([]);
       renderBookmarks(bookmarks);
@@ -1079,7 +1086,7 @@
           });
       }
 
-      const storedOrder = JSON.parse(localStorage.getItem('categoryOrder')) || [];
+      const storedOrder = appState.categoryOrder || [];
       const existingCategories = storedOrder.filter(cat => cats[cat]);
       const newCategories = Object.keys(cats).filter(cat => !existingCategories.includes(cat));
       let sortedCategories = [...existingCategories, ...newCategories];
@@ -1222,10 +1229,11 @@
      * @param {number} index - The original index of the bookmark in the main array.
      */
     function toggleToDo(index) {
-        let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+        let bookmarks = appState.bookmarks || [];
         if (bookmarks[index] && bookmarks[index].category === 'ToDo') {
             bookmarks[index].isDone = !bookmarks[index].isDone;
-            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+            appState.bookmarks = bookmarks;
+            saveToFile().catch(console.error);
             renderBookmarks(bookmarks);
         } else {
              console.warn(`Bookmark at index ${index} not found or not a ToDo item.`);
@@ -1236,8 +1244,7 @@
      * Loads bookmarks from local storage and initiates rendering.
      */
     function loadBookmarks() {
-      const b = JSON.parse(localStorage.getItem('bookmarks')) || [];
-      renderBookmarks(b);
+      renderBookmarks(appState.bookmarks || []);
     }
 
     /**
@@ -1245,9 +1252,10 @@
      * @param {number} i - The original index of the bookmark to delete.
      */
     function deleteBookmark(i) {
-      let b = JSON.parse(localStorage.getItem('bookmarks')) || [];
+      let b = appState.bookmarks || [];
       b.splice(i, 1);
-      localStorage.setItem('bookmarks', JSON.stringify(b));
+      appState.bookmarks = b;
+      saveToFile().catch(console.error);
       renderBookmarks(b);
       updateCategorySuggestions();
     }
@@ -1258,7 +1266,7 @@
      * @param {number} i - The original index of the bookmark to edit.
      */
     function editBookmark(i) {
-        let b = JSON.parse(localStorage.getItem('bookmarks')) || [];
+        let b = appState.bookmarks || [];
         if (i < 0 || i >= b.length) return;
         const bm = b[i];
         bootstrap.Collapse.getOrCreateInstance(document.getElementById('collapseForm')).show();
@@ -1267,7 +1275,8 @@
         document.getElementById('bookmarkCategory').value = bm.category;
         quill.clipboard.dangerouslyPasteHTML(bm.notes || '');
         b.splice(i, 1);
-        localStorage.setItem('bookmarks', JSON.stringify(b));
+        appState.bookmarks = b;
+        saveToFile().catch(console.error);
         renderBookmarks(b);
     }
 
@@ -1276,7 +1285,7 @@
      * @returns {Object<string, Array<Object>>} An object where keys are categories and values are arrays of bookmarks.
      */
     function getGroupedBookmarks() {
-        const b = JSON.parse(localStorage.getItem('bookmarks')) || [];
+        const b = appState.bookmarks || [];
         const cats = {};
         b.forEach((bm, i) => {
             const bookmarkWithIndex = { ...bm, originalIndex: i };
@@ -1308,9 +1317,9 @@
             }
         });
 
-        // Remove the temporary 'originalIndex' property before saving to local storage
         const bookmarksToSave = orderedBookmarks.map(({ originalIndex, ...rest }) => rest);
-        localStorage.setItem('bookmarks', JSON.stringify(bookmarksToSave));
+        appState.bookmarks = bookmarksToSave;
+        saveToFile().catch(console.error);
         renderBookmarks(bookmarksToSave);
     }
 
@@ -1379,7 +1388,8 @@
      */
     function updateCategoryOrder() {
       const cats = [...document.getElementById('bookmarkList').children].map(c=>c.dataset.category);
-      localStorage.setItem('categoryOrder',JSON.stringify(cats));
+      appState.categoryOrder = cats;
+      saveToFile().catch(console.error);
     }
 
     /**
@@ -1465,7 +1475,7 @@
      * @param {Array<number>} newOrderedOriginalIndices - An array of original indices in their new order.
      */
     function persistItemOrderWithinCategory(category, newOrderedOriginalIndices) {
-        let allBookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+        let allBookmarks = appState.bookmarks || [];
         // Create a map for quick lookup of bookmark objects by their array index
         let bookmarksLookup = new Map(allBookmarks.map((bm, index) => [index, bm]));
 
@@ -1485,7 +1495,7 @@
      * Exports all bookmarks to a CSV file.
      */
     function exportBookmarks() {
-      const bookmarksToExport = (JSON.parse(localStorage.getItem('bookmarks')) || []).map(bm => ({
+      const bookmarksToExport = (appState.bookmarks || []).map(bm => ({
           title: bm.title,
           url: bm.url,
           category: bm.category,
@@ -1553,7 +1563,7 @@
                 if (!window.confirm('CSV header does not match expected format (Title,URL,Category,Notes). Continue anyway?')) return; // Replaced confirm
             }
 
-            let existingBookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+            let existingBookmarks = appState.bookmarks || [];
             let importedCount = 0;
             for (let i = 1; i < lines.length; i++) {
                 if (lines[i].trim() === '') continue;
@@ -1567,7 +1577,8 @@
                     else { console.warn(`Skipping row ${i + 1} due to missing Title, URL, or Category:`, lines[i]); }
                 } else { console.warn(`Skipping row ${i + 1} due to unexpected number of fields:`, lines[i]); }
             }
-            localStorage.setItem('bookmarks', JSON.stringify(existingBookmarks));
+            appState.bookmarks = existingBookmarks;
+            saveToFile().catch(console.error);
             loadBookmarks();
             updateCategorySuggestions();
             console.log(`${importedCount} bookmarks imported successfully!`); // Replaced alert
@@ -1603,7 +1614,7 @@
      * Updates the datalist for category suggestions based on existing bookmarks.
      */
     function updateCategorySuggestions() {
-        const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+        const bookmarks = appState.bookmarks || [];
         const uniqueCategories = [...new Set(bookmarks.map(bm => bm.category))];
         const datalist = document.getElementById('categorySuggestions');
         datalist.innerHTML = '';
