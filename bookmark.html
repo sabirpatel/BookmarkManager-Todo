@@ -651,6 +651,38 @@
       background: var(--bg-card);
       color: var(--text-primary);
     }
+
+    /* Main view tabs */
+    .main-view-tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-right: 12px;
+      border-right: 1px solid var(--border-color);
+      margin-right: 4px;
+    }
+
+    .main-view-btn {
+      padding: 10px 16px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 13px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .main-view-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .main-view-btn.active {
+      background: var(--accent-gradient);
+      color: white;
+    }
   </style>
 </head>
 <body>
@@ -661,7 +693,7 @@
         <input type="file" id="importFile" accept=".csv" style="display: none;">
         <button id="importBtn" class="btn btn-warning">Import</button>
         <button id="exportBtn" class="btn btn-success">Export</button>
-        <button class="btn btn-info" onclick="sayHello()">Say Hello</button>
+        <a href="notes.html" class="btn btn-info">Notes</a>
       </div>
     </div>
 
@@ -705,10 +737,13 @@
 
     <!-- Tab System -->
     <div class="tabs-container mt-3">
+      <div class="main-view-tabs">
+        <button id="bookmarksViewBtn" class="main-view-btn active">Bookmarks</button>
+      </div>
       <div class="tabs-wrapper" id="tabsWrapper">
         <!-- Tabs will be rendered here -->
       </div>
-      <button class="add-tab-btn" onclick="showAddTabModal()">+ New Tab</button>
+      <button class="add-tab-btn" id="addBookmarkTabBtn" onclick="showAddTabModal()">+ New Tab</button>
     </div>
 
     <!-- Add/Edit Tab Modal -->
@@ -739,7 +774,7 @@
       [{ color: [] }, { background: [] }], [{ align: [] }], ['clean']
     ];
     let quill;
-    let currentTab = 'all'; // 'all' shows everything, otherwise shows specific tab
+    let currentTab = 'all'; // Defaults to CIM tab when available, otherwise 'all'
 
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('exportBtn').addEventListener('click', exportBookmarks);
@@ -792,6 +827,9 @@
      * Initializes the tab system
      */
     function initializeTabs() {
+      const tabs = getTabs();
+      const cimTab = tabs.find(t => (t.name || '').trim().toLowerCase() === 'cim');
+      currentTab = cimTab ? cimTab.id : 'all';
       renderTabs();
     }
 
@@ -1587,6 +1625,7 @@
     function sayHello() {
       console.log('Hello Afiya'); // Replaced alert
     }
+
   </script>
 </body>
 </html>

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --panel: #ffffff;
+      --panel-soft: #f4f6fb;
+      --text: #1f2430;
+      --muted: #64748b;
+      --border: #e5e9f2;
+      --accent: #6366f1;
+      --accent-soft: #eef0ff;
+      --radius: 12px;
+      --shadow: 0 4px 18px rgba(22, 26, 38, 0.06);
+      --transition: all 0.2s ease;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+    }
+
+    .app-shell {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .title {
+      font-weight: 700;
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .notes-layout {
+      display: grid;
+      grid-template-columns: 260px 320px 1fr;
+      gap: 10px;
+      min-height: 78vh;
+    }
+
+    .pane {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .pane-header {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-weight: 600;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .pane-body { padding: 12px; }
+
+    .folder-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .folder-item {
+      padding: 8px 10px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: var(--panel-soft);
+      color: #334155;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .folder-item:hover { background: #edf1f9; }
+
+    .folder-item.active {
+      background: var(--accent-soft);
+      border-color: #c7ccff;
+      color: #3740c7;
+    }
+
+    .folder-item.drag-over {
+      background: #e9edff;
+      border-color: var(--accent);
+    }
+
+    .new-note-icon {
+      width: 34px;
+      height: 34px;
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      color: white;
+      font-size: 22px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .new-note-icon:hover { transform: translateY(-1px); }
+
+    .notes-list {
+      padding: 8px;
+      max-height: calc(78vh - 44px);
+      overflow-y: auto;
+    }
+
+    .note-card {
+      background: var(--panel-soft);
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .note-card:hover {
+      border-color: #d6ddf0;
+      background: #eef2fb;
+    }
+
+    .note-card.active {
+      border-color: #b9c2ff;
+      background: #ebefff;
+    }
+
+    .note-card.dragging-note {
+      opacity: 0.45;
+      cursor: grabbing;
+    }
+
+    .note-title {
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #111827;
+    }
+
+    .note-preview {
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .note-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+
+    .status {
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    #noteRichTextEditor {
+      min-height: 58vh;
+    }
+
+    .tox-tinymce {
+      border-color: var(--border) !important;
+      border-radius: 8px !important;
+    }
+
+    @media (max-width: 1100px) {
+      .notes-layout { grid-template-columns: 1fr; }
+      .notes-list { max-height: 30vh; }
+      #noteRichTextEditor { min-height: 34vh; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <div class="topbar">
+      <h1 class="title">Notes</h1>
+      <a href="bookmark.html" class="btn btn-outline-secondary btn-sm">Back to Bookmarks</a>
+    </div>
+
+    <div class="notes-layout">
+      <aside class="pane">
+        <div class="pane-header">Folders</div>
+        <div class="pane-body">
+          <div class="d-flex gap-2">
+            <input type="text" class="form-control" id="newNoteFolderName" placeholder="New folder">
+            <button type="button" class="btn btn-secondary" onclick="addNotesFolder()">Add</button>
+          </div>
+          <div class="folder-list" id="notesFolderList"></div>
+        </div>
+      </aside>
+
+      <aside class="pane">
+        <div class="pane-header">
+          <span>Notes</span>
+          <button type="button" class="new-note-icon" title="New note" onclick="startNewNote()">+</button>
+        </div>
+        <div class="notes-list" id="notesBoard"></div>
+      </aside>
+
+      <section class="pane">
+        <div class="pane-header">Editor</div>
+        <div class="pane-body">
+          <div class="status" id="noteEditorStatus">Start typing to create a note...</div>
+          <div class="mb-2">
+            <label for="noteTitle" class="form-label">Title</label>
+            <input type="text" class="form-control" id="noteTitle" placeholder="Untitled note">
+          </div>
+          <div class="mb-2">
+            <label for="noteFolderSelect" class="form-label">Folder</label>
+            <select class="form-control" id="noteFolderSelect"></select>
+          </div>
+          <div class="mb-2">
+            <label for="noteRichTextEditor" class="form-label">Content</label>
+            <textarea id="noteRichTextEditor"></textarea>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js" referrerpolicy="origin"></script>
+  <script>
+    let notesEditor;
+    let selectedNotesFolder = 'all';
+    let activeNoteId = '';
+    let notesAutoSaveTimer = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.tinymce) {
+        console.error('TinyMCE is not available on window.');
+        setNoteEditorStatus('Editor failed to load. Please refresh the page.');
+        return;
+      }
+
+      tinymce.init({
+        selector: '#noteRichTextEditor',
+        menubar: false,
+        height: Math.max(420, Math.floor(window.innerHeight * 0.58)),
+        plugins: 'lists link table code',
+        toolbar: 'undo redo | blocks | bold italic underline strikethrough | forecolor backcolor | bullist numlist | table | blockquote code | link',
+        content_style: 'body { font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif; font-size: 14px; }',
+        setup: (editor) => {
+          notesEditor = editor;
+
+          editor.on('init', () => {
+            initializeNotes();
+            renderNotes();
+            openBlankEditor(true);
+
+            document.getElementById('noteTitle').addEventListener('input', queueActiveNoteSave);
+            document.getElementById('noteFolderSelect').addEventListener('change', queueActiveNoteSave);
+          });
+
+          editor.on('input change keyup undo redo', queueActiveNoteSave);
+        }
+      }).catch(err => {
+        console.error('Editor initialization failed', err);
+        setNoteEditorStatus('Editor failed to initialize. Please refresh the page.');
+      });
+    });
+
+    function getNotesFolders() {
+      return JSON.parse(localStorage.getItem('notesFolders')) || [];
+    }
+
+    function saveNotesFolders(folders) {
+      localStorage.setItem('notesFolders', JSON.stringify(folders));
+    }
+
+    function getNotes() {
+      return JSON.parse(localStorage.getItem('notesItems')) || [];
+    }
+
+    function saveNotes(items) {
+      localStorage.setItem('notesItems', JSON.stringify(items));
+    }
+
+    function initializeNotes() {
+      const folders = getNotesFolders();
+      if (!folders.length) {
+        saveNotesFolders([{ id: 'folder_general', name: 'General' }]);
+      }
+      refreshNoteFolderSelect();
+      renderNotesFolders();
+    }
+
+    function refreshNoteFolderSelect(preferredValue) {
+      const folders = getNotesFolders();
+      const select = document.getElementById('noteFolderSelect');
+      const currentValue = preferredValue || select.value;
+      select.innerHTML = folders.map(folder => `<option value="${folder.id}">${folder.name}</option>`).join('');
+
+      if (!folders.length) return;
+      const hasCurrent = folders.some(folder => folder.id === currentValue);
+      select.value = hasCurrent ? currentValue : folders[0].id;
+    }
+
+    function renderNotesFolders() {
+      const folders = getNotesFolders();
+      const list = document.getElementById('notesFolderList');
+
+      const allItem = `
+        <div class="folder-item ${selectedNotesFolder === 'all' ? 'active' : ''}"
+             onclick="selectNotesFolder('all')"
+             ondragover="onFolderItemDragOver(event)"
+             ondragleave="onFolderItemDragLeave(event)"
+             ondrop="onFolderItemDrop(event, 'all')">📁 All Notes</div>
+      `;
+
+      const folderItems = folders.map(folder => `
+        <div class="folder-item ${selectedNotesFolder === folder.id ? 'active' : ''}"
+             onclick="selectNotesFolder('${folder.id}')"
+              ondblclick="event.stopPropagation(); renameNotesFolder('${folder.id}')"
+             ondragover="onFolderItemDragOver(event)"
+             ondragleave="onFolderItemDragLeave(event)"
+             ondrop="onFolderItemDrop(event, '${folder.id}')">📂 ${escapeHtml(folder.name)}</div>
+      `).join('');
+
+      list.innerHTML = allItem + folderItems;
+    }
+
+    function selectNotesFolder(folderId) {
+      selectedNotesFolder = folderId;
+      renderNotesFolders();
+      renderNotes();
+    }
+
+    function addNotesFolder() {
+      const input = document.getElementById('newNoteFolderName');
+      const name = input.value.trim();
+      if (!name) return;
+
+      const folders = getNotesFolders();
+      const exists = folders.some(f => f.name.toLowerCase() === name.toLowerCase());
+      if (exists) return;
+
+      folders.push({ id: `folder_${Date.now()}`, name });
+      saveNotesFolders(folders);
+      input.value = '';
+      refreshNoteFolderSelect();
+      renderNotesFolders();
+      renderNotes();
+    }
+
+    function renameNotesFolder(folderId) {
+      const folders = getNotesFolders();
+      const folder = folders.find(f => f.id === folderId);
+      if (!folder) return;
+
+      const nextName = window.prompt('Rename folder:', folder.name);
+      if (nextName === null) return;
+
+      const trimmed = nextName.trim();
+      if (!trimmed) return;
+
+      const duplicate = folders.some(f => f.id !== folderId && f.name.toLowerCase() === trimmed.toLowerCase());
+      if (duplicate) return;
+
+      folder.name = trimmed;
+      saveNotesFolders(folders);
+      refreshNoteFolderSelect();
+      renderNotesFolders();
+      renderNotes();
+    }
+
+    function startNewNote() {
+      const folders = getNotesFolders();
+      const folderId = selectedNotesFolder !== 'all' ? selectedNotesFolder : (folders[0] ? folders[0].id : '');
+      if (!folderId) return;
+
+      const notes = getNotes();
+      const newNote = {
+        id: `note_${Date.now()}`,
+        title: 'Untitled note',
+        content: '',
+        folderId,
+        updatedAt: Date.now()
+      };
+      notes.unshift(newNote);
+      saveNotes(notes);
+      openNote(newNote.id, true);
+      renderNotes();
+    }
+
+    function openBlankEditor(shouldFocus = true) {
+      if (!notesEditor) return;
+      const folders = getNotesFolders();
+      const fallbackFolder = selectedNotesFolder !== 'all' ? selectedNotesFolder : (folders[0] ? folders[0].id : '');
+      activeNoteId = '';
+      document.getElementById('noteTitle').value = '';
+      document.getElementById('noteFolderSelect').value = fallbackFolder;
+      notesEditor.setContent('');
+      setNoteEditorStatus('Draft mode');
+      if (shouldFocus) notesEditor.focus();
+    }
+
+    function openNote(noteId, focusEditor = false) {
+      if (!notesEditor) return;
+      const notes = getNotes();
+      const note = notes.find(n => n.id === noteId);
+      if (!note) return;
+
+      activeNoteId = note.id;
+      document.getElementById('noteTitle').value = note.title || 'Untitled note';
+      document.getElementById('noteFolderSelect').value = note.folderId;
+      notesEditor.setContent(note.content || '');
+      setNoteEditorStatus(`Editing: ${note.title || 'Untitled note'}`);
+      renderNotes();
+      if (focusEditor) notesEditor.focus();
+    }
+
+    function queueActiveNoteSave() {
+      if (!notesEditor) return;
+      clearTimeout(notesAutoSaveTimer);
+      notesAutoSaveTimer = setTimeout(saveActiveNoteFromEditor, 250);
+    }
+
+    function saveActiveNoteFromEditor() {
+      if (!notesEditor) return;
+      const titleInput = document.getElementById('noteTitle');
+      const folderId = document.getElementById('noteFolderSelect').value;
+      const content = notesEditor.getContent();
+      const plainText = getPlainTextFromHtml(content).trim();
+      const typedTitle = titleInput.value.trim();
+      const title = typedTitle || 'Untitled note';
+
+      if (!folderId) return;
+      if (!plainText && !typedTitle) return;
+
+      const notes = getNotes();
+
+      if (!activeNoteId) {
+        const newNote = { id: `note_${Date.now()}`, title, content, folderId, updatedAt: Date.now() };
+        notes.unshift(newNote);
+        activeNoteId = newNote.id;
+      } else {
+        const idx = notes.findIndex(n => n.id === activeNoteId);
+        if (idx < 0) return;
+        notes[idx] = { ...notes[idx], title, content, folderId, updatedAt: Date.now() };
+      }
+
+      saveNotes(notes);
+      setNoteEditorStatus(`Saved: ${title}`);
+      renderNotes();
+    }
+
+    function deleteNote(noteId) {
+      let notes = getNotes();
+      notes = notes.filter(n => n.id !== noteId);
+      saveNotes(notes);
+
+      if (activeNoteId === noteId) {
+        const next = notes[0];
+        if (next) openNote(next.id);
+        else openBlankEditor(false);
+      }
+      renderNotes();
+    }
+
+    function renderNotes() {
+      const folders = getNotesFolders();
+      const notes = getNotes();
+      const board = document.getElementById('notesBoard');
+
+      const activeNote = notes.find(n => n.id === activeNoteId);
+      refreshNoteFolderSelect(activeNote ? activeNote.folderId : undefined);
+
+      const validFolderIds = new Set(folders.map(f => f.id));
+      const visibleNotes = notes
+        .filter(n => validFolderIds.has(n.folderId))
+        .filter(n => selectedNotesFolder === 'all' ? true : n.folderId === selectedNotesFolder)
+        .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+
+      const cards = visibleNotes.map(note => {
+        const preview = escapeHtml(getTopWords(getPlainTextFromHtml(note.content || ''), 100));
+        return `
+          <div class="note-card ${note.id === activeNoteId ? 'active' : ''}"
+               draggable="true"
+               data-note-id="${note.id}"
+               onclick="openNote('${note.id}')"
+               ondblclick="openNote('${note.id}', true)"
+               ondragstart="handleNoteDragStart(event, '${note.id}')">
+            <div class="note-title">${escapeHtml(note.title || 'Untitled note')}</div>
+            <div class="note-preview">${preview}</div>
+            <div class="note-actions">
+              <button class="btn btn-sm btn-outline-danger" onclick="event.stopPropagation(); deleteNote('${note.id}')">Delete</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      board.innerHTML = cards || '<div class="text-muted p-2">No notes in this view.</div>';
+    }
+
+    function handleNoteDragStart(event, noteId) {
+      event.dataTransfer.setData('text/note-id', noteId);
+      event.target.classList.add('dragging-note');
+    }
+
+    function onFolderItemDragOver(event) {
+      event.preventDefault();
+      event.currentTarget.classList.add('drag-over');
+    }
+
+    function onFolderItemDragLeave(event) {
+      event.currentTarget.classList.remove('drag-over');
+    }
+
+    function onFolderItemDrop(event, folderId) {
+      event.preventDefault();
+      event.currentTarget.classList.remove('drag-over');
+      const noteId = event.dataTransfer.getData('text/note-id');
+      if (!noteId || folderId === 'all') return;
+
+      const notes = getNotes();
+      const idx = notes.findIndex(n => n.id === noteId);
+      if (idx < 0) return;
+
+      notes[idx].folderId = folderId;
+      notes[idx].updatedAt = Date.now();
+      saveNotes(notes);
+
+      if (activeNoteId === noteId) {
+        document.getElementById('noteFolderSelect').value = folderId;
+      }
+
+      renderNotes();
+      renderNotesFolders();
+    }
+
+    function setNoteEditorStatus(message) {
+      const status = document.getElementById('noteEditorStatus');
+      if (status) status.textContent = message;
+    }
+
+    function getPlainTextFromHtml(html) {
+      const div = document.createElement('div');
+      div.innerHTML = html;
+      return div.textContent || div.innerText || '';
+    }
+
+    function getTopWords(text, limit) {
+      const words = text.trim().split(/\s+/).filter(Boolean);
+      if (words.length <= limit) return words.join(' ');
+      return words.slice(0, limit).join(' ') + '...';
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    document.addEventListener('dragend', () => {
+      document.querySelectorAll('.note-card.dragging-note').forEach(el => el.classList.remove('dragging-note'));
+      document.querySelectorAll('.folder-item.drag-over').forEach(el => el.classList.remove('drag-over'));
+    });
+  </script>
+</body>
+</html>
