@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(~/.bun/bin/bun /Users/i845496/dev/BookmarkManager-Todo/server.js)"
+    ]
+  }
+}

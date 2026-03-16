@@ -1,0 +1,12 @@
+Options -Indexes
+
+# Route all requests through index.php (except actual files like save.php, bookmarks.json, etc.)
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^$ index.php [L]
+
+# Block direct access to sensitive files
+<FilesMatch "^(bookmarks\.json|\.secret|server\.js)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

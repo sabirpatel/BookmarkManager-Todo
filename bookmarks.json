@@ -111,9 +111,548 @@
       "url": "https://docs.google.com/spreadsheets/d/1hFVTpMGEsOKdJe5mtOueU_PPorUjUii9FYMKC8k2p2Q/edit?usp=sharing",
       "category": "Rentals",
       "notes": "<p><br></p>"
+    },
+    {
+      "title": "Levrex Resources Details",
+      "url": "https://teams.microsoft.com/l/message/19:c358e037bc3a4e608a09db96ab358e05@thread.v2/1771352251797?context=%7B%22contextType%22%3A%22chat%22%7D",
+      "category": "ToDo",
+      "notes": "<p><br></p>",
+      "isDone": false
+    },
+    {
+      "title": "Performance Issue Connar",
+      "url": "https://app.mural.co/t/sappm1454/m/sappm1454/1771372231725/153915f2fd0d56fdf9b1465b9a4f2fe703e5f842",
+      "category": "ToDo",
+      "notes": "<p>Performance Issue Discussion.</p><p><br></p><ul><li>Aspose Migration max Time</li><li>Claude, Gemini flash, Only select top 2 models if uploaded. Ignore other models.</li></ul>",
+      "isDone": false
+    },
+    {
+      "title": "Sharmila Meeting",
+      "url": "https://teams.microsoft.com/meet/25130287069878?p=736fNeOR35oCJn6bLS",
+      "category": "ToDo",
+      "notes": "<p><strong style=\"color: rgb(36, 36, 36);\">Join:&nbsp;</strong><a href=\"https://teams.microsoft.com/meet/25130287069878?p=736fNeOR35oCJn6bLS\" target=\"_blank\" style=\"color: rgb(91, 95, 199);\">https://teams.microsoft.com/meet/25130287069878?p=736fNeOR35oCJn6bLS</a></p><p><span style=\"color: rgb(97, 97, 97);\">Meeting ID:&nbsp;</span><span style=\"color: rgb(36, 36, 36);\">251 302 870 698 78</span></p><p><span style=\"color: rgb(97, 97, 97);\">Passcode:&nbsp;</span><span style=\"color: rgb(36, 36, 36);\">MP9tJ9QG</span></p>",
+      "isDone": false
+    },
+    {
+      "title": "Tax Pro Portal",
+      "url": "https://taxumbrella.securefilepro.com/",
+      "category": "ToDo",
+      "notes": "<p><br></p>",
+      "isDone": false
+    },
+    {
+      "title": "📈 CIM Jira Dashboards",
+      "url": "https://jira.tools.sap/secure/Dashboard.jspa?selectPageId=204535",
+      "category": "CIM",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "📊 CIM-Burndown - Release",
+      "url": "https://sap.sharepoint.com/:x:/r/teams/CentralInvoiceDevelopment/_layouts/15/doc2.aspx?sourcedoc=%7B9B6B669F-FEE1-42FB-9C3F-E5B05F7C1A4A%7D&file=CIM%20Burndown%202024-4Q.xlsm&action=default&mobileredirect=true&DefaultItemOpen=1&ct=1743694922251&wdOrigin=OFFICECOM-WEB.START.EDGEWORTH&cid=90145b9a-43a5-440f-9b89-985745c5f23c&wdPreviousSessionSrc=HarmonyWeb&wdPreviousSession=97b562a0-fb8e-4287-a033-d5d5def0a95e",
+      "category": "CIM",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "🧪🧪 Testing Landscape",
+      "url": "https://wiki.one.int.sap/wiki/spaces/CIMN/pages/5863562009/CIM+USA01+Knowledge+Base+-+Test+Landscapes+and+QA+documents",
+      "category": "CIM",
+      "notes": "<p>Testing lanscape</p>"
+    },
+    {
+      "title": "💻 CIM-Github",
+      "url": "https://github.wdf.sap.corp/CentralInvoices",
+      "category": "CIM",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "🚨 CIM SWAT",
+      "url": "https://itsm.services.sap/now/nav/ui/classic/params/target/%24pa_dashboard.do%3Fsysparm_dashboard%3D84bfd3ab839c2e507ff054c6feaad3e9%26sysparm_tab%3D4dbf57ab839c2e507ff054c6feaad38e%26sysparm_cancelable%3Dtrue%26sysparm_editable%3Dfalse%26sysparm_active_panel%3Dfalse",
+      "category": "CIM",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "CIM-Amalthea",
+      "url": "https://dashboard.dwc.tools.sap/org/CentralInvoices/stages/DeliverREL004%2FRELTestFeature/artifacts",
+      "category": "CIM",
+      "notes": ""
+    },
+    {
+      "title": "My Teams Dashboard",
+      "url": "https://sap-sac.eu10.sapanalytics.cloud/sap/fpa/ui/app.html?sap-shell=embed#/story2&/s2/82D1E2390C1DDBF89253F3A23F4D284F/?viewer=story&mode=view",
+      "category": "CIM",
+      "notes": ""
+    },
+    {
+      "title": "Aha",
+      "url": "https://ariba.aha.io/products/CIM/feature_cards?open_quick_start=true",
+      "category": "CIM",
+      "notes": ""
+    },
+    {
+      "title": "Cobolt Arbia API's",
+      "url": "https://e2e.cobalt.ariba.com/api/apis",
+      "category": "CIM",
+      "notes": "Sumant shared these"
+    },
+    {
+      "title": "CIM - Customer Cases",
+      "url": "https://itsm.services.sap/now/cwf/agent/list/params/list-id/2cc436a2c3bb2d9088b12875e00131b4/tiny-id/dJoRjoQoeZfvLhbCkFxZIa0Uarrivr50",
+      "category": "CIM",
+      "notes": "Service now Customer Cases"
+    },
+    {
+      "title": "CIM-Wiki",
+      "url": "https://wiki.one.int.sap/wiki/display/INVEXT/CIM-US01+-+Important+Links",
+      "category": "CIM",
+      "notes": "<p>test</p>"
+    },
+    {
+      "title": "CIM Team Ownership",
+      "url": "https://wiki.one.int.sap/wiki/display/CIMN/SAP+Ariba+Central+Invoice+Management+Teams",
+      "category": "CIM",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "CIM-Component-Owners",
+      "url": "https://sapnam-my.sharepoint.com/:x:/g/personal/sabir_patel_sap_com/EfrGF4hIG6JOmPSuTMDtYgEB4OcnDoE8JTnDR5Vwg1jcww?e=enGDY9",
+      "category": "CIM",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Ariba Gap Analysis",
+      "url": "https://sapnam-my.sharepoint.com/:p:/r/personal/prasanna_krishnan_sap_com/_layouts/15/Doc.aspx?sourcedoc=%7B507CBCB5-C02B-4847-B4F8-D4CCAA6021A5%7D&file=AIM-CIM%20Feature%20Gap%20Analysis.pptx&action=edit&mobileredirect=true",
+      "category": "CIM",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Component Approval",
+      "url": "https://ach.cfapps.eu10.hana.ondemand.com/#/requests/create/show/b6e0aad7-c6e0-4de5-907a-26aa41ba6af0",
+      "category": "CIM",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "CIM-Elaborations GIT link",
+      "url": "https://github.wdf.sap.corp/CentralInvoices/Architecture/tree/main/Elaboration",
+      "category": "CIM",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "CIM QA docs",
+      "url": "https://github.wdf.sap.corp/CentralInvoices/qa-documents/blob/46acd81654a632479379aebced11be05e9692f20/docs/STSs/STS_Blocking_And_Deletion.mdx",
+      "category": "CIM",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "CAM Profile Creation",
+      "url": "https://github.wdf.sap.corp/pages/CentralInvoices/howTo/docs/DevOps/Ops/cloud_access_manager_cam/#dynatrace-profiles",
+      "category": "CIM",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "CIM 2602 Sharepoint",
+      "url": "https://sap.sharepoint.com/:u:/r/teams/CentralInvoiceDevelopment/SitePages/CIM-2602.aspx?csf=1&web=1&e=gP0Ty6",
+      "category": "CIM",
+      "notes": "<p>CIM New World.</p>"
+    },
+    {
+      "title": "AIM-CIM-Tenant-Migration",
+      "url": "https://sap.sharepoint.com/teams/CentralInvoiceDevelopment/Shared%20Documents/General/Ariba%20Invoice%20Management/AIM-CIM%20Tenant%20Setup%20for%20Upgrade.xlsx?d=we5271563484b4e70921e713e54dc7854",
+      "category": "CIM",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "🏆 SuccessFactor",
+      "url": "https://performancemanager5.successfactors.eu/",
+      "category": "Tools",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "🛢️🛢️ Hana DB Explorer",
+      "url": "https://wiki.one.int.sap/wiki/pages/viewpage.action?spaceKey=CONINVO&title=CIM+-+Local+Setup",
+      "category": "Tools",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "🦀 Claude Code",
+      "url": "https://pages.github.tools.sap/hAIperspace/hai-docs/llm-proxy/recipes/claude/",
+      "category": "Tools",
+      "notes": "<p><strong>SAP Setup</strong></p><p>hai configure claude-code</p><p>hai proxy start</p><p><br></p><p>SAP Doc</p><p><span style=\"color: black;\">Dear colleagues,</span></p><p><span style=\"color: black;\">Thank you for joining our&nbsp;</span><strong style=\"color: black;\">high-energy&nbsp;</strong><span style=\"color: black;\">rollout kick-off for Claude Code</span>!</p><p><span style=\"color: black;\">Here are links to the kick-off&nbsp;​</span><a href=\"https://sap.sharepoint.com/:b:/r/teams/ClaudeCodeRollout/Shared%20Documents/General/Resources/20260310_Claude%20Code_Kick-Off%20Roll-Out.pdf?csf=1&amp;web=1&amp;e=bmcOKb\" target=\"_blank\" style=\"background-color: rgb(243, 242, 241); color: blue;\"><img src=\"//:0\" alt=\"​pdf icon\" height=\"16\" width=\"16\">&nbsp;slides</a><span style=\"color: black;\">​&nbsp;and&nbsp;</span><a href=\"https://video.sap.com/media/t/1_tbpy7x1a\" target=\"_blank\" style=\"color: rgb(150, 96, 125);\">recording</a><span style=\"color: black;\">.</span></p><p><br></p><p><span style=\"color: black;\">Here are the&nbsp;</span><strong style=\"color: black;\">next steps</strong><span style=\"color: black;\">&nbsp;for you.</span></p><p><br></p><p>1.&nbsp;<a href=\"https://pages.github.tools.sap/hAIperspace/hai-docs/llm-proxy/recipes/claude/\" target=\"_blank\" style=\"color: rgb(91, 95, 199);\"><u>​</u></a><a href=\"https://pages.github.tools.sap/hAIperspace/hai-docs/llm-proxy/recipes/claude/\" target=\"_blank\" style=\"color: rgb(150, 96, 125);\">Set-up</a><span style=\"color: black;\">&nbsp;Claude Code.</span></p><p><br></p><p><span style=\"color: black;\">2. Visit the&nbsp;</span><a href=\"https://portal.hyperspace.tools.sap/\" target=\"_blank\" style=\"color: rgb(150, 96, 125);\">Hyperspace Portal</a><span style=\"color: black;\">&nbsp;(a pre-requisite to get access to the Hyperspace MCP Registry).</span></p><p><br></p><p><span style=\"color: black;\">3. Start&nbsp;</span><strong style=\"color: black;\">using&nbsp;</strong><span style=\"color: black;\">Claude Code!</span></p><p><br></p><p>4. Follow the&nbsp;<a href=\"https://sap.sharepoint.com/:b:/r/teams/ClaudeCodeRollout/Shared%20Documents/General/Resources/20260310_Claude%20Code_Dos%26Donts.pdf?csf=1&amp;web=1&amp;e=5LhA55\" target=\"_blank\" style=\"background-color: rgb(243, 242, 241); color: blue;\"><strong><img src=\"//:0\" alt=\"​pdf icon\" height=\"16\" width=\"16\">&nbsp;Dos &amp; Don'ts</strong></a><strong style=\"color: black;\">&nbsp;</strong><span style=\"color: black;\">shared in the kick-off</span></p><p><span style=\"color: black;\">If you need help, please reach out to us via the&nbsp;</span><a href=\"https://teams.microsoft.com/l/channel/19%3Afb167ed2fa604897908267d667ed0ff3%40thread.tacv2/Questions%20and%20Answers?groupId=f92ad6f5-67ec-4252-a77d-b41fef6bdf24&amp;tenantId=42f7676c-f455-423c-82f6-dc2d99791af7\" target=\"_blank\" style=\"color: rgb(150, 96, 125);\"><u>Claude Code Support channel</u></a><span style=\"color: black;\">.</span></p><p><br></p><p><strong style=\"color: black;\">Enjoy&nbsp;</strong><span style=\"color: black;\">AI-assisted coding with Claude Code!</span></p><p><br></p><p><br></p><p>https://www.youtube.com/watch?v=86HM0RUWhCk</p><p><br></p><p><strong>Claude.md file</strong></p><p>https://www.skool.com/ai-automation-society/classroom/076a1c6e?md=5086a446f2bc47ccbc29988bad7cb5e4</p><p><br></p><p><strong>Design Inspiration:</strong></p><p>https://dribbble.com/search/landing%20page (dribble)</p><p>https://www.awwwards.com/directory/interactive/</p><p>https://21st.dev/community/components</p><p><br></p><p><strong>Vercel + Ai Studio</strong></p><p>https://www.youtube.com/watch?v=n0ahK4AheN4</p>"
+    },
+    {
+      "title": "Figma",
+      "url": "https://figma.com/files/859487099279312422/recents-and-sharing?fuid=1286772878717495498",
+      "category": "Tools",
+      "notes": ""
+    },
+    {
+      "title": "SAP Copilot",
+      "url": "https://m365.cloud.microsoft/chat?auth=2",
+      "category": "Tools",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Mural",
+      "url": "https://app.mural.co/t/sappm1454/home",
+      "category": "Tools",
+      "notes": ""
+    },
+    {
+      "title": "Concur Travel & Expense",
+      "url": "https://accounts.sap.com/saml2/idp/sso?sp=https://eu1.concursolutions.com",
+      "category": "Tools",
+      "notes": ""
+    },
+    {
+      "title": "Unified Ticketing",
+      "url": "https://sapit-home-prod-004.launchpad.cfapps.eu10.hana.ondemand.com/site#unifiedticketing-Display?sap-ui-app-id-hint=51a3f75c-7f9d-4c1a-8c3e-079e8e3e1a45&/detail/1308077184/ZFAR",
+      "category": "Tools",
+      "notes": "<p>To create a Ticket for Support</p>"
+    },
+    {
+      "title": "Unified Ticketing - Create",
+      "url": "https://sapit-home-prod-004.launchpad.cfapps.eu10.hana.ondemand.com/site#unifiedticketing-Display?sap-ui-app-id-hint=51a3f75c-7f9d-4c1a-8c3e-079e8e3e1a45&/create",
+      "category": "Tools",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Employee Referal",
+      "url": "https://sap.1brd.com/dashboard/jobs/active",
+      "category": "Tools",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Draw Tool",
+      "url": "https://excalidraw.com/",
+      "category": "Tools",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Google Gemini",
+      "url": "https://gemini.google.com/app/5f7e417f9cf48627",
+      "category": "Tools",
+      "notes": "<p>https://gemini.google.com/app/5f7e417f9cf48627</p>"
+    },
+    {
+      "title": "Compensation Assistant",
+      "url": "https://compensationframeworkviewer-sapitcloud.dispatcher.hana.ondemand.com/webapp/index.html?hc_reset",
+      "category": "Tools",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "SharePad IO",
+      "url": "https://sharepad.io/p/iTikya4",
+      "category": "Tools",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "HR Direct - SAP",
+      "url": "https://sapit-home-prod-004.launchpad.cfapps.eu10.hana.ondemand.com/site#unifiedticketing-Display?sap-ui-app-id-hint=51a3f75c-7f9d-4c1a-8c3e-079e8e3e1a45&/create/YHRR/",
+      "category": "Tools",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Ai Work Buddy",
+      "url": "https://ipe-ato-poc-aicaptest-ai-poc-prod-productivitychains.cfapps.eu12.hana.ondemand.com/",
+      "category": "Tools",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "PROJECT TRACKER",
+      "url": "https://github.wdf.sap.corp/pages/InvoiceContentExtraction/project-tracker/",
+      "category": "Tools",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "🎥 Screen recording",
+      "url": "https://sapnam.sharepoint.com/_layouts/15/stream.aspx?action=create&referrer=StreamWebApp&referrerScenario=postroll&captureMode=screenrecorder&isDarkMode=false",
+      "category": "Tools",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "leverx resources",
+      "url": "https://sapnam-my.sharepoint.com/:x:/r/personal/sabir_patel_sap_com/Documents/LeverX-Resources.xlsx?d=wee16166a5b8a4dbcbdedb55852454dca&csf=1&web=1&e=Jdqjgh",
+      "category": "Leverx",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "LeverX Status ( Vasil PPT)",
+      "url": "https://sap-my.sharepoint.com/:p:/r/personal/vasil_shmidt_sap_com/Documents/MIN-USA%20Review.pptx?d=w04d121a8cbd74f47ad18ae16bc4e5c8f&csf=1&web=1&e=Uvd1rv",
+      "category": "Leverx",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Fieldglass Timesheet LeverX",
+      "url": "https://sapx.us.fieldglass.cloud.sap/SSOLogin?TARGET=company%3DSAPX&next=time_sheet_detail.do%3Fid%3Dz260201013238541081750e7%26buyerCode%3DSAPX",
+      "category": "Leverx",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "CIM-DailyMonitoring-7DayTrend (Dynatrace)",
+      "url": "https://live.eu10.apm.services.cloud.sap/e/89848e78-ef49-4cea-87f0-1b8ce4b040bc/#dashboard;gtf=-7d%20to%20now;gf=all;id=9cee89fc-b3ef-428d-86a9-d6e3a9edd427",
+      "category": "CIM-Monitoring",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "CIM-DailyPerformance-(Dynatrace)",
+      "url": "https://live.eu10.apm.services.cloud.sap/e/89848e78-ef49-4cea-87f0-1b8ce4b040bc/#dashboard;gtf=-7d%20to%20now;gf=all;id=c7634f01-b8d1-499d-9de4-b85e44e7bf9c",
+      "category": "CIM-Monitoring",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "CIM-Splunk",
+      "url": "https://dev-splunk-search.c-56e6702.kyma.ondemand.com/",
+      "category": "CIM-Monitoring",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "CIM-Quicksights",
+      "url": "https://quicksight.aws.amazon.com/sn/auth/signin?qs-signin-user-auth=false&directory_alias=sapinvoicecapture&redirect_uri=https%3A%2F%2Fquicksight.aws.amazon.com%2Fsn%2Fstart%3Fdirectory_alias%3Dsapinvoicecapture%26qs-signin-user-auth%3Dfalse%26state%3DhashArgs%2523%26isauthcode%3Dtrue",
+      "category": "CIM-Monitoring",
+      "notes": "<p>userid: sabir.patel@sap.com</p><p>Pass: VeryCold...</p>"
+    },
+    {
+      "title": "CIM-CloudLogging",
+      "url": "https://dashboards-sf-a5a0fd8b-5821-4468-a246-a0b533144d90.cls-03.cloud.logs.services.eu10.hana.ondemand.com/app/dashboards#/view/cf2578b0-822e-11ee-9ae3-63b7cd9a2b9a?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-24h,to:now))&_a=(description:'',filters:!(),fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t),query:(language:kuery,query:''),timeRestore:!t,title:cim-logs,viewMode:view)",
+      "category": "CIM-Monitoring",
+      "notes": "<p>Daily DOX.</p><p><br></p><p><span style=\"background-color: rgb(240, 242, 244); color: rgb(42, 57, 71);\">https://dashboards-sf-a5a0fd8b-5821-4468-a246-a0b533144d90.cls-03.cloud.logs.services.eu10.hana.ondemand.com/goto/a0a3e50e853af9d079fc0d23c8a59d85?security_tenant=global</span></p>"
+    },
+    {
+      "title": "Observability - Procurement Yann",
+      "url": "https://github.wdf.sap.corp/pages/Ariba-Observability/Docs/",
+      "category": "CIM-Monitoring",
+      "notes": "<p>Hi colleagues,</p><p><br></p><p>Few days&nbsp;ago, there was a meeting about Nexus Procurement Observability overview.</p><p>I can only encourage you to have a look on recording and documentation.</p><p><br></p><p><strong>Recording:</strong></p><p>​</p><p><br></p><p><strong>Documentation:</strong></p><p><a href=\"https://github.wdf.sap.corp/pages/Ariba-Observability/Docs/\" target=\"_blank\" style=\"color: rgb(83, 118, 176);\">https://github.wdf.sap.corp/pages/Ariba-Observability/Docs/</a></p><p><br></p><p><strong style=\"color: rgb(0, 0, 0);\">Dynatrace:</strong></p><p><a href=\"https://github.wdf.sap.corp/pages/Ariba-Observability/Docs/dynatrace/dt/\" target=\"_blank\" style=\"color: rgb(83, 118, 176);\">https://github.wdf.sap.corp/pages/Ariba-Observability/Docs/dynatrace/dt/</a></p><p><br></p><p><strong style=\"color: rgb(0, 0, 0);\">Splunk:</strong></p><p><a href=\"https://github.wdf.sap.corp/pages/Ariba-Observability/Docs/splunk/splunk/\" target=\"_blank\" style=\"color: rgb(83, 118, 176);\">https://github.wdf.sap.corp/pages/Ariba-Observability/Docs/splunk/splunk/</a></p><p><br></p><p><strong>Trainings:</strong></p><p>&nbsp;<a href=\"https://github.wdf.sap.corp/pages/Ariba-Observability/Docs/resources/resources/\" target=\"_blank\" style=\"color: rgb(83, 118, 176);\">https://github.wdf.sap.corp/pages/Ariba-Observability/Docs/resources/resources/</a></p><p><br></p>"
+    },
+    {
+      "title": "Event Orchestrator Demo",
+      "url": "https://cim-paas-dev-eu10-004-cim-dev-eu10-004-invoice-event-ui494ca0a2.cfapps.eu10-004.hana.ondemand.com/index.html#",
+      "category": "CIMDemos",
+      "notes": "<p><strong>Tenant: cim-dev-eu10-004-dev-exp-features</strong></p><p><a href=\"https://cim-dev-eu10-004-dev-exp-features.dev-eu10.cim.cloud.sap/launchpad#Shell-home\" target=\"_blank\">https://cim-dev-eu10-004-dev-exp-features.dev-eu10.cim.cloud.sap/launchpad#Shell-home</a></p><p><br></p><p><strong>Event Orchestrator use </strong><span style=\"color: rgb(19, 30, 41); background-color: rgb(220, 243, 255);\">cim-dev-eu10-004-dev-exp-approval</span></p><p><a href=\"https://cim-paas-dev-eu10-004-cim-dev-eu10-004-invoice-event-ui494ca0a2.cfapps.eu10-004.hana.ondemand.com/index.html#/dashboard\" target=\"_blank\">https://cim-paas-dev-eu10-004-cim-dev-eu10-004-invoice-event-ui494ca0a2.cfapps.eu10-004.hana.ondema…</a></p><p><br></p><p><strong>Amalthea Route:</strong></p><p><a href=\"https://dashboard.dwc.tools.sap/org/CentralInvoices/stages/Dev004%2FEXPFeatures/artifacts\" target=\"_blank\">https://dashboard.dwc.tools.sap/org/CentralInvoices/stages/Dev004%2FEXPFeatures/artifacts</a></p><p><br></p><p>Documentation:</p><p>https://github.tools.sap/I845775/docs/blob/main/event_orchestration_vision_v1.md</p><p>&nbsp;</p>"
+    },
+    {
+      "title": "Gartner - ICES Demo",
+      "url": "https://ices-dev-eu10.a121620.kyma.ondemand.com/uploadInvoiceUI",
+      "category": "CIMDemos",
+      "notes": "<p>admin, admin456</p><p><br></p><p>https://ices-dev-eu10.a121620.kyma.ondemand.com/uploadInvoiceUI</p>"
+    },
+    {
+      "title": "Demo CIM Test Landscape",
+      "url": "https://dev-eu10.cim.cloud.sap/login/amalthea?tenant=cim-dev-eu10-004-dev-exp-features&project=Dev004%2FEXPFeatures",
+      "category": "CIMDemos",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Migration Demo",
+      "url": "https://projectfinal-approuter.cfapps.eu12.hana.ondemand.com/index.html",
+      "category": "CIMDemos",
+      "notes": "<p>Migration </p><p><br></p><p><a href=\"https://fre-autopi-migration-ay7ujso5.autopilot.cfapps.sap.hana.ondemand.com/#/commands/CIMMigFlow-T001306R2:CIMMigrationHanaAPI:1\" target=\"_blank\">https://fre-autopi-migration-ay7ujso5.autopilot.cfapps.sap.hana.ondemand.com/#/commands/CIMMigFlow-…</a></p><p>&nbsp;</p><p>CIM - UI </p><p><br></p><p>https://projectfinal-approuter.cfapps.eu12.hana.ondemand.com/index.html</p>"
+    },
+    {
+      "title": "Extensibility Demo",
+      "url": "https://cim-int-eu10-cim-dev-eu10-004-dev-exp-features.int-eu10.ext.cfapps.eu10-004.hana.ondemand.com/launchpad#ManageExtensions-manage?sap-ui-app-id-hint=com.sap.extensibility.portalui&/Central%20Invoice%20Management/extensionProjects",
+      "category": "CIMDemos",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Demo Migration",
+      "url": "https://projectfinal-approuter.cfapps.eu12.hana.ondemand.com/index.html#/InvoiceObject('63a6b339-9751-4dc2-ace3-4fe3f4f96973')",
+      "category": "CIMDemos",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Extensibility Hdr LI - Video",
+      "url": "https://sap.sharepoint.com/teams/CentralInvoiceDevelopment/_layouts/15/stream.aspx?id=%2Fteams%2FCentralInvoiceDevelopment%2FShared%20Documents%2FGeneral%2F05%5FDevelopment%2FPAR01%2FDemos%2FCIM%2D3155%5FExtensibility%2Emp4&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview%2E8db0a73c%2D5178%2D456e%2D98da%2D8acbcaae32ef",
+      "category": "CIMDemos",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "CIM - Forwarding Email - Video",
+      "url": "https://sapnam-my.sharepoint.com/personal/chris_roethler_sap_com/_layouts/15/stream.aspx?id=%2Fpersonal%2Fchris_roethler_sap_com%2FDocuments%2FDemo+Videos%2FInbound+Email+Welcome+Email+for+2603.mp4&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&ga=1&startedResponseCatch=true&referrer=StreamWebApp.Web&referrerScenario=AddressBarCopied.view.063b0eca-5ac6-4d3d-a521-c99aaa850060",
+      "category": "CIMDemos",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "MCP Demo Video",
+      "url": "https://sapnam-my.sharepoint.com/:v:/g/personal/john_chancellor_sap_com/EU1e0iubSZ1Nl1pxbJCl3rYBpZjjea3cu2N1a-GXKn4e7g?e=f64Kit&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D",
+      "category": "CIMDemos",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "EventBasedOrchestrator-Diagram",
+      "url": "https://github.tools.sap/I845775/docs/blob/main/event_orchestration_vision_v1.md",
+      "category": "CIMDemos",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "CIM Demo Connar Entity. e4w",
+      "url": "https://smartlink.demo-education.cloud.sap/loginbyalias?alias=e4w_cim-BUYER",
+      "category": "CIMDemos",
+      "notes": "<p><br></p><p><br></p><p><br></p><p>Hi Sabir,</p><p><br></p><p>Please use smartlink to access the landscape:&nbsp;<a href=\"https://smartlink.demo-education.cloud.sap/loginbyalias?alias=e4w_cim-BUYER\" target=\"_blank\" style=\"color: rgb(83, 118, 176);\">https://smartlink.demo-education.cloud.sap/loginbyalias?alias=e4w_cim-BUYER</a></p><p><br></p><p>Tenant ID: 465f147e-af52-4704-89c8-0d0f16816858</p><p><br></p><p><span style=\"color: black;\">Regards,</span></p><p><span style=\"color: black;\">Jozef</span></p><p><br></p><p><span style=\"color: black;\">People: </span><span style=\"color: rgb(0, 0, 0);\">Schunk, Daniel &amp; </span>Pretko, Connor &lt;connor.pretko@sap.com&gt; &amp; Knapik, Jozef &lt;jozef.knapik@sap.com&gt;</p>"
+    },
+    {
+      "title": "CIM-PROGRAM Review (Red and Yellow Blockers)",
+      "url": "https://jira.tools.sap/secure/Dashboard.jspa?selectPageId=120324",
+      "category": "CIM-JIRA-Dashboards",
+      "notes": "<p>Focus on RTDC2 Date; For 2602 RTDC Date is Feb End. </p>"
+    },
+    {
+      "title": "CIM Stories 2602",
+      "url": "https://jira.tools.sap/secure/Dashboard.jspa?selectPageId=204535",
+      "category": "CIM-JIRA-Dashboards",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Ocean of Green",
+      "url": "https://pages.github.tools.sap/Procurement-Architecture/proc-arch-adoption-initiative-dashboard/index.html",
+      "category": "CIM-JIRA-Dashboards",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "L1 CIM Status",
+      "url": "https://jira.tools.sap/secure/Dashboard.jspa?selectPageId=204629",
+      "category": "CIM-JIRA-Dashboards",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "UBS Requirements",
+      "url": "https://sapnam-my.sharepoint.com/:b:/g/personal/subramanian_ramasamy_sap_com/IQCkf6L0QvImTruO2DSeFrPgAXuWGa82PwFP4qBnpheDdYo?e=DXfsiN",
+      "category": "CIM Customers",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "UBS Tracking Sheet",
+      "url": "https://sapnam-my.sharepoint.com/:x:/r/personal/subramanian_ramasamy_sap_com/Documents/UBS/UBS_Requirements_Tracking_Sheet_V1.xlsx?d=wec53eb78cc794bfbb56925df7cc5faaf&csf=1&web=1&e=yJkmET",
+      "category": "CIM Customers",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "UBS - MOM - Mural",
+      "url": "https://app.mural.co/t/sappm1454/m/sappm1454/1770134671069/dc0c3dedbebb10fc7b2b6bf2995f14c03fe674ce",
+      "category": "CIM Customers",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Schneider Electric",
+      "url": "https://sapnam-my.sharepoint.com/:x:/g/personal/subramanian_ramasamy_sap_com/EQvljaGme8tMvV9NfkcL9WQBndC6qJBkNJUkLLmQQnQE_A?e=jopXWq",
+      "category": "CIM Customers",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "IBM",
+      "url": "https://app.mural.co/t/sappm1454/m/sappm1454/1773153452822/c9daae5d5ddc403a0829bb485f2f3b2a84209f00?sender=ue9685c6d08db2c8b3a8b0775",
+      "category": "CIM Customers",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Whats APP Bot",
+      "url": "https://github.com/YonkoSam/whatsapp-python-chatbot",
+      "category": "ThingsToTry",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "ByteDance AI Model",
+      "url": "https://replicate.com/bytedance/seedance-1-pro",
+      "category": "ThingsToTry",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "LM Arena",
+      "url": "https://lmarena.ai/",
+      "category": "ThingsToTry",
+      "notes": "<p><strong style=\"color: rgb(36, 36, 36);\">Seedream 4</strong></p>"
+    },
+    {
+      "title": "CAP Getting started",
+      "url": "https://pages.github.tools.sap/naxos/playbook/get-started/introduction.html",
+      "category": "ThingsToTry",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Google AI Agent handbook",
+      "url": "https://services.google.com/fh/files/misc/ai_agents_handbook.pdf",
+      "category": "ThingsToTry",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Teams SAP Webhook",
+      "url": "https://apps.powerapps.com/play/e/5d0c171e-1ead-eaa6-b101-19d8010b564e/a/100b2502-1b3c-4569-a20c-3593ee37d075?tenantId=42f7676c-f455-423c-82f6-dc2d99791af7&hidenavbar=true&viewdeployment=true#",
+      "category": "ThingsToTry",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "iptv",
+      "url": "https://github.com/iptv-org/",
+      "category": "ThingsToTry",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Earnings Calendar",
+      "url": "https://earningshub.com/earnings-calendar/this-week",
+      "category": "Personal",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Trading View Buy Sell Script",
+      "url": "https://www.tradingview.com/chart/RaSMQcBN/",
+      "category": "Personal",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Magic Mirror",
+      "url": "https://3as.us/mm/index.html",
+      "category": "Personal",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Message Mirror",
+      "url": "https://3as.us/mm/messagemirror.html",
+      "category": "Personal",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Rtask",
+      "url": "https://app.residex.ai/Users/Login",
+      "category": "Personal",
+      "notes": "<p>Sabir:</p><p>Username: PATEL</p><p>Password: J@mesbond00712345</p>"
+    },
+    {
+      "title": "Burnsville License Renewal",
+      "url": "https://burnsvillemn.portal.opengov.com/",
+      "category": "Rentals",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Online Lease signing Documenso",
+      "url": "https://documenso.com/",
+      "category": "Rentals",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Rental Property Details",
+      "url": "https://docs.google.com/spreadsheets/d/1hFVTpMGEsOKdJe5mtOueU_PPorUjUii9FYMKC8k2p2Q/edit?usp=sharing",
+      "category": "Rentals",
+      "notes": "<p><br></p>"
     }
   ],
-  "bookmarkTabs": [],
-  "categoryTabAssignments": {},
+  "bookmarkTabs": [
+    {
+      "id": "tab_1773682806747",
+      "name": "CIM"
+    },
+    {
+      "id": "tab_1773682842121",
+      "name": "Personal"
+    }
+  ],
+  "categoryTabAssignments": {
+    "ToDo": "tab_1773682806747",
+    "Personal": "tab_1773682842121",
+    "ThingsToTry": "tab_1773682842121",
+    "Tools": "tab_1773682806747",
+    "CIM": "tab_1773682806747",
+    "Rentals": "tab_1773682842121",
+    "CIM-Monitoring": "tab_1773682806747",
+    "CIMDemos": "tab_1773682806747",
+    "Leverx": "tab_1773682806747"
+  },
   "categoryOrder": []
 }

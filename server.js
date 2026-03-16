@@ -1,7 +1,7 @@
 import { join } from "path";
 
 const ROOT   = import.meta.dir;
-const PORT   = 3000;
+const PORT   = process.env.PORT || 3001;
 const PIN    = process.env.BOOKMARK_PIN || "2608"; // change or set env BOOKMARK_PIN
 
 const COOKIE_NAME    = "bm_session";
@@ -173,8 +173,9 @@ Bun.serve({
       });
     }
 
-    // Write bookmarks
-    if (req.method === "PUT" && path === "/bookmarks.json") {
+    // Write bookmarks (POST /save.php for PHP compatibility, PUT /bookmarks.json legacy)
+    if ((req.method === "POST" && path === "/save.php") ||
+        (req.method === "PUT"  && path === "/bookmarks.json")) {
       await Bun.write(join(ROOT, "bookmarks.json"), await req.text());
       return new Response("OK", { status: 200 });
     }
