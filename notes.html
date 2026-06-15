@@ -89,17 +89,18 @@
     .folder-list {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      margin-top: 12px;
+      gap: 3px;
+      margin-top: 8px;
     }
 
     .folder-item {
-      padding: 8px 10px;
+      padding: 5px 10px;
       border: 1px solid transparent;
-      border-radius: 8px;
+      border-radius: 6px;
       background: var(--panel-soft);
       color: #334155;
       cursor: pointer;
+      font-size: 13px;
       transition: var(--transition);
     }
 
@@ -133,6 +134,29 @@
 
     .new-note-icon:hover { transform: translateY(-1px); }
 
+    .notes-search-wrap {
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .notes-search-input {
+      width: 100%;
+      padding: 5px 9px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: inherit;
+      background: var(--panel-soft);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .notes-search-input:focus {
+      border-color: var(--accent);
+      background: #fff;
+    }
+
     .notes-list {
       padding: 8px;
       max-height: calc(78vh - 44px);
@@ -142,10 +166,11 @@
     .note-card {
       background: var(--panel-soft);
       border: 1px solid transparent;
-      border-radius: 10px;
-      padding: 10px;
-      margin-bottom: 8px;
+      border-radius: 7px;
+      padding: 6px 8px;
+      margin-bottom: 3px;
       cursor: pointer;
+      position: relative;
       transition: var(--transition);
     }
 
@@ -166,23 +191,46 @@
 
     .note-title {
       font-weight: 600;
-      margin-bottom: 6px;
+      margin-bottom: 2px;
+      font-size: 13px;
       color: #111827;
     }
 
     .note-preview {
       color: #64748b;
-      font-size: 12px;
-      line-height: 1.45;
+      font-size: 11px;
+      line-height: 1.3;
       white-space: pre-wrap;
       word-break: break-word;
     }
 
     .note-actions {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 8px;
+      position: absolute;
+      top: 5px;
+      right: 6px;
+      opacity: 0;
+      transition: opacity 0.15s;
     }
+
+    .note-card:hover .note-actions { opacity: 1; }
+
+    .note-delete-btn {
+      width: 20px;
+      height: 20px;
+      border: none;
+      border-radius: 4px;
+      background: transparent;
+      color: #94a3b8;
+      font-size: 15px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .note-delete-btn:hover { background: #fee2e2; color: #dc2626; }
 
     .status {
       font-size: 12px;
@@ -210,7 +258,11 @@
   <div class="app-shell">
     <div class="topbar">
       <h1 class="title">Notes</h1>
-      <a href="bookmark.html" class="btn btn-outline-secondary btn-sm">Back to Bookmarks</a>
+      <div style="display:flex;gap:8px;">
+        <a href="bookmark.html" class="btn btn-outline-secondary btn-sm">Back to Bookmarks</a>
+        <a href="projects.html" class="btn btn-sm text-white" style="background:linear-gradient(135deg,#7c3aed 0%,#db2777 100%);">Projects</a>
+        <a href="https://getemoji.com/" target="_blank" class="btn btn-sm text-white" style="background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);">😀 Emoji</a>
+      </div>
     </div>
 
     <div class="notes-layout">
@@ -229,6 +281,9 @@
         <div class="pane-header">
           <span>Notes</span>
           <button type="button" class="new-note-icon" title="New note" onclick="startNewNote()">+</button>
+        </div>
+        <div class="notes-search-wrap">
+          <input type="text" id="notesSearchInput" class="notes-search-input" placeholder="Search notes…" oninput="renderNotes()">
         </div>
         <div class="notes-list" id="notesBoard"></div>
       </aside>
@@ -481,12 +536,14 @@
     }
 
     function deleteNote(noteId) {
-      let notes = getNotes();
-      notes = notes.filter(n => n.id !== noteId);
-      saveNotes(notes);
+      const notes = getNotes();
+      const note = notes.find(n => n.id === noteId);
+      if (!confirm(`Delete "${note ? note.title || 'Untitled note' : 'this note'}"?`)) return;
+      const remaining = notes.filter(n => n.id !== noteId);
+      saveNotes(remaining);
 
       if (activeNoteId === noteId) {
-        const next = notes[0];
+        const next = remaining[0];
         if (next) openNote(next.id);
         else openBlankEditor(false);
       }
@@ -505,10 +562,14 @@
       const visibleNotes = notes
         .filter(n => validFolderIds.has(n.folderId))
         .filter(n => selectedNotesFolder === 'all' ? true : n.folderId === selectedNotesFolder)
+        .filter(n => {
+          const q = (document.getElementById('notesSearchInput')?.value || '').trim().toLowerCase();
+          return q ? (n.title || '').toLowerCase().includes(q) : true;
+        })
         .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
 
       const cards = visibleNotes.map(note => {
-        const preview = escapeHtml(getTopWords(getPlainTextFromHtml(note.content || ''), 100));
+        const preview = escapeHtml(getTopWords(getPlainTextFromHtml(note.content || ''), 10));
         return `
           <div class="note-card ${note.id === activeNoteId ? 'active' : ''}"
                draggable="true"
@@ -519,7 +580,7 @@
             <div class="note-title">${escapeHtml(note.title || 'Untitled note')}</div>
             <div class="note-preview">${preview}</div>
             <div class="note-actions">
-              <button class="btn btn-sm btn-outline-danger" onclick="event.stopPropagation(); deleteNote('${note.id}')">Delete</button>
+                <button class="note-delete-btn" onclick="event.stopPropagation(); deleteNote('${note.id}')" title="Delete">&#x2715;</button>
             </div>
           </div>
         `;

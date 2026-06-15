@@ -12,3 +12,6 @@ Simple bookmark manager with Todo integrated.
 
 # Credits
 - This was totally developed using AI. I have used openai, grok and gemini for this project.
+
+# Run
+~/.bun/bin/bun /Users/i845496/dev/BookmarkManager-Todo/server.js

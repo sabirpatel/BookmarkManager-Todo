@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Status</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-primary: #f8f9fc;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-hover: #f0f2f8;
+      --text-primary: #1a1a2e;
+      --text-secondary: #4a4a68;
+      --text-muted: #8888a0;
+      --accent-primary: #7c3aed;
+      --accent-secondary: #8b5cf6;
+      --accent-gradient: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+      --border-color: rgba(0, 0, 0, 0.08);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.1);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+      --booster-bg: #dcfce7;
+      --booster-border: #86efac;
+      --booster-chip-bg: #bbf7d0;
+      --booster-chip-border: #4ade80;
+      --booster-text: #14532d;
+      --booster-accent: #16a34a;
+
+      --blocker-bg: #fee2e2;
+      --blocker-border: #fca5a5;
+      --blocker-chip-bg: #fecaca;
+      --blocker-chip-border: #f87171;
+      --blocker-text: #7f1d1d;
+      --blocker-accent: #dc2626;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .app-shell {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 18px;
+    }
+
+    /* ── Header ── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .fancy-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-nav {
+      border-radius: var(--radius-md);
+      padding: 8px 18px;
+      font-weight: 500;
+      font-size: 13px;
+      border: none;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .btn-nav-outline {
+      background: transparent;
+      border: 1.5px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    .btn-nav-outline:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .btn-nav-info {
+      background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+      color: white;
+    }
+
+    .btn-nav-info:hover {
+      background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+      color: white;
+    }
+
+    .btn-nav-accent {
+      background: var(--accent-gradient);
+      color: white;
+    }
+
+    .btn-nav-accent:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+      color: white;
+    }
+
+    /* ── Add Project Form ── */
+    .add-project-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      align-items: center;
+      background: var(--bg-secondary);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .add-project-bar:focus-within {
+      border-color: var(--accent-secondary);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.08);
+    }
+
+    .add-project-bar input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text-primary);
+      background: transparent;
+    }
+
+    .add-project-bar input::placeholder { color: var(--text-muted); }
+
+    .btn-add-confirm {
+      background: var(--accent-gradient);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-add-confirm:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 10px rgba(124, 58, 237, 0.35);
+    }
+
+    /* ── Project Card ── */
+    .project-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+      overflow: visible;
+      transition: var(--transition);
+      animation: fadeSlideIn 0.25s ease;
+    }
+
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .project-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .project-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.06) 0%, rgba(219,39,119,0.04) 100%);
+      border-bottom: 1px solid var(--border-color);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+
+    .project-name {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .project-name-input {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      border: 1.5px solid var(--accent-secondary);
+      border-radius: var(--radius-sm);
+      background: white;
+      padding: 2px 8px;
+      outline: none;
+      flex: 1;
+      min-width: 0;
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+      font-family: inherit;
+    }
+
+    .btn-delete-project {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+
+    .btn-delete-project:hover {
+      color: #dc2626;
+      background: #fee2e2;
+    }
+
+    .btn-move-project {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 2px 5px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+
+    .btn-move-project:hover {
+      color: var(--accent-primary);
+      background: rgba(124,58,237,0.08);
+    }
+
+    .btn-move-project:disabled {
+      opacity: 0.2;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .project-card-actions {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .project-panels {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 160px;
+    }
+
+    /* ── Panel (shared) ── */
+    .panel {
+      padding: 14px 16px;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .panel-boosters {
+      background: var(--booster-bg);
+      border-right: 1px solid var(--booster-border);
+      border-radius: 0 0 0 var(--radius-lg);
+    }
+
+    .panel-blockers {
+      background: var(--blocker-bg);
+      border-radius: 0 0 var(--radius-lg) 0;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .panel-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .panel-boosters .panel-label { color: var(--booster-accent); }
+    .panel-blockers .panel-label { color: var(--blocker-accent); }
+
+    .btn-panel-add {
+      font-size: 11px;
+      font-weight: 600;
+      border: none;
+      border-radius: 20px;
+      padding: 3px 10px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .panel-boosters .btn-panel-add {
+      background: var(--booster-chip-bg);
+      color: var(--booster-accent);
+      border: 1px solid var(--booster-chip-border);
+    }
+
+    .panel-boosters .btn-panel-add:hover {
+      background: var(--booster-chip-border);
+      color: #fff;
+    }
+
+    .panel-blockers .btn-panel-add {
+      background: var(--blocker-chip-bg);
+      color: var(--blocker-accent);
+      border: 1px solid var(--blocker-chip-border);
+    }
+
+    .panel-blockers .btn-panel-add:hover {
+      background: var(--blocker-chip-border);
+      color: #fff;
+    }
+
+    /* ── Chips ── */
+    .chips-area {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      flex: 1;
+      align-content: flex-start;
+    }
+
+    .chip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border-radius: 20px;
+      padding: 4px 10px 4px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      animation: chipPop 0.18s ease;
+      transition: var(--transition);
+    }
+
+    @keyframes chipPop {
+      from { transform: scale(0.85); opacity: 0; }
+      to   { transform: scale(1);    opacity: 1; }
+    }
+
+    .chip-booster {
+      background: var(--booster-chip-bg);
+      border: 1px solid var(--booster-chip-border);
+      color: var(--booster-text);
+    }
+
+    .chip-booster:hover { background: #a7f3d0; }
+
+    .chip-blocker {
+      background: var(--blocker-chip-bg);
+      border: 1px solid var(--blocker-chip-border);
+      color: var(--blocker-text);
+    }
+
+    .chip-blocker:hover { background: #fda4af; }
+
+    .chip-title {
+      max-width: 160px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .chip-edit-form {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      width: 100%;
+      animation: chipPop 0.15s ease;
+    }
+
+    .chip-edit-form input,
+    .chip-edit-form textarea {
+      width: 100%;
+      border-radius: var(--radius-sm);
+      padding: 5px 10px;
+      font-size: 12px;
+      font-family: inherit;
+      outline: none;
+      resize: none;
+      transition: var(--transition);
+    }
+
+    .chip-edit-form textarea { min-height: 50px; line-height: 1.4; }
+
+    .panel-boosters .chip-edit-form input,
+    .panel-boosters .chip-edit-form textarea {
+      border: 1.5px solid var(--booster-chip-border);
+      background: #f0fdf4;
+      color: var(--booster-text);
+    }
+
+    .panel-boosters .chip-edit-form input:focus,
+    .panel-boosters .chip-edit-form textarea:focus {
+      border-color: var(--booster-accent);
+      box-shadow: 0 0 0 2px rgba(22,163,74,0.15);
+    }
+
+    .panel-blockers .chip-edit-form input,
+    .panel-blockers .chip-edit-form textarea {
+      border: 1.5px solid var(--blocker-chip-border);
+      background: #fff1f2;
+      color: var(--blocker-text);
+    }
+
+    .panel-blockers .chip-edit-form input:focus,
+    .panel-blockers .chip-edit-form textarea:focus {
+      border-color: var(--blocker-accent);
+      box-shadow: 0 0 0 2px rgba(220,38,38,0.15);
+    }
+
+    /* dotted underline when details exist */
+    .chip-has-details .chip-title {
+      border-bottom: 1.5px dotted currentColor;
+      cursor: help;
+    }
+
+    .chip-delete {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1;
+      opacity: 0.55;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .chip-booster .chip-delete:hover { color: var(--booster-accent); opacity: 1; }
+    .chip-blocker  .chip-delete:hover { color: var(--blocker-accent); opacity: 1; }
+
+    /* ── Hover tooltip ── */
+    .chip-tooltip {
+      display: none;
+      position: fixed;
+      background: #1a1a2e;
+      color: #f0f2f8;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 400;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-width: 260px;
+      min-width: 120px;
+      z-index: 9999;
+      pointer-events: none;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      line-height: 1.5;
+    }
+
+    .chip-has-details:hover .chip-tooltip { display: block; }
+
+    /* ── Inline Add Form ── */
+    .inline-add {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .inline-add-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .inline-add input,
+    .inline-add textarea {
+      width: 100%;
+      border-radius: var(--radius-sm);
+      padding: 5px 10px;
+      font-size: 12px;
+      font-family: inherit;
+      outline: none;
+      min-width: 0;
+      transition: var(--transition);
+      resize: none;
+    }
+
+    .inline-add textarea {
+      min-height: 54px;
+      line-height: 1.4;
+    }
+
+    .panel-boosters .inline-add input,
+    .panel-boosters .inline-add textarea {
+      border: 1.5px solid var(--booster-chip-border);
+      background: #f0fdf4;
+      color: var(--booster-text);
+    }
+
+    .panel-boosters .inline-add input:focus,
+    .panel-boosters .inline-add textarea:focus {
+      border-color: var(--booster-accent);
+      box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.15);
+    }
+
+    .panel-blockers .inline-add input,
+    .panel-blockers .inline-add textarea {
+      border: 1.5px solid var(--blocker-chip-border);
+      background: #fff1f2;
+      color: var(--blocker-text);
+    }
+
+    .panel-blockers .inline-add input:focus,
+    .panel-blockers .inline-add textarea:focus {
+      border-color: var(--blocker-accent);
+      box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.15);
+    }
+
+    .inline-add-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .btn-inline-ok {
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .panel-boosters .btn-inline-ok {
+      background: var(--booster-accent);
+      color: white;
+    }
+
+    .panel-blockers .btn-inline-ok {
+      background: var(--blocker-accent);
+      color: white;
+    }
+
+    .btn-inline-ok:hover { opacity: 0.85; }
+
+    .btn-inline-cancel {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 2px 4px;
+      transition: var(--transition);
+    }
+
+    .btn-inline-cancel:hover { color: var(--text-primary); }
+
+    .inline-field-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+      opacity: 0.7;
+    }
+
+    .btn-nav-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+    }
+
+    .btn-nav-success:hover {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16,185,129,0.4);
+      color: white;
+    }
+
+    .btn-nav-warning {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+    }
+
+    .btn-nav-warning:hover {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(245,158,11,0.4);
+      color: white;
+    }
+
+    .import-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: #1a1a2e;
+      color: #f0f2f8;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .import-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .empty-state {
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--text-muted);
+    }
+
+    .empty-state svg {
+      opacity: 0.35;
+      margin-bottom: 14px;
+    }
+
+    .empty-state p {
+      font-size: 15px;
+      margin: 0 0 4px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .empty-state small { font-size: 13px; }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <h1 class="fancy-title">Project Status</h1>
+    <div class="topbar-right">
+      <a href="bookmark.html" class="btn-nav btn-nav-outline">← Bookmarks</a>
+      <a href="notes.html"    class="btn-nav btn-nav-info">Notes</a>
+      <a href="https://getemoji.com/" target="_blank" class="btn-nav btn-nav-warning">😀 Emoji</a>
+      <button class="btn-nav btn-nav-warning" onclick="importProjects()">Import</button>
+      <button class="btn-nav btn-nav-success" onclick="exportProjects()">Export</button>
+      <button class="btn-nav btn-nav-accent" onclick="toggleAddBar()">+ Add Project</button>
+      <input type="file" id="importFileInput" accept=".json" style="display:none;" onchange="handleImportFile(event)">
+    </div>
+  </div>
+
+  <!-- Add project bar -->
+  <div class="add-project-bar" id="addProjectBar" style="display:none;">
+    <input type="text" id="newProjectName" placeholder="Enter project name…" onkeydown="handleAddProjectKey(event)">
+    <button class="btn-add-confirm" onclick="addProject()">Add</button>
+    <button class="btn-inline-cancel" onclick="toggleAddBar()" title="Cancel">×</button>
+  </div>
+
+  <!-- Projects list -->
+  <div id="projectsList"></div>
+
+  <!-- Toast -->
+  <div id="importToast" class="import-toast"></div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'projectStatus';
+
+  function load() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch { return []; }
+  }
+
+  function save(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  let projects = load();
+  let editingItem = null; // { projectId, type, itemId }
+  let editingProjectId = null;
+
+  // Migrate old field names enablers→boosters, draggers→blockers
+  projects = projects.map(p => {
+    if (p.enablers !== undefined || p.draggers !== undefined) {
+      p.boosters = p.boosters || p.enablers || [];
+      p.blockers = p.blockers || p.draggers || [];
+      delete p.enablers;
+      delete p.draggers;
+    }
+    return p;
+  });
+  save(projects);
+
+  function toggleAddBar() {
+    const bar = document.getElementById('addProjectBar');
+    const visible = bar.style.display !== 'none';
+    bar.style.display = visible ? 'none' : 'flex';
+    if (!visible) {
+      document.getElementById('newProjectName').value = '';
+      document.getElementById('newProjectName').focus();
+    }
+  }
+
+  function handleAddProjectKey(e) {
+    if (e.key === 'Enter') addProject();
+    if (e.key === 'Escape') toggleAddBar();
+  }
+
+  function addProject() {
+    const name = document.getElementById('newProjectName').value.trim();
+    if (!name) return;
+    projects.push({ id: Date.now(), name, boosters: [], blockers: [] });
+    save(projects);
+    render();
+    toggleAddBar();
+  }
+
+  function deleteProject(id) {
+    projects = projects.filter(p => p.id !== id);
+    save(projects);
+    render();
+  }
+
+  function addItem(projectId, type, title, details) {
+    const p = projects.find(p => p.id === projectId);
+    if (!p || !title.trim()) return;
+    p[type].push({ id: Date.now(), title: title.trim(), details: details.trim() });
+    save(projects);
+    render();
+  }
+
+  function deleteItem(projectId, type, itemId) {
+    const p = projects.find(p => p.id === projectId);
+    if (!p) return;
+    p[type] = p[type].filter(i => i.id !== itemId);
+    save(projects);
+    render();
+  }
+
+  function showInlineAdd(projectId, type) {
+    const form   = document.getElementById(`inline-${projectId}-${type}`);
+    const addBtn = document.getElementById(`addbtn-${projectId}-${type}`);
+    if (!form) return;
+    form.style.display = 'flex';
+    addBtn.style.display = 'none';
+    document.getElementById(`title-${projectId}-${type}`).focus();
+  }
+
+  function hideInlineAdd(projectId, type) {
+    const form   = document.getElementById(`inline-${projectId}-${type}`);
+    const addBtn = document.getElementById(`addbtn-${projectId}-${type}`);
+    if (!form) return;
+    form.style.display = 'none';
+    addBtn.style.display = '';
+    document.getElementById(`title-${projectId}-${type}`).value = '';
+    document.getElementById(`details-${projectId}-${type}`).value = '';
+  }
+
+  function confirmInlineAdd(projectId, type) {
+    const title   = document.getElementById(`title-${projectId}-${type}`).value;
+    const details = document.getElementById(`details-${projectId}-${type}`).value;
+    addItem(projectId, type, title, details);
+  }
+
+  function handleTitleKey(e, projectId, type) {
+    if (e.key === 'Enter')  { e.preventDefault(); document.getElementById(`details-${projectId}-${type}`).focus(); }
+    if (e.key === 'Escape') hideInlineAdd(projectId, type);
+  }
+
+  function handleDetailsKey(e, projectId, type) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); confirmInlineAdd(projectId, type); }
+    if (e.key === 'Escape') hideInlineAdd(projectId, type);
+  }
+
+  function startEditProjectName(id) {
+    editingProjectId = id;
+    render();
+    const el = document.getElementById(`edit-project-name-${id}`);
+    if (el) { el.focus(); el.select(); }
+  }
+
+  function saveProjectName(id) {
+    const el = document.getElementById(`edit-project-name-${id}`);
+    if (!el) return;
+    const name = el.value.trim();
+    const p = projects.find(p => p.id === id);
+    if (p && name) p.name = name;
+    editingProjectId = null;
+    save(projects);
+    render();
+  }
+
+  function handleProjectNameKey(e, id) {
+    if (e.key === 'Enter')  { e.preventDefault(); saveProjectName(id); }
+    if (e.key === 'Escape') { editingProjectId = null; render(); }
+  }
+
+  function startEditItem(projectId, type, itemId) {
+    editingItem = { projectId, type, itemId };
+    render();
+    const el = document.getElementById(`edit-title-${itemId}`);
+    if (el) { el.focus(); el.select(); }
+  }
+
+  function saveEditItem(projectId, type, itemId) {
+    const title   = (document.getElementById(`edit-title-${itemId}`)   || {}).value || '';
+    const details = (document.getElementById(`edit-details-${itemId}`) || {}).value || '';
+    if (!title.trim()) return;
+    const p = projects.find(p => p.id === projectId);
+    if (!p) return;
+    const item = p[type].find(i => i.id === itemId);
+    if (item) { item.title = title.trim(); item.details = details.trim(); }
+    editingItem = null;
+    save(projects);
+    render();
+  }
+
+  function cancelEditItem() {
+    editingItem = null;
+    render();
+  }
+
+  function handleEditTitleKey(e, projectId, type, itemId) {
+    if (e.key === 'Enter')  { e.preventDefault(); document.getElementById(`edit-details-${itemId}`).focus(); }
+    if (e.key === 'Escape') cancelEditItem();
+  }
+
+  function handleEditDetailsKey(e, projectId, type, itemId) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); saveEditItem(projectId, type, itemId); }
+    if (e.key === 'Escape') cancelEditItem();
+  }
+
+  function renderPanel(p, type) {
+    const isBoosters = type === 'boosters';
+    const label      = isBoosters ? 'Boosters' : 'Blockers';
+    const chipClass  = isBoosters ? 'chip-booster' : 'chip-blocker';
+    const panelClass = isBoosters ? 'panel-boosters' : 'panel-blockers';
+    const itemWord   = isBoosters ? 'booster' : 'blocker';
+
+    const chips = p[type].map(item => {
+      const isEditing = editingItem &&
+        editingItem.projectId === p.id &&
+        editingItem.type === type &&
+        editingItem.itemId === item.id;
+
+      if (isEditing) {
+        const safeTitle   = escHtml(item.title   || item.text || '');
+        const safeDetails = escHtml(item.details || '');
+        return `
+          <div class="chip-edit-form">
+            <div class="inline-field-label">Title</div>
+            <input type="text" id="edit-title-${item.id}" value="${safeTitle}"
+              onkeydown="handleEditTitleKey(event,${p.id},'${type}',${item.id})">
+            <div class="inline-field-label">Details <span style="font-weight:400;opacity:0.6;">(hover tooltip)</span></div>
+            <textarea id="edit-details-${item.id}"
+              onkeydown="handleEditDetailsKey(event,${p.id},'${type}',${item.id})">${safeDetails}</textarea>
+            <div class="inline-add-actions">
+              <button class="btn-inline-ok" onclick="saveEditItem(${p.id},'${type}',${item.id})">Save</button>
+              <button class="btn-inline-cancel" onclick="cancelEditItem()" title="Cancel">×</button>
+            </div>
+          </div>
+        `;
+      }
+
+      const titleText  = escHtml(item.title || item.text || '');
+      const detailsText = escHtml(item.details || '');
+      const hasDetails  = (item.details || '').trim().length > 0;
+      return `
+        <span class="chip ${chipClass}${hasDetails ? ' chip-has-details' : ''}"
+          ondblclick="startEditItem(${p.id},'${type}',${item.id})" title="Double-click to edit">
+          <span class="chip-title">${titleText}</span>
+          ${hasDetails ? `<span class="chip-tooltip">${detailsText}</span>` : ''}
+          <button class="chip-delete" onclick="event.stopPropagation();deleteItem(${p.id},'${type}',${item.id})" title="Remove">×</button>
+        </span>
+      `;
+    }).join('');
+
+    return `
+      <div class="panel ${panelClass}">
+        <div class="panel-header">
+          <span class="panel-label">${label}</span>
+          <button class="btn-panel-add" id="addbtn-${p.id}-${type}"
+            onclick="showInlineAdd(${p.id},'${type}')">+ Add</button>
+        </div>
+        <div class="chips-area">${chips}</div>
+        <div class="inline-add" id="inline-${p.id}-${type}" style="display:none;">
+          <div class="inline-add-fields">
+            <div>
+              <div class="inline-field-label">Title</div>
+              <input type="text" id="title-${p.id}-${type}"
+                placeholder="Enter ${itemWord} title…"
+                onkeydown="handleTitleKey(event,${p.id},'${type}')">
+            </div>
+            <div>
+              <div class="inline-field-label">Details <span style="font-weight:400;opacity:0.6;">(hover tooltip)</span></div>
+              <textarea id="details-${p.id}-${type}"
+                placeholder="Optional details shown on hover…"
+                onkeydown="handleDetailsKey(event,${p.id},'${type}')"></textarea>
+            </div>
+          </div>
+          <div class="inline-add-actions">
+            <button class="btn-inline-ok" onclick="confirmInlineAdd(${p.id},'${type}')">Add</button>
+            <button class="btn-inline-cancel" onclick="hideInlineAdd(${p.id},'${type}')" title="Cancel">×</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function moveProject(id, dir) {
+    const idx = projects.findIndex(p => p.id === id);
+    const newIdx = idx + dir;
+    if (newIdx < 0 || newIdx >= projects.length) return;
+    [projects[idx], projects[newIdx]] = [projects[newIdx], projects[idx]];
+    save(projects);
+    render();
+  }
+
+  function renderCard(p) {
+    const idx      = projects.findIndex(x => x.id === p.id);
+    const isFirst  = idx === 0;
+    const isLast   = idx === projects.length - 1;
+
+    const nameHtml = editingProjectId === p.id
+      ? `<input class="project-name-input" id="edit-project-name-${p.id}"
+           value="${escHtml(p.name)}"
+           onkeydown="handleProjectNameKey(event,${p.id})"
+           onblur="saveProjectName(${p.id})">`
+      : `<span class="project-name" ondblclick="startEditProjectName(${p.id})" title="Double-click to edit">${escHtml(p.name)}</span>`;
+
+    return `
+      <div class="project-card" id="project-${p.id}">
+        <div class="project-card-header">
+          ${nameHtml}
+          <div class="project-card-actions">
+            <button class="btn-move-project" onclick="moveProject(${p.id},-1)" title="Move up" ${isFirst ? 'disabled' : ''}>▲</button>
+            <button class="btn-move-project" onclick="moveProject(${p.id},1)"  title="Move down" ${isLast  ? 'disabled' : ''}>▼</button>
+            <button class="btn-delete-project" onclick="deleteProject(${p.id})" title="Delete project">×</button>
+          </div>
+        </div>
+        <div class="project-panels">
+          ${renderPanel(p, 'boosters')}
+          ${renderPanel(p, 'blockers')}
+        </div>
+      </div>
+    `;
+  }
+
+  function render() {
+    const container = document.getElementById('projectsList');
+    if (projects.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/>
+          </svg>
+          <p>No projects yet</p>
+          <small>Click "Add Project" to get started</small>
+        </div>`;
+      return;
+    }
+    container.innerHTML = projects.map(renderCard).join('');
+  }
+
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function showToast(msg, isError = false) {
+    const el = document.getElementById('importToast');
+    el.textContent = msg;
+    el.style.background = isError ? '#7f1d1d' : '#1a1a2e';
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 3000);
+  }
+
+  function exportProjects() {
+    if (projects.length === 0) { showToast('No projects to export.', true); return; }
+    const json = JSON.stringify(projects, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `projects-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast(`Exported ${projects.length} project${projects.length > 1 ? 's' : ''}.`);
+  }
+
+  function importProjects() {
+    document.getElementById('importFileInput').value = '';
+    document.getElementById('importFileInput').click();
+  }
+
+  function handleImportFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = evt => {
+      try {
+        const imported = JSON.parse(evt.target.result);
+        if (!Array.isArray(imported)) throw new Error('Invalid format');
+        const existingIds = new Set(projects.map(p => p.id));
+        imported.forEach(p => {
+          if (!p.id || !p.name) return;
+          if (existingIds.has(p.id)) {
+            const idx = projects.findIndex(x => x.id === p.id);
+            if (idx !== -1) projects[idx] = p;
+          } else {
+            projects.push(p);
+          }
+        });
+        save(projects);
+        render();
+        showToast(`Imported ${imported.length} project${imported.length > 1 ? 's' : ''}.`);
+      } catch {
+        showToast('Import failed — invalid JSON file.', true);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  render();
+
+  // Position tooltips near cursor, kept inside viewport
+  document.addEventListener('mousemove', e => {
+    const chip = e.target.closest('.chip-has-details');
+    if (!chip) return;
+    const tip = chip.querySelector('.chip-tooltip');
+    if (!tip || tip.style.display === 'none') return;
+
+    const pad = 12;
+    const tw  = tip.offsetWidth  || 260;
+    const th  = tip.offsetHeight || 60;
+    let x = e.clientX + 14;
+    let y = e.clientY + 14;
+
+    if (x + tw > window.innerWidth  - pad) x = e.clientX - tw - 10;
+    if (y + th > window.innerHeight - pad) y = e.clientY - th - 10;
+    if (x < pad) x = pad;
+    if (y < pad) y = pad;
+
+    tip.style.left = x + 'px';
+    tip.style.top  = y + 'px';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meeting Notes</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="config.js"></script>
+
+  <style>
+    :root {
+      --bg-primary: #f8f9fc;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-hover: #f0f2f8;
+      --text-primary: #1a1a2e;
+      --text-secondary: #4a4a68;
+      --text-muted: #8888a0;
+      --accent-primary: #7c3aed;
+      --accent-secondary: #8b5cf6;
+      --accent-gradient: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+      --border-color: rgba(0, 0, 0, 0.08);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background-color: var(--bg-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+
+    .page-wrap {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      padding: 20px 24px 12px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-shrink: 0;
+    }
+
+    .fancy-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn {
+      border-radius: var(--radius-md);
+      padding: 9px 18px;
+      font-weight: 500;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-back {
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-back:hover { background: var(--bg-hover); color: var(--text-primary); }
+
+    .btn-copy {
+      background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+      color: white;
+    }
+    .btn-copy:hover {
+      background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+    }
+
+    .btn-clear {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+    }
+    .btn-clear:hover {
+      background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+    }
+
+    /* Editor card */
+    .editor-card {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    /* Quill toolbar overrides */
+    .ql-toolbar.ql-snow {
+      border: none;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-hover);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      padding: 10px 16px;
+      flex-shrink: 0;
+    }
+    .ql-container.ql-snow {
+      border: none;
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .ql-editor {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 28px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--text-primary);
+    }
+    .ql-editor.ql-blank::before {
+      color: var(--text-muted);
+      font-style: normal;
+    }
+    .ql-snow .ql-stroke { stroke: var(--text-secondary); }
+    .ql-snow .ql-fill   { fill: var(--text-secondary); }
+    .ql-snow .ql-picker  { color: var(--text-secondary); }
+    .ql-snow .ql-picker-options { background: var(--bg-card); border-color: var(--border-color); }
+    .ql-snow.ql-toolbar button:hover .ql-stroke,
+    .ql-snow.ql-toolbar button.ql-active .ql-stroke { stroke: var(--accent-primary); }
+    .ql-snow.ql-toolbar button:hover .ql-fill,
+    .ql-snow.ql-toolbar button.ql-active .ql-fill   { fill: var(--accent-primary); }
+    .ql-snow.ql-toolbar button:hover,
+    .ql-snow.ql-toolbar button.ql-active {
+      background: rgba(124, 58, 237, 0.08);
+      border-radius: var(--radius-sm);
+    }
+
+    /* Footer */
+    .editor-footer {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 20px;
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-hover);
+    }
+
+    .save-indicator {
+      font-size: 12px;
+      font-weight: 500;
+      color: #10b981;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .save-indicator.show { opacity: 1; }
+    .save-indicator svg { width: 14px; height: 14px; }
+
+    .word-count {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.3px;
+    }
+
+    /* PIN overlay */
+    #pinOverlay {
+      position: fixed; inset: 0; background: #f8f9fc;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999;
+    }
+    #pinOverlay.hidden { display: none; }
+    #pinCard {
+      background: #fff; border-radius: 20px; padding: 48px 40px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.12); text-align: center; width: 300px;
+    }
+    #pinCard h1 { font-size: 20px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px; }
+    #pinCard p  { color: #888; font-size: 14px; margin-bottom: 32px; }
+    .pin-dots { display: flex; gap: 16px; justify-content: center; margin-bottom: 32px; }
+    .pin-dot  { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #ccc; background: transparent; transition: all .15s; }
+    .pin-dot.filled { background: #7c3aed; border-color: #7c3aed; }
+    .pin-pad  { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+    .pin-key  { padding: 16px; font-size: 20px; font-weight: 600; color: #1a1a2e; background: #f0f2f8; border: none; border-radius: 12px; cursor: pointer; transition: all .15s; }
+    .pin-key:hover  { background: #e0e0f0; }
+    .pin-key:active { transform: scale(.95); }
+    .pin-err  { color: #e53e3e; font-size: 13px; margin-top: 16px; min-height: 20px; }
+
+    @media (max-width: 600px) {
+      .page-wrap { padding: 14px 14px 8px; }
+      .fancy-title { font-size: 1.4rem; }
+      .ql-editor { padding: 16px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PIN Gate -->
+  <div id="pinOverlay">
+    <div id="pinCard">
+      <h1>Meeting Notes</h1>
+      <p>Enter your 4-digit PIN</p>
+      <div class="pin-dots">
+        <div class="pin-dot" id="pd0"></div>
+        <div class="pin-dot" id="pd1"></div>
+        <div class="pin-dot" id="pd2"></div>
+        <div class="pin-dot" id="pd3"></div>
+      </div>
+      <div class="pin-pad">
+        <button class="pin-key" onclick="pinPress('1')">1</button>
+        <button class="pin-key" onclick="pinPress('2')">2</button>
+        <button class="pin-key" onclick="pinPress('3')">3</button>
+        <button class="pin-key" onclick="pinPress('4')">4</button>
+        <button class="pin-key" onclick="pinPress('5')">5</button>
+        <button class="pin-key" onclick="pinPress('6')">6</button>
+        <button class="pin-key" onclick="pinPress('7')">7</button>
+        <button class="pin-key" onclick="pinPress('8')">8</button>
+        <button class="pin-key" onclick="pinPress('9')">9</button>
+        <div></div>
+        <button class="pin-key" onclick="pinPress('0')">0</button>
+        <button class="pin-key" onclick="pinDel()">⌫</button>
+      </div>
+      <div class="pin-err" id="pinErr"></div>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <div class="page-header">
+      <h1 class="fancy-title">Meeting Notes</h1>
+      <div class="header-buttons">
+        <a href="bookmark.html" class="btn btn-back">← Bookmarks</a>
+        <button class="btn btn-copy" id="copyBtn" onclick="copyAll()">Copy All</button>
+        <button class="btn btn-clear" onclick="clearAll()">Clear</button>
+      </div>
+    </div>
+
+    <div class="editor-card">
+      <div id="quillEditor"></div>
+      <div class="editor-footer">
+        <div class="save-indicator" id="saveIndicator">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          Saved
+        </div>
+        <div class="word-count" id="wordCount">0 words · 0 chars</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script>
+    // ── PIN auth ────────────────────────────────────────────────────────────────
+    (function initPin() {
+      const cfg = window.JSONBIN_CONFIG || {};
+      const CORRECT_PIN = cfg.PIN || '2608';
+      if (sessionStorage.getItem('bm_authed') === '1') {
+        document.getElementById('pinOverlay').classList.add('hidden');
+        return;
+      }
+      let pin = '';
+      function updateDots() {
+        for (let i = 0; i < 4; i++)
+          document.getElementById('pd' + i).classList.toggle('filled', i < pin.length);
+      }
+      window.pinPress = function(d) {
+        if (pin.length >= 4) return;
+        pin += d; updateDots();
+        if (pin.length === 4) {
+          if (pin === CORRECT_PIN) {
+            sessionStorage.setItem('bm_authed', '1');
+            document.getElementById('pinOverlay').classList.add('hidden');
+          } else {
+            document.getElementById('pinErr').textContent = 'Incorrect PIN — try again.';
+            pin = ''; updateDots();
+          }
+        }
+      };
+      window.pinDel = function() { pin = pin.slice(0, -1); updateDots(); };
+      document.addEventListener('keydown', e => {
+        if (document.getElementById('pinOverlay').classList.contains('hidden')) return;
+        if (e.key >= '0' && e.key <= '9') pinPress(e.key);
+        else if (e.key === 'Backspace') pinDel();
+      });
+    })();
+
+    // ── Quill setup ─────────────────────────────────────────────────────────────
+    const quill = new Quill('#quillEditor', {
+      theme: 'snow',
+      placeholder: 'Start typing your meeting notes…',
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          [{ header: [1, 2, 3, false] }],
+          ['blockquote', 'code-block'],
+          [{ color: [] }],
+          ['clean']
+        ]
+      }
+    });
+
+    // ── JSONBin storage ─────────────────────────────────────────────────────────
+    const cfg = window.JSONBIN_CONFIG || {};
+    const BIN_ID     = cfg.BIN_ID || '';
+    const MASTER_KEY = cfg.MASTER_KEY || '';
+
+    async function loadFromJsonBin() {
+      if (!BIN_ID || !MASTER_KEY) return null;
+      try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+          headers: { 'X-Master-Key': MASTER_KEY }
+        });
+        if (res.ok) {
+          const json = await res.json();
+          return json.record || {};
+        }
+      } catch (e) {
+        console.warn('JSONBin load failed:', e);
+      }
+      return null;
+    }
+
+    async function saveToJsonBin(html) {
+      if (!BIN_ID || !MASTER_KEY) return;
+      const record = await loadFromJsonBin() || {};
+      record.scratchpadContent = html;
+      try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'X-Master-Key': MASTER_KEY },
+          body: JSON.stringify(record)
+        });
+        if (!res.ok) console.error('JSONBin save failed:', res.status);
+      } catch (e) {
+        console.error('JSONBin save error:', e);
+      }
+    }
+
+    // ── Load content ────────────────────────────────────────────────────────────
+    async function loadContent() {
+      const record = await loadFromJsonBin();
+      const html = record && record.scratchpadContent;
+      if (html) {
+        quill.clipboard.dangerouslyPasteHTML(html);
+      }
+      updateCount();
+    }
+
+    loadContent();
+
+    // ── Auto-save (debounced) ───────────────────────────────────────────────────
+    const indicator = document.getElementById('saveIndicator');
+    let saveTimer = null;
+    let fadeTimer = null;
+
+    quill.on('text-change', () => {
+      updateCount();
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(async () => {
+        await saveToJsonBin(quill.root.innerHTML);
+        showSaved();
+      }, 1000);
+    });
+
+    function showSaved() {
+      clearTimeout(fadeTimer);
+      indicator.classList.add('show');
+      fadeTimer = setTimeout(() => indicator.classList.remove('show'), 1800);
+    }
+
+    function updateCount() {
+      const text  = quill.getText().trim();
+      const words = text ? text.split(/\s+/).filter(Boolean).length : 0;
+      const chars = quill.getText().replace(/\n$/, '').length;
+      document.getElementById('wordCount').textContent =
+        `${words} word${words !== 1 ? 's' : ''} · ${chars} char${chars !== 1 ? 's' : ''}`;
+    }
+
+    // ── Copy All ────────────────────────────────────────────────────────────────
+    function copyAll() {
+      const text = quill.getText().trim();
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy All', 1500);
+      });
+    }
+
+    // ── Clear ───────────────────────────────────────────────────────────────────
+    async function clearAll() {
+      if (!quill.getText().trim()) return;
+      if (!confirm('Clear all notes? This cannot be undone.')) return;
+      quill.setContents([]);
+      await saveToJsonBin('');
+      updateCount();
+    }
+  </script>
+</body>
+</html>

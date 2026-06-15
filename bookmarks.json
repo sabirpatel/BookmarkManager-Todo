@@ -1,141 +1,8 @@
 {
   "bookmarks": [
     {
-      "title": "Levrex Resources Details",
-      "url": "https://teams.microsoft.com/l/message/19:c358e037bc3a4e608a09db96ab358e05@thread.v2/1771352251797?context=%7B%22contextType%22%3A%22chat%22%7D",
-      "category": "ToDo",
-      "notes": "<p><br></p>",
-      "isDone": false
-    },
-    {
-      "title": "Performance Issue Connar",
-      "url": "https://app.mural.co/t/sappm1454/m/sappm1454/1771372231725/153915f2fd0d56fdf9b1465b9a4f2fe703e5f842",
-      "category": "ToDo",
-      "notes": "<p>Performance Issue Discussion.</p><p><br></p><ul><li>Aspose Migration max Time</li><li>Claude, Gemini flash, Only select top 2 models if uploaded. Ignore other models.</li></ul>",
-      "isDone": false
-    },
-    {
-      "title": "Sharmila Meeting",
-      "url": "https://teams.microsoft.com/meet/25130287069878?p=736fNeOR35oCJn6bLS",
-      "category": "ToDo",
-      "notes": "<p><strong style=\"color: rgb(36, 36, 36);\">Join:&nbsp;</strong><a href=\"https://teams.microsoft.com/meet/25130287069878?p=736fNeOR35oCJn6bLS\" target=\"_blank\" style=\"color: rgb(91, 95, 199);\">https://teams.microsoft.com/meet/25130287069878?p=736fNeOR35oCJn6bLS</a></p><p><span style=\"color: rgb(97, 97, 97);\">Meeting ID:&nbsp;</span><span style=\"color: rgb(36, 36, 36);\">251 302 870 698 78</span></p><p><span style=\"color: rgb(97, 97, 97);\">Passcode:&nbsp;</span><span style=\"color: rgb(36, 36, 36);\">MP9tJ9QG</span></p>",
-      "isDone": false
-    },
-    {
-      "title": "Tax Pro Portal",
-      "url": "https://taxumbrella.securefilepro.com/",
-      "category": "ToDo",
-      "notes": "<p><br></p>",
-      "isDone": false
-    },
-    {
-      "title": "ByteDance AI Model",
-      "url": "https://replicate.com/bytedance/seedance-1-pro",
-      "category": "ThingsToTry",
-      "notes": "<p><br></p>"
-    },
-    {
-      "title": "LM Arena",
-      "url": "https://lmarena.ai/",
-      "category": "ThingsToTry",
-      "notes": "<p><strong style=\"color: rgb(36, 36, 36);\">Seedream 4</strong></p>"
-    },
-    {
-      "title": "CAP Getting started",
-      "url": "https://pages.github.tools.sap/naxos/playbook/get-started/introduction.html",
-      "category": "ThingsToTry",
-      "notes": "<p><br></p>"
-    },
-    {
-      "title": "Google AI Agent handbook",
-      "url": "https://services.google.com/fh/files/misc/ai_agents_handbook.pdf",
-      "category": "ThingsToTry",
-      "notes": "<p><br></p>"
-    },
-    {
-      "title": "Teams SAP Webhook",
-      "url": "https://apps.powerapps.com/play/e/5d0c171e-1ead-eaa6-b101-19d8010b564e/a/100b2502-1b3c-4569-a20c-3593ee37d075?tenantId=42f7676c-f455-423c-82f6-dc2d99791af7&hidenavbar=true&viewdeployment=true#",
-      "category": "ThingsToTry",
-      "notes": "<p><br></p>"
-    },
-    {
-      "title": "iptv",
-      "url": "https://github.com/iptv-org/",
-      "category": "ThingsToTry",
-      "notes": "<p><br></p>"
-    },
-    {
-      "title": "Earnings Calendar",
-      "url": "https://earningshub.com/earnings-calendar/this-week",
-      "category": "Personal",
-      "notes": "<p><br></p>"
-    },
-    {
-      "title": "Trading View Buy Sell Script",
-      "url": "https://www.tradingview.com/chart/RaSMQcBN/",
-      "category": "Personal",
-      "notes": "<p><br></p>"
-    },
-    {
-      "title": "Magic Mirror",
-      "url": "https://3as.us/mm/index.html",
-      "category": "Personal",
-      "notes": "<p><br></p>"
-    },
-    {
-      "title": "Message Mirror",
-      "url": "https://3as.us/mm/messagemirror.html",
-      "category": "Personal",
-      "notes": "<p><br></p>"
-    },
-    {
-      "title": "Rtask",
-      "url": "https://app.residex.ai/Users/Login",
-      "category": "Personal",
-      "notes": "<p>Sabir:</p><p>Username: PATEL</p><p>Password: J@mesbond00712345</p>"
-    },
-    {
-      "title": "Burnsville License Renewal",
-      "url": "https://burnsvillemn.portal.opengov.com/",
-      "category": "Rentals",
-      "notes": "<p><br></p>"
-    },
-    {
-      "title": "Online Lease signing Documenso",
-      "url": "https://documenso.com/",
-      "category": "Rentals",
-      "notes": "<p><br></p>"
-    },
-    {
-      "title": "Rental Property Details",
-      "url": "https://docs.google.com/spreadsheets/d/1hFVTpMGEsOKdJe5mtOueU_PPorUjUii9FYMKC8k2p2Q/edit?usp=sharing",
-      "category": "Rentals",
-      "notes": "<p><br></p>"
-    },
-    {
-      "title": "Levrex Resources Details",
-      "url": "https://teams.microsoft.com/l/message/19:c358e037bc3a4e608a09db96ab358e05@thread.v2/1771352251797?context=%7B%22contextType%22%3A%22chat%22%7D",
-      "category": "ToDo",
-      "notes": "<p><br></p>",
-      "isDone": false
-    },
-    {
-      "title": "Performance Issue Connar",
-      "url": "https://app.mural.co/t/sappm1454/m/sappm1454/1771372231725/153915f2fd0d56fdf9b1465b9a4f2fe703e5f842",
-      "category": "ToDo",
-      "notes": "<p>Performance Issue Discussion.</p><p><br></p><ul><li>Aspose Migration max Time</li><li>Claude, Gemini flash, Only select top 2 models if uploaded. Ignore other models.</li></ul>",
-      "isDone": false
-    },
-    {
-      "title": "Sharmila Meeting",
-      "url": "https://teams.microsoft.com/meet/25130287069878?p=736fNeOR35oCJn6bLS",
-      "category": "ToDo",
-      "notes": "<p><strong style=\"color: rgb(36, 36, 36);\">Join:&nbsp;</strong><a href=\"https://teams.microsoft.com/meet/25130287069878?p=736fNeOR35oCJn6bLS\" target=\"_blank\" style=\"color: rgb(91, 95, 199);\">https://teams.microsoft.com/meet/25130287069878?p=736fNeOR35oCJn6bLS</a></p><p><span style=\"color: rgb(97, 97, 97);\">Meeting ID:&nbsp;</span><span style=\"color: rgb(36, 36, 36);\">251 302 870 698 78</span></p><p><span style=\"color: rgb(97, 97, 97);\">Passcode:&nbsp;</span><span style=\"color: rgb(36, 36, 36);\">MP9tJ9QG</span></p>",
-      "isDone": false
-    },
-    {
-      "title": "Tax Pro Portal",
-      "url": "https://taxumbrella.securefilepro.com/",
+      "title": "🚨 IBM Escalation",
+      "url": "https://wiki.ariba.com/spaces/~D045141/pages/691100668/IBM",
       "category": "ToDo",
       "notes": "<p><br></p>",
       "isDone": false
@@ -167,6 +34,24 @@
     {
       "title": "🚨 CIM SWAT",
       "url": "https://itsm.services.sap/now/nav/ui/classic/params/target/%24pa_dashboard.do%3Fsysparm_dashboard%3D84bfd3ab839c2e507ff054c6feaad3e9%26sysparm_tab%3D4dbf57ab839c2e507ff054c6feaad38e%26sysparm_cancelable%3Dtrue%26sysparm_editable%3Dfalse%26sysparm_active_panel%3Dfalse",
+      "category": "CIM",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "✔️ Invoice Service Jira Artifacts and Components",
+      "url": "https://wiki.one.int.sap/wiki/spaces/CIMN/pages/5917387779/SAP+Ariba+Invoicing+Artifacts",
+      "category": "CIM",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "🫝CIM Invoice Artifacts Components Owner🫝",
+      "url": "https://wiki.one.int.sap/wiki/spaces/CIMN/pages/5917387779/SAP+Ariba+Invoicing+Artifacts",
+      "category": "CIM",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "🧐🧐 Test Alure Report",
+      "url": "https://cim-paas-dev-eu10-004-allure-reports.cfapps.eu10-004.hana.ondemand.com/",
       "category": "CIM",
       "notes": "<p><br></p>"
     },
@@ -259,6 +144,18 @@
       "url": "https://sap.sharepoint.com/teams/CentralInvoiceDevelopment/Shared%20Documents/General/Ariba%20Invoice%20Management/AIM-CIM%20Tenant%20Setup%20for%20Upgrade.xlsx?d=we5271563484b4e70921e713e54dc7854",
       "category": "CIM",
       "notes": "<p><br></p>"
+    },
+    {
+      "title": "Sirius - Tools",
+      "url": "https://sirius.hyperspace.tools.sap/",
+      "category": "CIM",
+      "notes": "<p>Select Program -&gt; SAP Ariba Invoicing</p><p>Select appropriate Delivery - &gt; e.g. CIM MDG BTP Q2 2026</p><p>Go to tasks -&gt; open and inprogress for all Obligation Levels.</p><p><br></p><p>Go to Product Standards Plan -&gt; Review, Open ones, Especially Capture and Joule.</p>"
+    },
+    {
+      "title": "CIM - PROD Test deployment Blockers - Amalthea",
+      "url": "https://dashboard.dwc.tools.sap/org/CentralInvoices/stages/DeliverREL004%2FRELTestFeature/artifacts?version=019e0395-76d7-42c0-ad7c-f5a5a118e84a",
+      "category": "CIM",
+      "notes": "<p>https://dashboard.dwc.tools.sap/org/CentralInvoices/stages/DeliverREL004%2FRELTestFeature/artifacts?version=019e0395-76d7-42c0-ad7c-f5a5a118e84a</p><p><br></p><p>Select Vector and look for test faliures.</p>"
     },
     {
       "title": "🏆 SuccessFactor",
@@ -369,6 +266,18 @@
       "notes": "<p><br></p>"
     },
     {
+      "title": "My DL's",
+      "url": "https://profiles.wdf.sap.corp/groups?show=owned",
+      "category": "Tools",
+      "notes": "<p>DLS I own</p>"
+    },
+    {
+      "title": "Successfactor - Goals Finalization",
+      "url": "https://performancemanager5.successfactors.eu/sf/teamoverviewpage?bplte_company=SAP&_s.crb=IBDya3U9Mu5hIwPuuPTtYN%2f0hBrPVWN0ocqNQHqSWR0%3d#anchor_1365_909_b3f63ff6",
+      "category": "Tools",
+      "notes": "<p><br></p>"
+    },
+    {
       "title": "leverx resources",
       "url": "https://sapnam-my.sharepoint.com/:x:/r/personal/sabir_patel_sap_com/Documents/LeverX-Resources.xlsx?d=wee16166a5b8a4dbcbdedb55852454dca&csf=1&web=1&e=Jdqjgh",
       "category": "Leverx",
@@ -384,6 +293,12 @@
       "title": "Fieldglass Timesheet LeverX",
       "url": "https://sapx.us.fieldglass.cloud.sap/SSOLogin?TARGET=company%3DSAPX&next=time_sheet_detail.do%3Fid%3Dz260201013238541081750e7%26buyerCode%3DSAPX",
       "category": "Leverx",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "CIM-Total-Invoice Daily Volume",
+      "url": "https://dashboards-sf-a5a0fd8b-5821-4468-a246-a0b533144d90.cls-03.cloud.logs.services.eu10.hana.ondemand.com/app/dashboards#/view/15205c00-d363-11ef-ae85-af365c0ea48b?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-1M,to:now))&_a=(description:%27%27,filters:!(),fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t),query:(language:kuery,query:%27%27),timeRestore:!t,title:CIM_DOX_Dashboard,viewMode:view)",
+      "category": "CIM-Monitoring",
       "notes": "<p><br></p>"
     },
     {
@@ -423,20 +338,38 @@
       "notes": "<p>Hi colleagues,</p><p><br></p><p>Few days&nbsp;ago, there was a meeting about Nexus Procurement Observability overview.</p><p>I can only encourage you to have a look on recording and documentation.</p><p><br></p><p><strong>Recording:</strong></p><p>​</p><p><br></p><p><strong>Documentation:</strong></p><p><a href=\"https://github.wdf.sap.corp/pages/Ariba-Observability/Docs/\" target=\"_blank\" style=\"color: rgb(83, 118, 176);\">https://github.wdf.sap.corp/pages/Ariba-Observability/Docs/</a></p><p><br></p><p><strong style=\"color: rgb(0, 0, 0);\">Dynatrace:</strong></p><p><a href=\"https://github.wdf.sap.corp/pages/Ariba-Observability/Docs/dynatrace/dt/\" target=\"_blank\" style=\"color: rgb(83, 118, 176);\">https://github.wdf.sap.corp/pages/Ariba-Observability/Docs/dynatrace/dt/</a></p><p><br></p><p><strong style=\"color: rgb(0, 0, 0);\">Splunk:</strong></p><p><a href=\"https://github.wdf.sap.corp/pages/Ariba-Observability/Docs/splunk/splunk/\" target=\"_blank\" style=\"color: rgb(83, 118, 176);\">https://github.wdf.sap.corp/pages/Ariba-Observability/Docs/splunk/splunk/</a></p><p><br></p><p><strong>Trainings:</strong></p><p>&nbsp;<a href=\"https://github.wdf.sap.corp/pages/Ariba-Observability/Docs/resources/resources/\" target=\"_blank\" style=\"color: rgb(83, 118, 176);\">https://github.wdf.sap.corp/pages/Ariba-Observability/Docs/resources/resources/</a></p><p><br></p>"
     },
     {
-      "title": "Event Orchestrator Demo",
-      "url": "https://cim-paas-dev-eu10-004-cim-dev-eu10-004-invoice-event-ui494ca0a2.cfapps.eu10-004.hana.ondemand.com/index.html#",
+      "title": "Demo - Event Orchestrator",
+      "url": "https://cim-paas-dev-eu10-004-cim-dev-eu10-004-invoice-event-ui.cfapps.eu10-004.hana.ondemand.com/index.html",
       "category": "CIMDemos",
-      "notes": "<p><strong>Tenant: cim-dev-eu10-004-dev-exp-features</strong></p><p><a href=\"https://cim-dev-eu10-004-dev-exp-features.dev-eu10.cim.cloud.sap/launchpad#Shell-home\" target=\"_blank\">https://cim-dev-eu10-004-dev-exp-features.dev-eu10.cim.cloud.sap/launchpad#Shell-home</a></p><p><br></p><p><strong>Event Orchestrator use </strong><span style=\"color: rgb(19, 30, 41); background-color: rgb(220, 243, 255);\">cim-dev-eu10-004-dev-exp-approval</span></p><p><a href=\"https://cim-paas-dev-eu10-004-cim-dev-eu10-004-invoice-event-ui494ca0a2.cfapps.eu10-004.hana.ondemand.com/index.html#/dashboard\" target=\"_blank\">https://cim-paas-dev-eu10-004-cim-dev-eu10-004-invoice-event-ui494ca0a2.cfapps.eu10-004.hana.ondema…</a></p><p><br></p><p><strong>Amalthea Route:</strong></p><p><a href=\"https://dashboard.dwc.tools.sap/org/CentralInvoices/stages/Dev004%2FEXPFeatures/artifacts\" target=\"_blank\">https://dashboard.dwc.tools.sap/org/CentralInvoices/stages/Dev004%2FEXPFeatures/artifacts</a></p><p><br></p><p>Documentation:</p><p>https://github.tools.sap/I845775/docs/blob/main/event_orchestration_vision_v1.md</p><p>&nbsp;</p>"
-    },
-    {
-      "title": "Gartner - ICES Demo",
-      "url": "https://ices-dev-eu10.a121620.kyma.ondemand.com/uploadInvoiceUI",
-      "category": "CIMDemos",
-      "notes": "<p>admin, admin456</p><p><br></p><p>https://ices-dev-eu10.a121620.kyma.ondemand.com/uploadInvoiceUI</p>"
+      "notes": "<p><strong>UI</strong></p><p>https://cim-paas-dev-eu10-004-cim-dev-eu10-004-invoice-event-ui.cfapps.eu10-004.hana.ondemand.com/index.html</p><p><br></p><p><strong>Tenant URL:</strong></p><p>https://emea.cockpit.btp.cloud.sap/cockpit/#/globalaccount/1c44c629-c59a-4ebe-aa53-dc16ec530efb/subaccount/e0df2b89-16dd-4011-8b1a-4052053003ef/org/a27d44df-12a3-4b27-80a9-790bcb59e5a6/space/0f375127-f078-41c5-aafa-d54c29f98022/app</p><p><br></p><p>Look for event and find the tenant URL</p><p><br></p><p>Search for paas should have access to provider account. Contact Maha or Zhou if you don't have.</p><p><br></p><p><strong>Demo Sequence:</strong></p><ul><li>Go to Invoices with completed status.</li><li>Go to configuration.</li><li><br></li></ul><p><br></p><p><br></p><p><br></p><p><strong>Request the following CAM profile</strong></p><p>https://github.wdf.sap.corp/pages/CentralInvoices/howTo/docs/DevOps/Ops/cloud_access_manager_cam/#member-profiles</p><p>We want profile for <span style=\"color: rgb(28, 30, 33);\">SAP Central Invoice Management Developer</span></p>"
     },
     {
       "title": "Demo CIM Test Landscape",
       "url": "https://dev-eu10.cim.cloud.sap/login/amalthea?tenant=cim-dev-eu10-004-dev-exp-features&project=Dev004%2FEXPFeatures",
+      "category": "CIMDemos",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Demo - AI Insights -Video",
+      "url": "https://sapnam-my.sharepoint.com/:v:/g/personal/sai_kumar_kayala_sap_com/IQCPvEdmSXuKTLK1tN5S2sAdASgSLIUPt8iSZqavQC8a0Qs?e=OcysyX",
+      "category": "CIMDemos",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Demo- ICES",
+      "url": "https://ices-dev-eu10.a121620.kyma.ondemand.com/uploadInvoiceUI",
+      "category": "CIMDemos",
+      "notes": "<p>admin, admin456</p><p><br></p><p>https://ices-dev-eu10.a121620.kyma.ondemand.com/uploadInvoiceUI</p><p><br></p><p>Go to BNI if CIM does not work.</p>"
+    },
+    {
+      "title": "Demo - Intake Joule",
+      "url": "https://intake-dev-eu12-agents-joule.eu12.sapdas.cloud.sap/webclient/standalone/lt114",
+      "category": "CIMDemos",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Agent-Presentation",
+      "url": "https://sapnam-my.sharepoint.com/:p:/r/personal/sabir_patel_sap_com/Documents/AIl-In-On-AI.pptx?d=wd9454d737051422e9041f817a58b9c49&csf=1&web=1&e=0kAKSh",
       "category": "CIMDemos",
       "notes": "<p><br></p>"
     },
@@ -543,6 +476,78 @@
       "notes": "<p><br></p>"
     },
     {
+      "title": "Jira Daily AI standup",
+      "url": "https://jira.tools.sap/secure/StructureBoard.jspa?s=30903#",
+      "category": "Al-In-On-AI",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Shaphire-Sharepoint",
+      "url": "https://sap.sharepoint.com/teams/AITechnologyPlatformCluster/SitePages/Sapphire-2026.aspx?csf=1&web=1&e=LeIbEt&CID=5e7d9528-0514-4d99-8869-56064a011795",
+      "category": "Al-In-On-AI",
+      "notes": "<p><span class=\"ql-cursor\">﻿</span></p>"
+    },
+    {
+      "title": "Agent Template",
+      "url": "https://github.tools.sap/intake-management/agent-template-java",
+      "category": "Al-In-On-AI",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Agent-Deployment",
+      "url": "https://pages.github.tools.sap/intake-management/docs/docs/all-in-on-ai/landscape/how-to-deploy-an-agent/",
+      "category": "Al-In-On-AI",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Demo-Folder",
+      "url": "https://sap.sharepoint.com/:f:/r/teams/All-inonAI/Shared%20Documents/General/02%20Workstreams/02%20Agentic%20Platform/Workstream%201%20-%20LoB%20Agent%20Accelerator/Spend%20-%20Ariba/Demo%20Recordings?csf=1&web=1&e=cs1Mo6",
+      "category": "Al-In-On-AI",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Spaces",
+      "url": "https://github.tools.sap/fsm-codebasedagents/i821846-test-agent-1/blob/main/joule/a2a/functions/get_answer_mock.yaml",
+      "category": "Al-In-On-AI",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "App Foundation - Migration",
+      "url": "https://pages.github.tools.sap/application-foundation/agent-runtime-domains/integration/agent-gateway/",
+      "category": "Al-In-On-AI",
+      "notes": "<p>We are in Level0</p><h2>Contact with Sriram on <strong>HANA Agent Memory</strong></h2><p><br></p>"
+    },
+    {
+      "title": "Ai-Chat-Demo",
+      "url": "/Users/i845496/dev/ariba-invoice-service/docs/testing/agent-chat-live.html",
+      "category": "Al-In-On-AI-Demos",
+      "notes": "<p>Run the application.</p><p><br></p><p>It should run on http://localhost:9031</p><p><br></p><p>/Users/i845496/dev/ariba-invoice-service/docs/testing/agent-chat-joule.html</p><p><br></p><p>Open the html file.</p><p><br></p><p>/Users/i845496/dev/ariba-invoice-service/docs/testing/agent-chat-live.html</p><p><br></p><p>Joule</p><p>/Users/i845496/dev/ariba-invoice-service/docs/testing/agent-chat-joule.html</p>"
+    },
+    {
+      "title": "AI-Mock-Invoicing-Server : 9028",
+      "url": "/Users/i845496/dev/mock-invoicing/README.md",
+      "category": "Al-In-On-AI-Demos",
+      "notes": "<p>mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=9028﻿</p>"
+    },
+    {
+      "title": "Archiecture & Documentation",
+      "url": "/Users/i845496/dev/ariba-invoice-service/docs/architecture/agent-orchestrator-executive.html",
+      "category": "Al-In-On-AI-Demos",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Saphire Demo Tenant",
+      "url": "https://beta1-0209368275.prod-eu12.sal.procurement.cloud.sap/site/launchpad",
+      "category": "Al-In-On-AI-Demos",
+      "notes": "<p>nexus-e2e@sap.com to nexus-e2e5@sap.com </p><p>Password: Ariba@1234</p>"
+    },
+    {
+      "title": "Joule App Foundation",
+      "url": "https://procurement-agents-157732.eu12.sapdas.cloud.sap/new/conversations/?botName=invoicing_agent",
+      "category": "Al-In-On-AI-Demos",
+      "notes": "<p>Joule login details:</p><p><a href=\"https://procurement-agents-157732.eu12.sapdas.cloud.sap/new/conversations/?botName=invoicing_agent\" target=\"_blank\">https://procurement-agents-157732.eu12.sapdas.cloud.sap/new/conversations/?botName=invoicing_agent</a></p><p><a href=\"mailto:anoop.k.n@sap.com\" target=\"_blank\">anoop.k.n@sap.com</a></p><p>Ano123op!2023202</p>"
+    },
+    {
       "title": "Whats APP Bot",
       "url": "https://github.com/YonkoSam/whatsapp-python-chatbot",
       "category": "ThingsToTry",
@@ -582,6 +587,12 @@
       "title": "iptv",
       "url": "https://github.com/iptv-org/",
       "category": "ThingsToTry",
+      "notes": "<p><br></p>"
+    },
+    {
+      "title": "Tax Umbrella",
+      "url": "https://taxumbrella.securefilepro.com/connect/#/login?un=SabirPatel",
+      "category": "Personal",
       "notes": "<p><br></p>"
     },
     {
@@ -631,28 +642,58 @@
       "url": "https://docs.google.com/spreadsheets/d/1hFVTpMGEsOKdJe5mtOueU_PPorUjUii9FYMKC8k2p2Q/edit?usp=sharing",
       "category": "Rentals",
       "notes": "<p><br></p>"
+    },
+    {
+      "title": "Wyoming LLC",
+      "url": "https://app.wyomingllcattorney.com/v2/home/companies/338010/overview",
+      "category": "MoonBack",
+      "notes": "<p>Login using google.</p>"
     }
   ],
   "bookmarkTabs": [
     {
-      "id": "tab_1773682806747",
+      "id": "tab_1774284912021",
       "name": "CIM"
     },
     {
-      "id": "tab_1773682842121",
-      "name": "Personal"
+      "id": "tab_1774284921304",
+      "name": "All-in-AI"
+    },
+    {
+      "id": "tab_1774284970640",
+      "name": "personal"
     }
   ],
   "categoryTabAssignments": {
-    "ToDo": "tab_1773682806747",
-    "Personal": "tab_1773682842121",
-    "ThingsToTry": "tab_1773682842121",
-    "Tools": "tab_1773682806747",
-    "CIM": "tab_1773682806747",
-    "Rentals": "tab_1773682842121",
-    "CIM-Monitoring": "tab_1773682806747",
-    "CIMDemos": "tab_1773682806747",
-    "Leverx": "tab_1773682806747"
+    "Al-In-On-AI": "tab_1774284921304",
+    "Rentals": "tab_1774284970640",
+    "CIM": "tab_1774284912021",
+    "Tools": "tab_1774284912021",
+    "Leverx": "tab_1774284912021",
+    "CIM-Monitoring": "tab_1774284912021",
+    "CIMDemos": "tab_1774284912021",
+    "CIM-JIRA-Dashboards": "tab_1774284912021",
+    "CIM Customers": "tab_1774284912021",
+    "Personal": "tab_1774284970640",
+    "ThingsToTry": "tab_1774284970640",
+    "Al-In-On-AI-Demos": "tab_1774284921304",
+    "ToDo": "tab_1774284912021",
+    "MoonBack": "tab_1774284970640"
   },
-  "categoryOrder": []
+  "categoryOrder": [
+    "ToDo",
+    "CIM",
+    "Tools",
+    "Leverx",
+    "CIM-Monitoring",
+    "CIMDemos",
+    "CIM-JIRA-Dashboards",
+    "CIM Customers",
+    "Al-In-On-AI",
+    "Al-In-On-AI-Demos",
+    "ThingsToTry",
+    "Personal",
+    "Rentals",
+    "MoonBack"
+  ]
 }

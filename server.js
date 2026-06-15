@@ -167,9 +167,26 @@ Bun.serve({
 
     // All other routes require authentication
     if (!isAuthenticated(req)) {
+      if (req.method !== "GET") {
+        return new Response("Unauthorized", { status: 401 });
+      }
       return new Response(LOGIN_PAGE, {
         status: 200,
         headers: { "Content-Type": "text/html" },
+      });
+    }
+
+    // Serve local files by absolute path (for bookmarks pointing to local HTML files)
+    if (req.method === "GET" && path === "/localfile") {
+      const filePath = url.searchParams.get("path");
+      if (!filePath || !filePath.startsWith("/")) {
+        return new Response("Bad path", { status: 400 });
+      }
+      const file = Bun.file(filePath);
+      if (!(await file.exists())) return new Response("Not found", { status: 404 });
+      const ext = filePath.match(/\.[^.]+$/)?.[0] ?? "";
+      return new Response(file, {
+        headers: { "Content-Type": MIME[ext] ?? "application/octet-stream" },
       });
     }
 
