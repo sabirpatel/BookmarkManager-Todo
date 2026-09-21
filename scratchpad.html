@@ -349,46 +349,36 @@
       }
     });
 
-    // ── JSONBin storage ─────────────────────────────────────────────────────────
-    const cfg = window.JSONBIN_CONFIG || {};
-    const BIN_ID     = cfg.BIN_ID || '';
-    const MASTER_KEY = cfg.MASTER_KEY || '';
+    // ── MySQL storage ────────────────────────────────────────────────────────────
 
-    async function loadFromJsonBin() {
-      if (!BIN_ID || !MASTER_KEY) return null;
+    async function loadFromDb() {
       try {
-        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-          headers: { 'X-Master-Key': MASTER_KEY }
-        });
-        if (res.ok) {
-          const json = await res.json();
-          return json.record || {};
-        }
+        const res = await fetch('data.php');
+        if (res.ok) return await res.json();
       } catch (e) {
-        console.warn('JSONBin load failed:', e);
+        console.warn('Load failed:', e);
       }
       return null;
     }
 
     async function saveToJsonBin(html) {
-      if (!BIN_ID || !MASTER_KEY) return;
-      const record = await loadFromJsonBin() || {};
+      const record = await loadFromDb() || {};
       record.scratchpadContent = html;
       try {
-        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        const res = await fetch('data.php', {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json', 'X-Master-Key': MASTER_KEY },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(record)
         });
-        if (!res.ok) console.error('JSONBin save failed:', res.status);
+        if (!res.ok) console.error('Save failed:', res.status);
       } catch (e) {
-        console.error('JSONBin save error:', e);
+        console.error('Save error:', e);
       }
     }
 
     // ── Load content ────────────────────────────────────────────────────────────
     async function loadContent() {
-      const record = await loadFromJsonBin();
+      const record = await loadFromDb();
       const html = record && record.scratchpadContent;
       if (html) {
         quill.clipboard.dangerouslyPasteHTML(html);

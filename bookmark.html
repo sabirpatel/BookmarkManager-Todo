@@ -869,56 +869,37 @@
       });
     })();
 
-    // ==================== JSONBIN STORAGE ====================
-    // Reads BIN_ID and MASTER_KEY from window.JSONBIN_CONFIG (injected by config.js)
-
-    function getJsonBinConfig() {
-      const cfg = window.JSONBIN_CONFIG || {};
-      return { binId: cfg.BIN_ID || '', masterKey: cfg.MASTER_KEY || '' };
-    }
+    // ==================== MYSQL STORAGE ====================
 
     async function openOrCreateFile() {
-      const { binId, masterKey } = getJsonBinConfig();
-      if (!binId || !masterKey) {
-        console.warn('JSONBin config missing — using empty state');
-        return;
-      }
       try {
-        const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
-          headers: { 'X-Master-Key': masterKey }
-        });
+        const res = await fetch('data.php');
         if (res.ok) {
-          const json = await res.json();
-          const data = json.record || {};
+          const data = await res.json();
           appState.bookmarks = data.bookmarks || [];
           appState.bookmarkTabs = data.bookmarkTabs || [];
           appState.categoryTabAssignments = data.categoryTabAssignments || {};
           appState.categoryOrder = data.categoryOrder || [];
         } else {
-          console.error('JSONBin load failed:', res.status);
+          console.error('Load failed:', res.status);
         }
       } catch (e) {
-        console.warn('Could not load from JSONBin:', e);
+        console.warn('Could not load data:', e);
       }
     }
 
     async function saveToFile() {
-      const { binId, masterKey } = getJsonBinConfig();
-      if (!binId || !masterKey) { console.warn('JSONBin config missing — save skipped'); return; }
       try {
-        const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+        const res = await fetch('data.php', {
           method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Master-Key': masterKey
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(appState)
         });
         if (!res.ok) {
-          console.error('JSONBin save failed:', res.status, await res.text());
+          console.error('Save failed:', res.status, await res.text());
         }
       } catch (e) {
-        console.error('Error saving to JSONBin:', e);
+        console.error('Error saving:', e);
       }
     }
 
