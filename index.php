@@ -1,3 +1,17 @@
+<?php
+$AUTH_USER = 'admin';
+$AUTH_PASS = '2608';
+
+$ok = isset($_SERVER['PHP_AUTH_USER'])
+    ? $_SERVER['PHP_AUTH_USER'] === $AUTH_USER && $_SERVER['PHP_AUTH_PW'] === $AUTH_PASS
+    : false;
+
+if (!$ok) {
+    header('WWW-Authenticate: Basic realm="Bookmarks"');
+    header('HTTP/1.0 401 Unauthorized');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
