@@ -1,3 +1,1650 @@
-<?php
-$html = file_get_contents(__DIR__ . '/bookmark.html');
-echo $html;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookmark Organizer</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-primary: #f8f9fc;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-hover: #f0f2f8;
+      --text-primary: #1a1a2e;
+      --text-secondary: #4a4a68;
+      --text-muted: #8888a0;
+      --accent-primary: #7c3aed;
+      --accent-secondary: #8b5cf6;
+      --accent-gradient: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+      --border-color: rgba(0, 0, 0, 0.08);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1400px;
+    }
+
+    /* Fancy title with gradient */
+    .fancy-title {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    /* Header buttons */
+    .header-buttons .btn {
+      border-radius: var(--radius-md);
+      padding: 10px 20px;
+      font-weight: 500;
+      font-size: 13px;
+      border: none;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-warning {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+    }
+
+    .btn-warning:hover {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-info {
+      background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+      color: white;
+    }
+
+    .btn-info:hover {
+      background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+    }
+
+    .btn-primary {
+      background: var(--accent-gradient);
+      border: none;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+    }
+
+    /* Accordion styling */
+    .accordion {
+      background: transparent;
+    }
+
+    .accordion-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg) !important;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .accordion-button {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 15px;
+      padding: 18px 24px;
+      border: none;
+      box-shadow: none !important;
+    }
+
+    .accordion-button:not(.collapsed) {
+      background: var(--bg-hover);
+      color: var(--accent-primary);
+    }
+
+    .accordion-button::after {
+      filter: none;
+    }
+
+    .accordion-body {
+      background: var(--bg-hover);
+      padding: 24px;
+    }
+
+    /* Form styling */
+    .form-label {
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .form-control {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      font-size: 14px;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      background: var(--bg-card);
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+    }
+
+    .form-control::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* Quill editor styling */
+    #bookmarkNotesEditor {
+      height: 150px;
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+    }
+
+    .ql-toolbar.ql-snow {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+    }
+
+    .ql-container.ql-snow {
+      border: 1px solid var(--border-color);
+      border-top: none;
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+    }
+
+    .ql-editor {
+      color: var(--text-primary);
+    }
+
+    .ql-snow .ql-stroke {
+      stroke: var(--text-secondary);
+    }
+
+    .ql-snow .ql-fill {
+      fill: var(--text-secondary);
+    }
+
+    .ql-snow .ql-picker {
+      color: var(--text-secondary);
+    }
+
+    /* Category cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(139, 92, 246, 0.3);
+    }
+
+    .category-header {
+      font-size: 14px;
+      font-weight: 600;
+      padding: 16px 20px;
+      cursor: grab;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .category-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+    }
+
+    /* Modern category colors */
+    .bg-primary { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important; }
+    .bg-success { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; }
+    .bg-danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important; }
+    .bg-warning { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important; }
+    .bg-info { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%) !important; }
+    .bg-secondary { background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%) !important; }
+
+    /* List items */
+    .list-group {
+      background: transparent;
+    }
+
+    .list-group-item {
+      font-size: 13px;
+      padding: 8px 12px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      cursor: grab;
+      background: var(--bg-secondary);
+      border: none;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-primary);
+      transition: var(--transition);
+    }
+
+    .list-group-item:last-child {
+      border-bottom: none;
+    }
+
+    .list-group-item:hover {
+      background: var(--bg-hover);
+    }
+
+    .list-group-item .bookmark-content {
+      flex-grow: 1;
+      margin-right: 110px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .list-group-item .bookmark-content a {
+      color: var(--accent-secondary);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .list-group-item .bookmark-content a:hover {
+      color: var(--accent-primary);
+      text-decoration: underline;
+    }
+
+    .list-group-item .form-check-input {
+      flex-shrink: 0;
+      margin-top: 0;
+      width: 16px;
+      height: 16px;
+      background-color: var(--bg-card);
+      border: 2px solid var(--border-color);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .list-group-item .form-check-input:checked {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    /* Action buttons */
+    .btn-sm {
+      font-size: 10px;
+      padding: 4px 10px;
+      margin: 0 2px;
+      border-radius: var(--radius-sm);
+      font-weight: 500;
+      border: none;
+      transition: var(--transition);
+    }
+
+    .note-button-group {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      white-space: nowrap;
+      z-index: 1;
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .list-group-item:hover .note-button-group {
+      opacity: 1;
+    }
+
+    .note-button-group .btn-warning {
+      background: rgba(99, 102, 241, 0.15);
+      color: #6366f1;
+    }
+
+    .note-button-group .btn-warning:hover {
+      background: rgba(99, 102, 241, 0.25);
+      color: #4f46e5;
+    }
+
+    .note-button-group .btn-danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+    }
+
+    .note-button-group .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.4);
+    }
+
+    /* Dragging states */
+    .dragging {
+      opacity: 0.5;
+      transform: rotate(2deg);
+    }
+
+    .dragging-item {
+      opacity: 0.5;
+      background: var(--accent-primary) !important;
+    }
+
+    /* Popover styling */
+    .popover {
+      pointer-events: auto !important;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .popover-body {
+      pointer-events: auto !important;
+      color: var(--text-primary);
+      padding: 16px;
+    }
+
+    .popover-body a {
+      pointer-events: auto !important;
+      color: var(--accent-secondary);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .popover-body a:hover {
+      color: var(--accent-primary);
+    }
+
+    .popover-arrow::before,
+    .popover-arrow::after {
+      border-color: var(--bg-card) transparent transparent transparent !important;
+    }
+
+    /* Bookmark content with notes indicator */
+    .bookmark-content span[data-bs-toggle="popover"] {
+      cursor: help;
+      border-bottom: 1px dotted var(--text-muted);
+      color: var(--text-primary);
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--text-muted);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-secondary);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .fancy-title {
+        font-size: 1.5rem;
+      }
+
+      .header-buttons .btn {
+        padding: 8px 14px;
+        font-size: 12px;
+      }
+
+      .note-button-group {
+        opacity: 1;
+      }
+    }
+
+    /* Tab System Styles */
+    .tabs-container {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 8px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tabs-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    .tab-btn {
+      padding: 10px 20px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 13px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .tab-btn.active {
+      background: var(--accent-gradient);
+      color: white;
+    }
+
+    .tab-btn .tab-delete {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      opacity: 0;
+      transition: var(--transition);
+      background: rgba(255,255,255,0.2);
+    }
+
+    .tab-btn:hover .tab-delete {
+      opacity: 1;
+    }
+
+    .tab-btn .tab-delete:hover {
+      background: rgba(239, 68, 68, 0.8);
+    }
+
+    .add-tab-btn {
+      padding: 8px 16px;
+      border: 2px dashed var(--border-color);
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 13px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .add-tab-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      background: rgba(124, 58, 237, 0.05);
+    }
+
+    /* Tab modal styles */
+    .tab-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+
+    .tab-modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .tab-modal {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: var(--shadow-lg);
+      transform: scale(0.9);
+      transition: var(--transition);
+    }
+
+    .tab-modal-overlay.show .tab-modal {
+      transform: scale(1);
+    }
+
+    .tab-modal h3 {
+      margin: 0 0 16px 0;
+      color: var(--text-primary);
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .tab-modal-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .tab-modal-actions .btn {
+      flex: 1;
+    }
+
+    /* Category assignment dropdown in card header */
+    .category-header {
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 16px;
+      cursor: grab;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: visible;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .category-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .category-tab-selector {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 10px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      z-index: 1;
+    }
+
+    .category-tab-selector:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .category-tab-selector option {
+      background: var(--bg-card);
+      color: var(--text-primary);
+    }
+
+    /* Main view tabs */
+    .main-view-tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-right: 12px;
+      border-right: 1px solid var(--border-color);
+      margin-right: 4px;
+    }
+
+    .main-view-btn {
+      padding: 10px 16px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 13px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .main-view-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .main-view-btn.active {
+      background: var(--accent-gradient);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-4 py-md-5">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <h2 class="fancy-title">R I B A S બુકમાર્ક <span style="font-size:12px;font-weight:400;color:#aaa;margin-left:8px;">v1.4</span></h2>
+      <div class="header-buttons d-flex gap-2">
+        <input type="file" id="importFile" accept=".csv" style="display: none;">
+        <button id="importBtn" class="btn btn-warning">Import</button>
+        <button id="exportBtn" class="btn btn-success">Export</button>
+        <a href="scratchpad.html" class="btn btn-info" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">📝 Scratchpad</a>
+        <a href="projects.html" class="btn btn-info" style="background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);">Projects</a>
+        <a href="https://getemoji.com/" target="_blank" class="btn btn-info" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">😀 Emoji</a>
+      </div>
+    </div>
+
+    <div class="accordion mt-3" id="bookmarkAccordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm">
+            Add New Bookmark
+          </button>
+        </h2>
+        <div id="collapseForm" class="accordion-collapse collapse" data-bs-parent="#bookmarkAccordion">
+          <div class="accordion-body">
+            <form id="bookmarkForm" onsubmit="saveBookmark(event)">
+              <div class="mb-2">
+                <label for="bookmarkTitle" class="form-label">Title</label>
+                <input type="text" class="form-control" id="bookmarkTitle" required>
+              </div>
+              <div class="mb-2">
+                <label for="bookmarkURL" class="form-label">URL (optional)</label>
+                <input type="text" class="form-control" id="bookmarkURL">
+              </div>
+              <div class="mb-2">
+                <label for="bookmarkCategory" class="form-label">Category</label>
+                <input type="text" class="form-control" id="bookmarkCategory" list="categorySuggestions" required>
+                <datalist id="categorySuggestions">
+                    <option value="ToDo"></option>
+                    <option value="Work"></option>
+                    <option value="Personal"></option>
+                </datalist>
+              </div>
+              <div class="mb-2">
+                <label for="bookmarkNotesEditor" class="form-label">Notes</label>
+                <div id="bookmarkNotesEditor"></div>
+              </div>
+              <button type="submit" class="btn btn-primary">Add Bookmark</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab System -->
+    <div class="tabs-container mt-3">
+      <div class="main-view-tabs">
+        <button id="bookmarksViewBtn" class="main-view-btn active">Bookmarks</button>
+      </div>
+      <div class="tabs-wrapper" id="tabsWrapper">
+        <!-- Tabs will be rendered here -->
+      </div>
+      <button class="add-tab-btn" id="addBookmarkTabBtn" onclick="showAddTabModal()">+ New Tab</button>
+    </div>
+
+    <!-- Add/Edit Tab Modal -->
+    <div class="tab-modal-overlay" id="tabModal">
+      <div class="tab-modal">
+        <h3 id="tabModalTitle">Create New Tab</h3>
+        <div class="mb-2">
+          <label for="tabNameInput" class="form-label">Tab Name</label>
+          <input type="text" class="form-control" id="tabNameInput" placeholder="e.g., Personal, Work, Projects">
+        </div>
+        <div class="tab-modal-actions">
+          <button class="btn btn-secondary" onclick="hideTabModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="saveTab()">Create Tab</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-3" id="bookmarkList"></div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script>
+    const toolbarOptions = [
+      ['bold','italic','underline','strike'], ['blockquote','code-block'],
+      [{ header: 1 }, { header: 2 }], [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ indent: '-1' }, { indent: '+1' }], [{ size: ['small', false, 'large', 'huge'] }],
+      [{ color: [] }, { background: [] }], [{ align: [] }], ['clean']
+    ];
+    let quill;
+    let currentTab = 'all';
+    let appState = { bookmarks: [], bookmarkTabs: [], categoryTabAssignments: {}, categoryOrder: [] };
+
+    // ==================== MYSQL STORAGE ====================
+
+    async function openOrCreateFile() {
+      try {
+        const res = await fetch('data.php');
+        if (res.ok) {
+          const data = await res.json();
+          appState.bookmarks = data.bookmarks || [];
+          appState.bookmarkTabs = data.bookmarkTabs || [];
+          appState.categoryTabAssignments = data.categoryTabAssignments || {};
+          appState.categoryOrder = data.categoryOrder || [];
+        } else {
+          console.error('Load failed:', res.status);
+        }
+      } catch (e) {
+        console.warn('Could not load data:', e);
+      }
+    }
+
+    async function saveToFile() {
+      try {
+        const res = await fetch('data.php', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(appState)
+        });
+        if (!res.ok) {
+          console.error('Save failed:', res.status, await res.text());
+        }
+      } catch (e) {
+        console.error('Error saving:', e);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      document.getElementById('exportBtn').addEventListener('click', exportBookmarks);
+      document.getElementById('importBtn').addEventListener('click', handleImportClick);
+      document.getElementById('importFile').addEventListener('change', handleFileSelect);
+
+      quill = new Quill('#bookmarkNotesEditor', { modules: { toolbar: toolbarOptions }, theme: 'snow' });
+      initDragAndDrop();
+      initItemDragAndDrop();
+
+      await openOrCreateFile();
+
+      initializeTabs();
+      loadBookmarks();
+      updateCategorySuggestions();
+    });
+
+    // ==================== TAB MANAGEMENT ====================
+
+    function getTabs() { return appState.bookmarkTabs || []; }
+    function saveTabs(tabs) { appState.bookmarkTabs = tabs; saveToFile().catch(console.error); }
+    function getCategoryTabAssignments() { return appState.categoryTabAssignments || {}; }
+    function saveCategoryTabAssignments(assignments) { appState.categoryTabAssignments = assignments; saveToFile().catch(console.error); }
+
+    /**
+     * Initializes the tab system
+     */
+    function initializeTabs() {
+      const tabs = getTabs();
+      const cimTab = tabs.find(t => (t.name || '').trim().toLowerCase() === 'cim');
+      currentTab = cimTab ? cimTab.id : 'all';
+      renderTabs();
+    }
+
+    /**
+     * Renders all tabs in the tab bar
+     */
+    function renderTabs() {
+      const tabs = getTabs();
+      const wrapper = document.getElementById('tabsWrapper');
+      
+      let tabsHTML = `
+        <button class="tab-btn ${currentTab === 'all' ? 'active' : ''}" onclick="switchTab('all')">
+          All
+        </button>
+      `;
+
+      tabs.forEach(tab => {
+        tabsHTML += `
+          <button class="tab-btn ${currentTab === tab.id ? 'active' : ''}" onclick="switchTab('${tab.id}')">
+            ${tab.name}
+            <span class="tab-delete" onclick="event.stopPropagation(); deleteTab('${tab.id}')">&times;</span>
+          </button>
+        `;
+      });
+
+      wrapper.innerHTML = tabsHTML;
+    }
+
+    /**
+     * Switches to a different tab
+     * @param {string} tabId
+     */
+    function switchTab(tabId) {
+      currentTab = tabId;
+      renderTabs();
+      loadBookmarks();
+    }
+
+    /**
+     * Shows the add tab modal
+     */
+    function showAddTabModal() {
+      document.getElementById('tabModal').classList.add('show');
+      document.getElementById('tabNameInput').value = '';
+      document.getElementById('tabNameInput').focus();
+    }
+
+    /**
+     * Hides the tab modal
+     */
+    function hideTabModal() {
+      document.getElementById('tabModal').classList.remove('show');
+    }
+
+    /**
+     * Saves a new tab
+     */
+    function saveTab() {
+      const name = document.getElementById('tabNameInput').value.trim();
+      if (!name) {
+        console.error('Please enter a tab name');
+        return;
+      }
+
+      const tabs = getTabs();
+      const newTab = {
+        id: 'tab_' + Date.now(),
+        name: name
+      };
+      tabs.push(newTab);
+      saveTabs(tabs);
+      hideTabModal();
+      renderTabs();
+    }
+
+    /**
+     * Deletes a tab
+     * @param {string} tabId
+     */
+    function deleteTab(tabId) {
+      let tabs = getTabs();
+      tabs = tabs.filter(t => t.id !== tabId);
+      saveTabs(tabs);
+
+      // Remove category assignments for this tab
+      const assignments = getCategoryTabAssignments();
+      Object.keys(assignments).forEach(cat => {
+        if (assignments[cat] === tabId) {
+          delete assignments[cat];
+        }
+      });
+      saveCategoryTabAssignments(assignments);
+
+      if (currentTab === tabId) {
+        currentTab = 'all';
+      }
+      renderTabs();
+      loadBookmarks();
+    }
+
+    /**
+     * Assigns a category to a tab
+     * @param {string} category
+     * @param {string} tabId
+     */
+    function assignCategoryToTab(category, tabId) {
+      const assignments = getCategoryTabAssignments();
+      if (tabId === '') {
+        delete assignments[category];
+      } else {
+        assignments[category] = tabId;
+      }
+      saveCategoryTabAssignments(assignments);
+      loadBookmarks();
+    }
+
+    /**
+     * Generates the tab selector dropdown HTML for a category
+     * @param {string} category
+     * @returns {string}
+     */
+    function getTabSelectorHTML(category) {
+      const tabs = getTabs();
+      const assignments = getCategoryTabAssignments();
+      const currentAssignment = assignments[category] || '';
+
+      let options = `<option value="" ${currentAssignment === '' ? 'selected' : ''}>No Tab</option>`;
+      tabs.forEach(tab => {
+        options += `<option value="${tab.id}" ${currentAssignment === tab.id ? 'selected' : ''}>${tab.name}</option>`;
+      });
+
+      return `
+        <select class="category-tab-selector" onchange="assignCategoryToTab('${category}', this.value)" onclick="event.stopPropagation()">
+          ${options}
+        </select>
+      `;
+    }
+
+    /**
+     * Assigns a distinct background color class based on the category name.
+     * 'ToDo' has a specific color, others are assigned cyclically based on a hash.
+     * @param {string} cat - The category name.
+     * @returns {string} Bootstrap background color class.
+     */
+    function getCategoryColor(cat) {
+        // Use specific color for ToDo, fallback for others
+        if (cat === 'ToDo') return 'bg-secondary';
+        const colors = ['bg-primary','bg-success','bg-danger','bg-warning','bg-info'];
+        let hash = 0;
+        for (let i = 0; i < cat.length; i++) {
+            hash += cat.charCodeAt(i);
+        }
+        return colors[hash % colors.length];
+    }
+
+    /**
+     * Saves a new bookmark or updates an existing one to local storage.
+     * @param {Event} e - The form submission event.
+     */
+    function saveBookmark(e) {
+      e.preventDefault();
+      const title = document.getElementById('bookmarkTitle').value.trim();
+      const url = document.getElementById('bookmarkURL').value.trim();
+      const category = document.getElementById('bookmarkCategory').value.trim();
+      const notes = quill.root.innerHTML;
+      if (!title || !category) {
+        console.error('Please fill out Title and Category.'); // Replaced alert
+        return;
+      }
+
+      const newBookmark = { title: title, url: url, category: category, notes: notes };
+
+      if (category === 'ToDo') {
+        newBookmark.isDone = false; // Default to not done
+      }
+
+      const bookmarks = appState.bookmarks;
+      bookmarks.push(newBookmark);
+      appState.bookmarks = bookmarks;
+      saveToFile().catch(console.error);
+      document.getElementById('bookmarkForm').reset();
+      quill.setContents([]);
+      renderBookmarks(bookmarks);
+      updateCategorySuggestions();
+    }
+
+    /**
+     * Converts plain text URLs (http/https) in HTML content to clickable anchor tags.
+     * Skips URLs that are already inside anchor tags.
+     * @param {string} html - The HTML content to process.
+     * @returns {string} HTML with URLs converted to links.
+     */
+    function linkifyUrls(html) {
+        // Regex to match URLs not already in href attribute
+        const urlRegex = /(https?:\/\/[^\s<>"']+)/gi;
+        
+        // Create a temporary element to parse the HTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        
+        // Process text nodes only (not already inside anchor tags)
+        const walker = document.createTreeWalker(
+            tempDiv,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+        
+        const textNodes = [];
+        let node;
+        while (node = walker.nextNode()) {
+            // Skip if parent is an anchor tag
+            if (node.parentNode.tagName !== 'A') {
+                textNodes.push(node);
+            }
+        }
+        
+        textNodes.forEach(textNode => {
+            const text = textNode.textContent;
+            if (urlRegex.test(text)) {
+                const span = document.createElement('span');
+                span.innerHTML = text.replace(urlRegex, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+                textNode.parentNode.replaceChild(span, textNode);
+            }
+        });
+        
+        return tempDiv.innerHTML;
+    }
+
+    /**
+     * Renders all bookmarks grouped by category into the UI.
+     * @param {Array<Object>} bookmarks - The array of bookmark objects.
+     */
+    function renderBookmarks(bookmarks) {
+      const cats = {};
+      bookmarks.forEach((bm, i) => {
+          const bookmarkWithIndex = { ...bm, originalIndex: i };
+          cats[bm.category] = cats[bm.category] || [];
+          cats[bm.category].push(bookmarkWithIndex);
+      });
+
+      // Sort 'ToDo' category bookmarks: incomplete tasks first, then completed tasks
+      if (cats['ToDo']) {
+          cats['ToDo'].sort((a, b) => {
+              if (!a.isDone && b.isDone) return -1;
+              if (a.isDone && !b.isDone) return 1;
+              return 0;
+          });
+      }
+
+      const storedOrder = appState.categoryOrder || [];
+      const existingCategories = storedOrder.filter(cat => cats[cat]);
+      const newCategories = Object.keys(cats).filter(cat => !existingCategories.includes(cat));
+      let sortedCategories = [...existingCategories, ...newCategories];
+
+      // Filter categories by current tab
+      const categoryAssignments = getCategoryTabAssignments();
+      if (currentTab !== 'all') {
+        sortedCategories = sortedCategories.filter(cat => categoryAssignments[cat] === currentTab);
+      }
+
+      const container = document.getElementById('bookmarkList');
+      container.innerHTML = '';
+      const frag = document.createDocumentFragment();
+
+      sortedCategories.forEach(cat => {
+        const col = document.createElement('div');
+        col.className = 'col-md-4 mb-2 draggable'; // Class for category column drag
+        col.dataset.category = cat;
+        col.setAttribute('draggable','true');
+
+        const items = cats[cat].map((bm, categoryPos) => {
+            let checkboxHTML = '';
+            let titleClasses = '';
+            const originalIndex = bm.originalIndex;
+
+            if (bm.category === 'ToDo') {
+                const isChecked = bm.isDone ? 'checked' : '';
+                checkboxHTML = `<input type="checkbox" class="form-check-input me-2" id="todo-check-${originalIndex}" onclick="toggleToDo(${originalIndex})" ${isChecked}>`;
+                if (bm.isDone) {
+                    titleClasses = 'text-decoration-line-through';
+                }
+            }
+
+            // Prepare notes for popover.
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = bm.notes || ''; // Get HTML content
+            const plainTextNotes = tempDiv.innerText.trim(); // Get plain text to check for emptiness
+
+            let popoverAttributes = '';
+            // Only add popover attributes if there are actual notes (not just empty HTML or whitespace)
+            if (plainTextNotes.length > 0 && bm.notes && bm.notes.trim() !== '<p><br></p>') { // Check for Quill's empty paragraph
+                // Convert plain text URLs to clickable links
+                const linkedContent = linkifyUrls(tempDiv.innerHTML);
+                const popoverContent = linkedContent.replace(/'/g, '&apos;'); // Escape single quotes for data-bs-content
+                popoverAttributes = `
+                    data-bs-toggle="popover"
+                    data-bs-trigger="manual"
+                    data-bs-placement="auto"
+                    data-bs-html="true"
+                    data-bs-content='${popoverContent}'
+                `;
+            }
+
+            const resolvedUrl = bm.url || '';
+            const titleHTML = resolvedUrl
+                ? `<a href="${resolvedUrl}" target="_blank" class="${titleClasses}" id="todo-title-${originalIndex}" ${popoverAttributes}>${bm.title}</a>`
+                : `<span class="${titleClasses}" id="todo-title-${originalIndex}" ${popoverAttributes}>${bm.title}</span>`;
+
+            return `
+                <li class="list-group-item" draggable="true" data-bookmark-original-index="${originalIndex}">
+                    ${checkboxHTML} <div class="bookmark-content">
+                        ${titleHTML}
+                    </div>
+                    <div class="note-button-group">
+                       <button class="btn btn-warning btn-sm" onclick="editBookmark(${originalIndex})">Edit</button>
+                       <button class="btn btn-danger btn-sm" onclick="deleteBookmark(${originalIndex})">Delete</button>
+                    </div>
+                </li>`;
+        }).join('');
+
+        col.innerHTML = `
+          <div class="card">
+            <div class="card-header ${getCategoryColor(cat)} category-header">
+              <span>${cat}</span>
+              ${getTabSelectorHTML(cat)}
+            </div>
+            <div class="card-body p-0"><ul class="list-group list-group-flush">${items}</ul></div>
+          </div>`;
+        frag.appendChild(col);
+      });
+      container.appendChild(frag);
+
+      // Initialize Bootstrap Popovers after rendering with interactive behavior
+      const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+      popoverTriggerList.forEach(popoverTriggerEl => {
+          const popover = new bootstrap.Popover(popoverTriggerEl, {
+              sanitize: false // Allow links in popover content
+          });
+          let isOverTrigger = false;
+          let isOverPopover = false;
+          let hideTimeout = null;
+
+          const showPopover = () => {
+              clearTimeout(hideTimeout);
+              popover.show();
+          };
+
+          const hidePopover = () => {
+              hideTimeout = setTimeout(() => {
+                  if (!isOverTrigger && !isOverPopover) {
+                      popover.hide();
+                  }
+              }, 300);
+          };
+
+          popoverTriggerEl.addEventListener('mouseenter', () => {
+              isOverTrigger = true;
+              showPopover();
+          });
+
+          popoverTriggerEl.addEventListener('mouseleave', () => {
+              isOverTrigger = false;
+              hidePopover();
+          });
+
+          popoverTriggerEl.addEventListener('shown.bs.popover', () => {
+              const popoverElement = popover.tip;
+              if (popoverElement) {
+                  popoverElement.style.pointerEvents = 'auto';
+                  popoverElement.addEventListener('mouseenter', () => {
+                      isOverPopover = true;
+                      clearTimeout(hideTimeout);
+                  });
+                  popoverElement.addEventListener('mouseleave', () => {
+                      isOverPopover = false;
+                      hidePopover();
+                  });
+                  // Ensure links inside the popover are clickable
+                  popoverElement.querySelectorAll('a').forEach(link => {
+                      link.style.pointerEvents = 'auto';
+                      link.setAttribute('target', '_blank');
+                      link.setAttribute('rel', 'noopener noreferrer');
+                  });
+              }
+          });
+      });
+    }
+
+    /**
+     * Toggles the 'isDone' status of a 'ToDo' bookmark.
+     * @param {number} index - The original index of the bookmark in the main array.
+     */
+    function toggleToDo(index) {
+        let bookmarks = appState.bookmarks || [];
+        if (bookmarks[index] && bookmarks[index].category === 'ToDo') {
+            bookmarks[index].isDone = !bookmarks[index].isDone;
+            appState.bookmarks = bookmarks;
+            saveToFile().catch(console.error);
+            renderBookmarks(bookmarks);
+        } else {
+             console.warn(`Bookmark at index ${index} not found or not a ToDo item.`);
+        }
+    }
+
+    /**
+     * Loads bookmarks from local storage and initiates rendering.
+     */
+    function loadBookmarks() {
+      renderBookmarks(appState.bookmarks || []);
+    }
+
+    /**
+     * Deletes a bookmark from local storage and re-renders the list.
+     * @param {number} i - The original index of the bookmark to delete.
+     */
+    function deleteBookmark(i) {
+      let b = appState.bookmarks || [];
+      b.splice(i, 1);
+      appState.bookmarks = b;
+      saveToFile().catch(console.error);
+      renderBookmarks(b);
+      updateCategorySuggestions();
+    }
+
+    /**
+     * Populates the form with a bookmark's data for editing.
+     * The bookmark is temporarily removed from the list to be re-added on save.
+     * @param {number} i - The original index of the bookmark to edit.
+     */
+    function editBookmark(i) {
+        let b = appState.bookmarks || [];
+        if (i < 0 || i >= b.length) return;
+        const bm = b[i];
+        bootstrap.Collapse.getOrCreateInstance(document.getElementById('collapseForm')).show();
+        document.getElementById('bookmarkTitle').value = bm.title;
+        document.getElementById('bookmarkURL').value = bm.url;
+        document.getElementById('bookmarkCategory').value = bm.category;
+        quill.clipboard.dangerouslyPasteHTML(bm.notes || '');
+        b.splice(i, 1);
+        appState.bookmarks = b;
+        saveToFile().catch(console.error);
+        renderBookmarks(b);
+    }
+
+    /**
+     * Helper function to retrieve bookmarks grouped by category, preserving original indices.
+     * @returns {Object<string, Array<Object>>} An object where keys are categories and values are arrays of bookmarks.
+     */
+    function getGroupedBookmarks() {
+        const b = appState.bookmarks || [];
+        const cats = {};
+        b.forEach((bm, i) => {
+            const bookmarkWithIndex = { ...bm, originalIndex: i };
+            cats[bm.category] = cats[bm.category] || [];
+            cats[bm.category].push(bookmarkWithIndex);
+        });
+        return cats;
+    }
+
+    /**
+     * Reconstructs the main bookmarks array from the grouped categories and saves it.
+     * This function ensures that the order within categories and the overall category order are maintained.
+     * @param {Object<string, Array<Object>>} groupedCategories - Bookmarks grouped by category with their current order.
+     */
+    function saveReorderedBookmarks(groupedCategories) {
+        const orderedBookmarks = [];
+        // Get the current order of categories from the DOM (after drag-and-drop)
+        const currentCategoryOrder = [...document.getElementById('bookmarkList').children].map(c => c.dataset.category);
+
+        currentCategoryOrder.forEach(cat => {
+            if (groupedCategories[cat]) {
+                orderedBookmarks.push(...groupedCategories[cat]);
+            }
+        });
+
+        Object.keys(groupedCategories).forEach(cat => {
+            if (!currentCategoryOrder.includes(cat)) {
+                orderedBookmarks.push(...groupedCategories[cat]);
+            }
+        });
+
+        const bookmarksToSave = orderedBookmarks.map(({ originalIndex, ...rest }) => rest);
+        appState.bookmarks = bookmarksToSave;
+        saveToFile().catch(console.error);
+        renderBookmarks(bookmarksToSave);
+    }
+
+    /**
+     * Initializes drag-and-drop functionality for category columns.
+     */
+    function initDragAndDrop() {
+      const container = document.getElementById('bookmarkList');
+
+      container.addEventListener('dragstart', e => {
+        // Skip if dragging an individual bookmark item (not a category column)
+        if (e.target.closest('.list-group-item')) return;
+        
+        const draggedElement = e.target.closest('.draggable');
+        if (draggedElement) {
+          draggedElement.classList.add('dragging');
+          e.dataTransfer.setData('text/plain', draggedElement.dataset.category);
+        }
+      });
+
+      container.addEventListener('dragend', e => {
+        // Skip if this was an individual bookmark item drag
+        if (e.target.closest('.list-group-item')) return;
+        
+        const draggedElement = e.target.closest('.draggable');
+        if (draggedElement) {
+          draggedElement.classList.remove('dragging');
+          updateCategoryOrder();
+        }
+      });
+
+      container.addEventListener('dragover', e => {
+        e.preventDefault();
+        // Skip category reordering if dragging an item
+        if (document.querySelector('.dragging-item')) return;
+        
+        const draggingElement = container.querySelector('.dragging');
+        if (!draggingElement) return;
+        const afterElement = getDragAfterElement(container, e.clientY);
+        if (afterElement) container.insertBefore(draggingElement, afterElement);
+        else container.appendChild(draggingElement);
+      });
+    }
+
+    /**
+     * Determines the element after which the dragged category column should be inserted.
+     * @param {HTMLElement} container - The parent container of draggable elements.
+     * @param {number} y - The vertical position of the mouse.
+     * @returns {HTMLElement|undefined} The element to insert after, or undefined if at the end.
+     */
+    function getDragAfterElement(container, y) {
+      const draggableItems = [...container.querySelectorAll('.draggable:not(.dragging)')];
+      return draggableItems.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+          return { offset: offset, element: child };
+        } else {
+          return closest;
+        }
+      }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    /**
+     * Updates the order of categories in local storage based on their current DOM order.
+     */
+    function updateCategoryOrder() {
+      const cats = [...document.getElementById('bookmarkList').children].map(c=>c.dataset.category);
+      appState.categoryOrder = cats;
+      saveToFile().catch(console.error);
+    }
+
+    /**
+     * Initializes drag-and-drop functionality for individual bookmark items within categories.
+     */
+    function initItemDragAndDrop() {
+        const bookmarkListContainer = document.getElementById('bookmarkList');
+
+        // Event listener for when a drag operation starts on an item
+        bookmarkListContainer.addEventListener('dragstart', e => {
+            const draggedItem = e.target.closest('.list-group-item');
+            if (draggedItem) {
+                e.dataTransfer.setData('text/plain', draggedItem.dataset.bookmarkOriginalIndex);
+                // Store the category of the dragged item to ensure reordering within the same category
+                e.dataTransfer.setData('text/category', draggedItem.closest('.draggable').dataset.category);
+                draggedItem.classList.add('dragging-item');
+            }
+        });
+
+        // Event listener for when a dragged item is over a valid drop target
+        bookmarkListContainer.addEventListener('dragover', e => {
+            e.preventDefault(); // Allow dropping
+            const draggedItem = document.querySelector('.dragging-item');
+            const targetItem = e.target.closest('.list-group-item');
+
+            if (!draggedItem || !targetItem || draggedItem === targetItem) return;
+
+            const draggedCategory = draggedItem.closest('.draggable').dataset.category;
+            const targetCategory = targetItem.closest('.draggable').dataset.category;
+
+            // Only allow reordering if the dragged item and target item are in the same category
+            if (draggedCategory !== targetCategory) return;
+
+            const afterElement = getDragAfterElementForItems(targetItem.parentNode, e.clientY);
+            if (afterElement) {
+                targetItem.parentNode.insertBefore(draggedItem, afterElement);
+            } else {
+                targetItem.parentNode.appendChild(draggedItem);
+            }
+        });
+
+        // Event listener for when a drag operation ends on an item
+        bookmarkListContainer.addEventListener('dragend', e => {
+            const draggedItem = e.target.closest('.list-group-item');
+            if (draggedItem) {
+                draggedItem.classList.remove('dragging-item');
+
+                const categoryElement = draggedItem.closest('.draggable');
+                if (categoryElement) {
+                    const category = categoryElement.dataset.category;
+                    const listGroup = categoryElement.querySelector('.list-group');
+                    const newOrderedOriginalIndices = [...listGroup.children].map(li =>
+                        parseInt(li.dataset.bookmarkOriginalIndex)
+                    );
+                    persistItemOrderWithinCategory(category, newOrderedOriginalIndices);
+                }
+            }
+        });
+    }
+
+    /**
+     * Determines the element after which the dragged bookmark item should be inserted.
+     * @param {HTMLElement} container - The parent UL container of draggable items.
+     * @param {number} y - The vertical position of the mouse.
+     * @returns {HTMLElement|undefined} The element to insert after, or undefined if at the end.
+     */
+    function getDragAfterElementForItems(container, y) {
+        const draggableItems = [...container.querySelectorAll('.list-group-item:not(.dragging-item)')];
+        return draggableItems.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+            if (offset < 0 && offset > closest.offset) {
+                return { offset: offset, element: child };
+            } else {
+                return closest;
+            }
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    /**
+     * Persists the new order of bookmarks within a specific category to local storage.
+     * @param {string} category - The category whose bookmarks are being reordered.
+     * @param {Array<number>} newOrderedOriginalIndices - An array of original indices in their new order.
+     */
+    function persistItemOrderWithinCategory(category, newOrderedOriginalIndices) {
+        let allBookmarks = appState.bookmarks || [];
+        // Create a map for quick lookup of bookmark objects by their array index
+        let bookmarksLookup = new Map(allBookmarks.map((bm, index) => [index, bm]));
+
+        // Reconstruct the list of bookmarks for the specific category based on the new order
+        let reorderedCategoryBookmarks = newOrderedOriginalIndices.map(originalIndex => bookmarksLookup.get(originalIndex));
+
+        // Get the current grouped categories structure
+        let groupedCats = getGroupedBookmarks();
+        // Update the specific category's list with the newly reordered bookmarks
+        groupedCats[category] = reorderedCategoryBookmarks;
+
+        // Save the entire reordered structure back to local storage and re-render
+        saveReorderedBookmarks(groupedCats);
+    }
+
+    /**
+     * Exports all bookmarks to a CSV file.
+     */
+    function exportBookmarks() {
+      const bookmarksToExport = (appState.bookmarks || []).map(bm => ({
+          title: bm.title,
+          url: bm.url,
+          category: bm.category,
+          notes: bm.notes
+      }));
+
+      if (!bookmarksToExport.length) { console.warn('No bookmarks to export.'); return; } // Replaced alert
+      const header = ['Title', 'URL', 'Category', 'Notes'];
+      const rows = bookmarksToExport.map(bm => [
+        `"${(bm.title || '').replace(/"/g, '""')}"`,
+        `"${(bm.url || '').replace(/"/g, '""')}"`,
+        `"${(bm.category || '').replace(/"/g, '""')}"`,
+        `"${(bm.notes || '').replace(/"/g, '""')}"`
+      ].join(','));
+      const csvContent = [header.join(','), ...rows].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'bookmarks.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      } else {
+         console.error('Your browser does not support automatic file downloading.'); // Replaced alert
+      }
+    }
+
+    /**
+     * Triggers the hidden file input click when the import button is clicked.
+     */
+    function handleImportClick() { document.getElementById('importFile').click(); }
+
+    /**
+     * Handles the file selection for import.
+     * @param {Event} event - The change event from the file input.
+     */
+    function handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        if (!file.type.match('text/csv') && !file.name.toLowerCase().endsWith('.csv')) {
+            console.error('Please select a valid CSV file.'); // Replaced alert
+            event.target.value = null;
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(e) { processImportData(e.target.result); event.target.value = null; };
+        reader.onerror = function(e) { console.error("Error reading file:", e); console.error('Error reading the selected file.'); event.target.value = null; }; // Replaced alert
+        reader.readAsText(file);
+    }
+
+    /**
+     * Processes the imported CSV data, parsing it and adding bookmarks to local storage.
+     * @param {string} csvData - The raw CSV string content.
+     */
+    function processImportData(csvData) {
+        try {
+            const lines = csvData.trim().split('\n');
+            if (lines.length < 2) { console.warn('CSV file appears to be empty or only contains a header.'); return; } // Replaced alert
+            const header = parseCsvRow(lines[0]);
+            if (header.length < 4 || header[0].toLowerCase() !== 'title' || header[1].toLowerCase() !== 'url' || header[2].toLowerCase() !== 'category' || header[3].toLowerCase() !== 'notes') {
+                if (!window.confirm('CSV header does not match expected format (Title,URL,Category,Notes). Continue anyway?')) return; // Replaced confirm
+            }
+
+            let existingBookmarks = appState.bookmarks || [];
+            let importedCount = 0;
+            for (let i = 1; i < lines.length; i++) {
+                if (lines[i].trim() === '') continue;
+                const fields = parseCsvRow(lines[i]);
+                if (fields.length >= 4) {
+                    const newBookmark = { title: fields[0], url: fields[1], category: fields[2], notes: fields[3] };
+                    if (newBookmark.category === 'ToDo') {
+                        newBookmark.isDone = false;
+                    }
+                    if (newBookmark.title && newBookmark.url && newBookmark.category) { existingBookmarks.push(newBookmark); importedCount++; }
+                    else { console.warn(`Skipping row ${i + 1} due to missing Title, URL, or Category:`, lines[i]); }
+                } else { console.warn(`Skipping row ${i + 1} due to unexpected number of fields:`, lines[i]); }
+            }
+            appState.bookmarks = existingBookmarks;
+            saveToFile().catch(console.error);
+            loadBookmarks();
+            updateCategorySuggestions();
+            console.log(`${importedCount} bookmarks imported successfully!`); // Replaced alert
+        } catch (error) {
+            console.error("Error processing CSV data:", error);
+            console.error('An error occurred while processing the CSV file. Check console for details.'); // Replaced alert
+        }
+    }
+
+    /**
+     * Parses a single CSV row string into an array of fields, handling quotes.
+     * @param {string} rowString - The CSV row string.
+     * @returns {Array<string>} An array of parsed fields.
+     */
+    function parseCsvRow(rowString) {
+        const fields = [];
+        let currentField = '';
+        let inQuotes = false;
+        for (let i = 0; i < rowString.length; i++) {
+            const char = rowString[i];
+            const nextChar = rowString[i + 1];
+            if (char === '"' && !inQuotes && currentField.length === 0) { inQuotes = true; }
+            else if (char === '"' && inQuotes && nextChar === '"') { currentField += '"'; i++; }
+            else if (char === '"' && inQuotes && (nextChar === ',' || nextChar === undefined)) { inQuotes = false; }
+            else if (char === ',' && !inQuotes) { fields.push(currentField); currentField = ''; }
+            else { currentField += char; }
+        }
+        fields.push(currentField);
+        return fields;
+    }
+
+    /**
+     * Updates the datalist for category suggestions based on existing bookmarks.
+     */
+    function updateCategorySuggestions() {
+        const bookmarks = appState.bookmarks || [];
+        const uniqueCategories = [...new Set(bookmarks.map(bm => bm.category))];
+        const datalist = document.getElementById('categorySuggestions');
+        datalist.innerHTML = '';
+        uniqueCategories.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat;
+            datalist.appendChild(option);
+        });
+        if (!uniqueCategories.includes('ToDo')) {
+             const option = document.createElement('option');
+             option.value = 'ToDo';
+             datalist.appendChild(option);
+        }
+    }
+
+    /**
+     * A simple function to display a greeting message.
+     */
+    function sayHello() {
+      console.log('Hello Afiya'); // Replaced alert
+    }
+
+  </script>
+</body>
+</html>

@@ -198,7 +198,7 @@ Bun.serve({
     }
 
     // Serve static files
-    const filePath = join(ROOT, path === "/" ? "/bookmark.html" : path);
+    const filePath = join(ROOT, path === "/" ? "/index.php" : path);
     const file = Bun.file(filePath);
     if (!(await file.exists())) return new Response("Not found", { status: 404 });
 
