@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-define('VERSION', 'v1.2');
+define('VERSION', 'v1.3');
 
 $PIN    = getenv('BOOKMARK_PIN') ?: '2608';
 $SECRET = hash('sha256', $PIN . 'bm_auth_v1');
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Already authenticated — serve the app
 if (isset($_COOKIE[$COOKIE]) && $_COOKIE[$COOKIE] === $SECRET) {
     $html = file_get_contents(__DIR__ . '/bookmark.html');
-    $inject = '<script>sessionStorage.setItem("bm_authed","1");</script>';
+    $inject = '<script>localStorage.setItem("bm_authed","1");</script>';
     echo str_replace('</head>', $inject . '</head>', $html);
     exit;
 }
