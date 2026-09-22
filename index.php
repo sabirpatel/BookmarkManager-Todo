@@ -1,17 +1,66 @@
 <?php
-$AUTH_USER = 'admin';
-$AUTH_PASS = '2608';
+$PASS   = '2608';
+$SECRET = hash('sha256', $PASS . 'bm_v1');
+$COOKIE = 'bm_auth';
 
-$ok = isset($_SERVER['PHP_AUTH_USER'])
-    ? $_SERVER['PHP_AUTH_USER'] === $AUTH_USER && $_SERVER['PHP_AUTH_PW'] === $AUTH_PASS
-    : false;
-
-if (!$ok) {
-    header('WWW-Authenticate: Basic realm="Bookmarks"');
-    header('HTTP/1.0 401 Unauthorized');
-    exit;
+// Handle login form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pass'])) {
+    if ($_POST['pass'] === $PASS) {
+        setcookie($COOKIE, $SECRET, [
+            'expires'  => time() + 86400 * 30,
+            'path'     => '/',
+            'httponly' => true,
+            'secure'   => isset($_SERVER['HTTPS']),
+            'samesite' => 'Strict',
+        ]);
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit;
+    }
+    $error = true;
 }
-?>
+
+// Check cookie
+if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookmark Manager</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:#f8f9fc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+         display:flex;align-items:center;justify-content:center;min-height:100vh}
+    .card{background:#fff;border-radius:20px;padding:48px 40px;
+          box-shadow:0 8px 40px rgba(0,0,0,0.12);text-align:center;width:300px}
+    h1{font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:8px}
+    p{color:#888;font-size:14px;margin-bottom:24px}
+    input[type=password]{width:100%;padding:14px 16px;font-size:20px;letter-spacing:6px;
+         text-align:center;border:2px solid #e0e0f0;border-radius:12px;outline:none;
+         color:#1a1a2e;background:#f8f9fc;transition:border .2s}
+    input[type=password]:focus{border-color:#7c3aed}
+    button{margin-top:16px;width:100%;padding:14px;font-size:15px;font-weight:600;
+           color:#fff;background:linear-gradient(135deg,#7c3aed,#db2777);
+           border:none;border-radius:12px;cursor:pointer}
+    button:hover{opacity:.9}
+    .err{color:#e53e3e;font-size:13px;margin-top:12px;min-height:20px}
+    .ver{color:#ccc;font-size:11px;margin-top:24px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Bookmark Manager</h1>
+    <p>Enter your passcode</p>
+    <form method="POST" autocomplete="off">
+      <input type="password" name="pass" autofocus placeholder="••••">
+      <button type="submit">Unlock</button>
+    </form>
+    <div class="err"><?= isset($error) ? 'Incorrect passcode — try again.' : '' ?></div>
+    <div class="ver">v1.6</div>
+  </div>
+</body>
+</html>
+<?php exit; } ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -702,7 +751,7 @@ if (!$ok) {
 <body>
   <div class="container py-4 py-md-5">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-      <h2 class="fancy-title">R I B A S બુકમાર્ક <span style="font-size:12px;font-weight:400;color:#aaa;margin-left:8px;">v1.5</span></h2>
+      <h2 class="fancy-title">R I B A S બુકમાર્ક <span style="font-size:12px;font-weight:400;color:#aaa;margin-left:8px;">v1.6</span></h2>
       <div class="header-buttons d-flex gap-2">
         <input type="file" id="importFile" accept=".csv" style="display: none;">
         <button id="importBtn" class="btn btn-warning">Import</button>
