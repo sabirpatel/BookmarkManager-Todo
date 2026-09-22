@@ -18,7 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Already authenticated — serve the app
 if (!empty($_SESSION['authenticated'])) {
-    readfile(__DIR__ . '/bookmark.html');
+    $html = file_get_contents(__DIR__ . '/bookmark.html');
+    // Bypass the client-side PIN overlay since PHP session already authenticated
+    $inject = '<script>sessionStorage.setItem("bm_authed","1");</script>';
+    echo str_replace('</head>', $inject . '</head>', $html);
     exit;
 }
 
