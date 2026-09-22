@@ -11,9 +11,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- JSONBin config — create config.js with: window.JSONBIN_CONFIG={BIN_ID:'...',MASTER_KEY:'...',PIN:'...'} -->
-  <script src="config.js"></script>
-
   <style>
     :root {
       --bg-primary: #f8f9fc;
@@ -466,28 +463,6 @@
       }
     }
 
-    /* PIN overlay */
-    #pinOverlay {
-      position: fixed; inset: 0; background: #f8f9fc;
-      display: flex; align-items: center; justify-content: center;
-      z-index: 9999;
-    }
-    #pinOverlay.hidden { display: none; }
-    #pinCard {
-      background: #fff; border-radius: 20px; padding: 48px 40px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.12); text-align: center; width: 300px;
-    }
-    #pinCard h1 { font-size: 20px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px; }
-    #pinCard p { color: #888; font-size: 14px; margin-bottom: 32px; }
-    .pin-dots { display: flex; gap: 16px; justify-content: center; margin-bottom: 32px; }
-    .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #ccc; background: transparent; transition: all .15s; }
-    .pin-dot.filled { background: #7c3aed; border-color: #7c3aed; }
-    .pin-pad { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
-    .pin-key { padding: 16px; font-size: 20px; font-weight: 600; color: #1a1a2e; background: #f0f2f8; border: none; border-radius: 12px; cursor: pointer; transition: all .15s; }
-    .pin-key:hover { background: #e0e0f0; }
-    .pin-key:active { transform: scale(.95); }
-    .pin-err { color: #e53e3e; font-size: 13px; margin-top: 16px; min-height: 20px; }
-
     /* Tab System Styles */
     .tabs-container {
       background: var(--bg-card);
@@ -711,37 +686,9 @@
   </style>
 </head>
 <body>
-  <!-- PIN Gate -->
-  <div id="pinOverlay">
-    <div id="pinCard">
-      <h1>Bookmark Manager</h1>
-      <p>Enter your 4-digit PIN</p>
-      <div class="pin-dots">
-        <div class="pin-dot" id="pd0"></div>
-        <div class="pin-dot" id="pd1"></div>
-        <div class="pin-dot" id="pd2"></div>
-        <div class="pin-dot" id="pd3"></div>
-      </div>
-      <div class="pin-pad">
-        <button class="pin-key" onclick="pinPress('1')">1</button>
-        <button class="pin-key" onclick="pinPress('2')">2</button>
-        <button class="pin-key" onclick="pinPress('3')">3</button>
-        <button class="pin-key" onclick="pinPress('4')">4</button>
-        <button class="pin-key" onclick="pinPress('5')">5</button>
-        <button class="pin-key" onclick="pinPress('6')">6</button>
-        <button class="pin-key" onclick="pinPress('7')">7</button>
-        <button class="pin-key" onclick="pinPress('8')">8</button>
-        <button class="pin-key" onclick="pinPress('9')">9</button>
-        <div></div>
-        <button class="pin-key" onclick="pinPress('0')">0</button>
-        <button class="pin-key" onclick="pinDel()">⌫</button>
-      </div>
-      <div class="pin-err" id="pinErr"></div>
-    </div>
-  </div>
   <div class="container py-4 py-md-5">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-      <h2 class="fancy-title">R I B A S બુકમાર્ક <span style="font-size:12px;font-weight:400;color:#aaa;margin-left:8px;">v1.3</span></h2>
+      <h2 class="fancy-title">R I B A S બુકમાર્ક <span style="font-size:12px;font-weight:400;color:#aaa;margin-left:8px;">v1.4</span></h2>
       <div class="header-buttons d-flex gap-2">
         <input type="file" id="importFile" accept=".csv" style="display: none;">
         <button id="importBtn" class="btn btn-warning">Import</button>
@@ -831,43 +778,6 @@
     let quill;
     let currentTab = 'all';
     let appState = { bookmarks: [], bookmarkTabs: [], categoryTabAssignments: {}, categoryOrder: [] };
-
-    // ==================== PIN AUTH ====================
-
-    (function initPin() {
-      const SESSION_KEY = 'bm_authed';
-      const cfg = window.JSONBIN_CONFIG || {};
-      const CORRECT_PIN = cfg.PIN || '2608';
-
-      if (localStorage.getItem(SESSION_KEY) === '1') {
-        document.getElementById('pinOverlay').classList.add('hidden');
-        return;
-      }
-
-      let pin = '';
-      function updateDots() {
-        for (let i = 0; i < 4; i++)
-          document.getElementById('pd' + i).classList.toggle('filled', i < pin.length);
-      }
-      window.pinPress = function(d) {
-        if (pin.length >= 4) return;
-        pin += d; updateDots();
-        if (pin.length === 4) {
-          if (pin === CORRECT_PIN) {
-            localStorage.setItem(SESSION_KEY, '1');
-            document.getElementById('pinOverlay').classList.add('hidden');
-          } else {
-            document.getElementById('pinErr').textContent = 'Incorrect PIN — try again.';
-            pin = ''; updateDots();
-          }
-        }
-      };
-      window.pinDel = function() { pin = pin.slice(0, -1); updateDots(); };
-      document.addEventListener('keydown', e => {
-        if (e.key >= '0' && e.key <= '9') pinPress(e.key);
-        else if (e.key === 'Backspace') pinDel();
-      });
-    })();
 
     // ==================== MYSQL STORAGE ====================
 
