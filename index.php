@@ -702,7 +702,7 @@ if (!$ok) {
 <body>
   <div class="container py-4 py-md-5">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-      <h2 class="fancy-title">R I B A S બુકમાર્ક <span style="font-size:12px;font-weight:400;color:#aaa;margin-left:8px;">v1.4</span></h2>
+      <h2 class="fancy-title">R I B A S બુકમાર્ક <span style="font-size:12px;font-weight:400;color:#aaa;margin-left:8px;">v1.5</span></h2>
       <div class="header-buttons d-flex gap-2">
         <input type="file" id="importFile" accept=".csv" style="display: none;">
         <button id="importBtn" class="btn btn-warning">Import</button>
