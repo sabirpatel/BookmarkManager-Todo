@@ -1,13 +1,23 @@
 <?php
 session_start();
 
-$PIN = getenv('BOOKMARK_PIN') ?: '2608';
+define('VERSION', 'v1.2');
+
+$PIN    = getenv('BOOKMARK_PIN') ?: '2608';
+$SECRET = hash('sha256', $PIN . 'bm_auth_v1');
+$COOKIE = 'bm_auth';
 
 // Handle PIN submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $body = json_decode(file_get_contents('php://input'), true);
     if (isset($body['pin']) && $body['pin'] === $PIN) {
-        $_SESSION['authenticated'] = true;
+        setcookie($COOKIE, $SECRET, [
+            'expires'  => time() + 86400 * 30,
+            'path'     => '/',
+            'httponly' => true,
+            'secure'   => isset($_SERVER['HTTPS']),
+            'samesite' => 'Strict',
+        ]);
         echo 'OK';
     } else {
         http_response_code(403);
@@ -17,9 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Already authenticated — serve the app
-if (!empty($_SESSION['authenticated'])) {
+if (isset($_COOKIE[$COOKIE]) && $_COOKIE[$COOKIE] === $SECRET) {
     $html = file_get_contents(__DIR__ . '/bookmark.html');
-    // Bypass the client-side PIN overlay since PHP session already authenticated
     $inject = '<script>sessionStorage.setItem("bm_authed","1");</script>';
     echo str_replace('</head>', $inject . '</head>', $html);
     exit;
@@ -51,6 +60,7 @@ if (!empty($_SESSION['authenticated'])) {
     .key:active{transform:scale(.95)}
     .key.del{font-size:16px;color:#888}
     .err{color:#e53e3e;font-size:13px;margin-top:16px;min-height:20px}
+    .ver{color:#ccc;font-size:11px;margin-top:24px}
   </style>
 </head>
 <body>
@@ -78,6 +88,7 @@ if (!empty($_SESSION['authenticated'])) {
       <button class="key del" onclick="del()">⌫</button>
     </div>
     <div class="err" id="err"></div>
+    <div class="ver"><?= VERSION ?></div>
   </div>
   <script>
     let pin = '';
