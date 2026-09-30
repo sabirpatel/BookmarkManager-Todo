@@ -1,9 +1,7 @@
 <?php
-$PASS   = '2608';
-$SECRET = hash('sha256', $PASS . 'bm_v1');
-$COOKIE = 'bm_auth';
+session_start();
 
-if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) {
+if (empty($_SESSION['authenticated'])) {
     http_response_code(401);
     exit('Unauthorized');
 }
