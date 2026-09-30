@@ -510,6 +510,34 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
       background: var(--text-secondary);
     }
 
+    #saveStatus {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: none;
+      align-items: center;
+      gap: 5px;
+      transition: opacity 0.4s ease;
+    }
+    #saveStatus.saving {
+      display: inline-flex;
+      background: #fef3c7;
+      color: #92400e;
+    }
+    #saveStatus.saved {
+      display: inline-flex;
+      background: #d1fae5;
+      color: #065f46;
+    }
+    #saveStatus.save-error {
+      display: inline-flex;
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { display: inline-block; animation: spin 0.8s linear infinite; }
+
     /* Responsive adjustments */
     @media (max-width: 768px) {
       .fancy-title {
@@ -752,6 +780,7 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
   <div class="container py-4 py-md-5">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
       <h2 class="fancy-title">R I B A S બુકમાર્ક <span style="font-size:12px;font-weight:400;color:#aaa;margin-left:8px;">v2.0</span></h2>
+      <span id="saveStatus"></span>
       <div class="header-buttons d-flex gap-2">
         <input type="file" id="importFile" accept=".csv" style="display: none;">
         <button id="importBtn" class="btn btn-warning">Import</button>
@@ -862,16 +891,29 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
     }
 
     async function saveToFile() {
+      const el = document.getElementById('saveStatus');
+      let fadeTimer;
+      function show(cls, html) {
+        clearTimeout(fadeTimer);
+        el.className = cls;
+        el.innerHTML = html;
+      }
       try {
+        show('saving', '<span class="spin">⟳</span> Saving…');
         const res = await fetch('data.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(appState)
         });
-        if (!res.ok) {
+        if (res.ok) {
+          show('saved', '✓ Saved');
+          fadeTimer = setTimeout(() => { el.className = ''; el.innerHTML = ''; }, 2500);
+        } else {
+          show('save-error', '✗ Save failed (' + res.status + ')');
           console.error('Save failed:', res.status, await res.text());
         }
       } catch (e) {
+        show('save-error', '✗ Network error');
         console.error('Error saving:', e);
       }
     }
