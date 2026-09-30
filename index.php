@@ -864,7 +864,7 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
     async function saveToFile() {
       try {
         const res = await fetch('data.php', {
-          method: 'PUT',
+          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(appState)
         });

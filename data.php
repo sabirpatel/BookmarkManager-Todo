@@ -1,12 +1,5 @@
 <?php
 require __DIR__ . '/db-config.php';
-$SECRET = hash('sha256', $PASS . 'bm_v1');
-$COOKIE = 'bm_auth';
-
-if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) {
-    http_response_code(401);
-    exit('Unauthorized');
-}
 
 try {
     $pdo = new PDO(
@@ -23,12 +16,14 @@ try {
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
+    header('Content-Type: application/json');
+    header('Cache-Control: no-store, no-cache, must-revalidate');
+    header('Pragma: no-cache');
     $stmt = $pdo->query('SELECT data FROM app_data WHERE id = 1');
     $row  = $stmt->fetch(PDO::FETCH_ASSOC);
-    header('Content-Type: application/json');
     echo $row ? $row['data'] : '{}';
 
-} elseif ($method === 'PUT') {
+} elseif ($method === 'POST') {
     $input = file_get_contents('php://input');
     json_decode($input);
     if (json_last_error() !== JSON_ERROR_NONE) {
