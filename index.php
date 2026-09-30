@@ -56,7 +56,7 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
       <button type="submit">Unlock</button>
     </form>
     <div class="err"><?= isset($error) ? 'Incorrect passcode — try again.' : '' ?></div>
-    <div class="ver">v1.9</div>
+    <div class="ver">v2.0</div>
   </div>
 </body>
 </html>
@@ -751,7 +751,7 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
 <body>
   <div class="container py-4 py-md-5">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-      <h2 class="fancy-title">R I B A S બુકમાર્ક <span style="font-size:12px;font-weight:400;color:#aaa;margin-left:8px;">v1.9</span></h2>
+      <h2 class="fancy-title">R I B A S બુકમાર્ક <span style="font-size:12px;font-weight:400;color:#aaa;margin-left:8px;">v2.0</span></h2>
       <div class="header-buttons d-flex gap-2">
         <input type="file" id="importFile" accept=".csv" style="display: none;">
         <button id="importBtn" class="btn btn-warning">Import</button>
@@ -1373,8 +1373,10 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
      */
     function saveReorderedBookmarks(groupedCategories) {
         const orderedBookmarks = [];
-        // Get the current order of categories from the DOM (after drag-and-drop)
         const currentCategoryOrder = [...document.getElementById('bookmarkList').children].map(c => c.dataset.category);
+
+        // Keep categoryOrder in sync so reload preserves category sequence
+        appState.categoryOrder = currentCategoryOrder;
 
         currentCategoryOrder.forEach(cat => {
             if (groupedCategories[cat]) {
@@ -1460,6 +1462,16 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
     function updateCategoryOrder() {
       const cats = [...document.getElementById('bookmarkList').children].map(c=>c.dataset.category);
       appState.categoryOrder = cats;
+      // Also reorder bookmarks array to match new category order so it persists on reload
+      const grouped = {};
+      (appState.bookmarks || []).forEach(bm => {
+        grouped[bm.category] = grouped[bm.category] || [];
+        grouped[bm.category].push(bm);
+      });
+      const reordered = [];
+      cats.forEach(cat => { if (grouped[cat]) reordered.push(...grouped[cat]); });
+      Object.keys(grouped).forEach(cat => { if (!cats.includes(cat)) reordered.push(...grouped[cat]); });
+      appState.bookmarks = reordered;
       saveToFile().catch(console.error);
     }
 
