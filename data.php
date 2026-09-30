@@ -39,9 +39,9 @@ if ($method === 'GET') {
     }
     $stmt = $pdo->prepare('
         INSERT INTO app_data (id, data) VALUES (1, ?)
-        ON DUPLICATE KEY UPDATE data = VALUES(data), updated_at = CURRENT_TIMESTAMP
+        ON DUPLICATE KEY UPDATE data = ?, updated_at = CURRENT_TIMESTAMP
     ');
-    $stmt->execute([$input]);
+    $stmt->execute([$input, $input]);
     http_response_code(200);
     echo 'OK';
 
