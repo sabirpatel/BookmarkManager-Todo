@@ -1,12 +1,12 @@
 <?php
-session_start();
+require __DIR__ . '/db-config.php';
+$SECRET = hash('sha256', $PASS . 'bm_v1');
+$COOKIE = 'bm_auth';
 
-if (empty($_SESSION['authenticated'])) {
+if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) {
     http_response_code(401);
     exit('Unauthorized');
 }
-
-require __DIR__ . '/db-config.php';
 
 try {
     $pdo = new PDO(

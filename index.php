@@ -1,5 +1,5 @@
 <?php
-$PASS   = '2608';
+require __DIR__ . '/db-config.php';
 $SECRET = hash('sha256', $PASS . 'bm_v1');
 $COOKIE = 'bm_auth';
 
