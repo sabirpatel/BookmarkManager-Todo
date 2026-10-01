@@ -10,3 +10,12 @@ RewriteRule ^$ index.php [L]
     Order allow,deny
     Deny from all
 </FilesMatch>
+
+# Never cache the data API — always serve fresh from MySQL
+<FilesMatch "data\.php$">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </IfModule>
+</FilesMatch>
