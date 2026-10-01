@@ -878,7 +878,6 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
         const res = await fetch('data.php?t=' + Date.now(), { cache: 'no-store' });
         if (res.ok) {
           const data = await res.json();
-          console.log('[LOAD] bookmarks count:', (data.bookmarks||[]).length, '| first 3:', (data.bookmarks||[]).slice(0,3).map(b=>b.title));
           appState.bookmarks = data.bookmarks || [];
           appState.bookmarkTabs = data.bookmarkTabs || [];
           appState.categoryTabAssignments = data.categoryTabAssignments || {};
@@ -902,7 +901,6 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
       try {
         show('saving', '<span class="spin">⟳</span> Saving…');
         const payload = JSON.stringify(appState);
-        console.log('[SAVE] bookmarks count:', appState.bookmarks.length, '| first 3:', appState.bookmarks.slice(0,3).map(b=>b.title));
         const res = await fetch('data.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
