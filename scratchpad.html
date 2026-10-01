@@ -353,7 +353,7 @@
 
     async function loadFromDb() {
       try {
-        const res = await fetch('data.php');
+        const res = await fetch('data.php?t=' + Date.now(), { cache: 'no-store' });
         if (res.ok) return await res.json();
       } catch (e) {
         console.warn('Load failed:', e);

@@ -56,7 +56,7 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
       <button type="submit">Unlock</button>
     </form>
     <div class="err"><?= isset($error) ? 'Incorrect passcode — try again.' : '' ?></div>
-    <div class="ver">v2.0</div>
+    <div class="ver">v2.1</div>
   </div>
 </body>
 </html>
@@ -779,7 +779,7 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
 <body>
   <div class="container py-4 py-md-5">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-      <h2 class="fancy-title">R I B A S બુકમાર્ક <span style="font-size:12px;font-weight:400;color:#aaa;margin-left:8px;">v2.0</span></h2>
+      <h2 class="fancy-title">R I B A S બુકમાર્ક <span style="font-size:12px;font-weight:400;color:#aaa;margin-left:8px;">v2.1</span></h2>
       <span id="saveStatus"></span>
       <div class="header-buttons d-flex gap-2">
         <input type="file" id="importFile" accept=".csv" style="display: none;">
@@ -875,7 +875,7 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
 
     async function openOrCreateFile() {
       try {
-        const res = await fetch('data.php');
+        const res = await fetch('data.php?t=' + Date.now(), { cache: 'no-store' });
         if (res.ok) {
           const data = await res.json();
           console.log('[LOAD] bookmarks count:', (data.bookmarks||[]).length, '| first 3:', (data.bookmarks||[]).slice(0,3).map(b=>b.title));
