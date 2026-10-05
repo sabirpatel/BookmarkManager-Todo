@@ -56,7 +56,7 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
       <button type="submit">Unlock</button>
     </form>
     <div class="err"><?= isset($error) ? 'Incorrect passcode — try again.' : '' ?></div>
-    <div class="ver">v2.2</div>
+    <div class="ver">v2.3</div>
   </div>
 </body>
 </html>
@@ -779,7 +779,7 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
 <body>
   <div class="container py-4 py-md-5">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-      <h2 class="fancy-title">R I B A S બુકમાર્ક <span style="font-size:12px;font-weight:400;color:#aaa;margin-left:8px;">v2.2</span></h2>
+      <h2 class="fancy-title">R I B A S બુકમાર્ક <span style="font-size:12px;font-weight:400;color:#aaa;margin-left:8px;">v2.3</span></h2>
       <span id="saveStatus"></span>
       <div class="header-buttons d-flex gap-2">
         <input type="file" id="importFile" accept=".csv" style="display: none;">
@@ -1204,10 +1204,10 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
       const newCategories = Object.keys(cats).filter(cat => !existingCategories.includes(cat));
       let sortedCategories = [...existingCategories, ...newCategories];
 
-      // Filter categories by current tab
+      // Filter categories by current tab (ToDo always shown on every tab)
       const categoryAssignments = getCategoryTabAssignments();
       if (currentTab !== 'all') {
-        sortedCategories = sortedCategories.filter(cat => categoryAssignments[cat] === currentTab);
+        sortedCategories = sortedCategories.filter(cat => cat === 'ToDo' || categoryAssignments[cat] === currentTab);
       }
 
       const container = document.getElementById('bookmarkList');
