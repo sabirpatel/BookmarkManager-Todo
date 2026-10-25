@@ -776,6 +776,106 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
       background: var(--accent-gradient);
       color: white;
     }
+
+    /* Inline Todo Quick Add */
+    .todo-quick-add {
+      padding: 8px 12px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .todo-quick-add.is-empty {
+      padding: 16px;
+      border-top: none;
+    }
+
+    .todo-add-trigger {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 13px;
+      padding: 5px 6px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+      user-select: none;
+    }
+
+    .is-empty .todo-add-trigger {
+      justify-content: center;
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      font-size: 14px;
+    }
+
+    .todo-add-trigger:hover {
+      background: rgba(124, 58, 237, 0.06);
+      color: var(--accent-primary);
+    }
+
+    .is-empty .todo-add-trigger:hover {
+      border-color: var(--accent-primary);
+    }
+
+    .todo-add-form {
+      display: none;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .todo-add-form.active {
+      display: flex;
+    }
+
+    .todo-add-form input {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1.5px solid var(--accent-primary);
+      color: var(--text-primary);
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
+      font-size: 13px;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+      font-family: inherit;
+    }
+
+    .todo-confirm-btn {
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: #10b981;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+
+    .todo-confirm-btn:hover { background: #059669; }
+
+    .todo-cancel-btn {
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: rgba(100, 100, 120, 0.1);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+
+    .todo-cancel-btn:hover { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
   </style>
 </head>
 <body>
@@ -785,7 +885,6 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
       <span id="saveStatus"></span>
       <div class="header-buttons d-flex gap-2">
         <input type="file" id="importFile" accept=".csv" style="display: none;">
-        <button onclick="showQuickTodoModal()" class="btn btn-primary" style="background:linear-gradient(135deg,#10b981 0%,#059669 100%);">+ Todo</button>
         <button id="importBtn" class="btn btn-warning">Import</button>
         <button id="exportBtn" class="btn btn-success">Export</button>
         <a href="scratchpad.html" class="btn btn-info" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">📝 Scratchpad</a>
@@ -854,20 +953,6 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
         <div class="tab-modal-actions">
           <button class="btn btn-secondary" onclick="hideTabModal()">Cancel</button>
           <button class="btn btn-primary" onclick="saveTab()">Create Tab</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Quick Add Todo Modal -->
-    <div class="tab-modal-overlay" id="quickTodoModal">
-      <div class="tab-modal">
-        <h3>Quick Add Todo</h3>
-        <div class="mb-2">
-          <input type="text" class="form-control" id="quickTodoInput" placeholder="What needs to be done?" autocomplete="off">
-        </div>
-        <div class="tab-modal-actions">
-          <button class="btn btn-secondary" onclick="hideQuickTodoModal()">Cancel</button>
-          <button class="btn btn-primary" onclick="addQuickTodo()">Add Todo</button>
         </div>
       </div>
     </div>
@@ -951,10 +1036,6 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
       loadBookmarks();
       updateCategorySuggestions();
 
-      document.getElementById('quickTodoInput').addEventListener('keydown', e => {
-        if (e.key === 'Enter') addQuickTodo();
-        if (e.key === 'Escape') hideQuickTodoModal();
-      });
       document.getElementById('tabNameInput').addEventListener('keydown', e => {
         if (e.key === 'Enter') saveTab();
         if (e.key === 'Escape') hideTabModal();
@@ -1029,26 +1110,36 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
       document.getElementById('tabModal').classList.remove('show');
     }
 
-    function showQuickTodoModal() {
-      document.getElementById('quickTodoModal').classList.add('show');
-      const input = document.getElementById('quickTodoInput');
-      input.value = '';
-      input.focus();
+    function showQuickTodoModal() {}
+    function hideQuickTodoModal() {}
+    function addQuickTodo() {}
+
+    function activateInlineTodo() {
+      document.getElementById('todoAddTrigger').style.display = 'none';
+      const form = document.getElementById('todoAddForm');
+      form.classList.add('active');
+      document.getElementById('inlineTodoInput').focus();
     }
 
-    function hideQuickTodoModal() {
-      document.getElementById('quickTodoModal').classList.remove('show');
+    function cancelInlineTodo() {
+      const form = document.getElementById('todoAddForm');
+      form.classList.remove('active');
+      document.getElementById('inlineTodoInput').value = '';
+      document.getElementById('todoAddTrigger').style.display = '';
     }
 
-    function addQuickTodo() {
-      const title = document.getElementById('quickTodoInput').value.trim();
-      if (!title) return;
-      const newBookmark = { title: title, url: '', category: 'ToDo', notes: '', isDone: false };
-      appState.bookmarks.push(newBookmark);
+    function submitInlineTodo() {
+      const title = document.getElementById('inlineTodoInput').value.trim();
+      if (!title) { cancelInlineTodo(); return; }
+      appState.bookmarks.push({ title, url: '', category: 'ToDo', notes: '', isDone: false });
       saveToFile().catch(console.error);
-      hideQuickTodoModal();
       renderBookmarks(appState.bookmarks);
       updateCategorySuggestions();
+    }
+
+    function handleInlineTodoKey(e) {
+      if (e.key === 'Enter') submitInlineTodo();
+      if (e.key === 'Escape') cancelInlineTodo();
     }
 
     /**
@@ -1326,13 +1417,29 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
                 </li>`;
         }).join('');
 
+        const todoAddHTML = cat === 'ToDo' ? `
+          <div class="todo-quick-add${cats[cat].length === 0 ? ' is-empty' : ''}" id="todoQuickAdd">
+            <div class="todo-add-trigger" id="todoAddTrigger" onclick="activateInlineTodo()">
+              <span style="font-size:18px;font-weight:300;line-height:1;">+</span> Add a todo
+            </div>
+            <div class="todo-add-form" id="todoAddForm">
+              <input type="text" id="inlineTodoInput" placeholder="What needs to be done?"
+                     onkeydown="handleInlineTodoKey(event)" autocomplete="off">
+              <button class="todo-confirm-btn" onclick="submitInlineTodo()" title="Add">✓</button>
+              <button class="todo-cancel-btn" onclick="cancelInlineTodo()" title="Cancel">✕</button>
+            </div>
+          </div>` : '';
+
         col.innerHTML = `
           <div class="card">
             <div class="card-header ${getCategoryColor(cat)} category-header">
               <span>${cat}</span>
               ${getTabSelectorHTML(cat)}
             </div>
-            <div class="card-body p-0"><ul class="list-group list-group-flush">${items}</ul></div>
+            <div class="card-body p-0">
+              <ul class="list-group list-group-flush">${items}</ul>
+              ${todoAddHTML}
+            </div>
           </div>`;
         frag.appendChild(col);
       });
