@@ -56,7 +56,7 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
       <button type="submit">Unlock</button>
     </form>
     <div class="err"><?= isset($error) ? 'Incorrect passcode — try again.' : '' ?></div>
-    <div class="ver">v2.3</div>
+    <div class="ver">v2.4</div>
   </div>
 </body>
 </html>
@@ -779,10 +779,11 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
 <body>
   <div class="container py-4 py-md-5">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-      <h2 class="fancy-title">R I B A S બુકમાર્ક <span style="font-size:12px;font-weight:400;color:#aaa;margin-left:8px;">v2.3</span></h2>
+      <h2 class="fancy-title">R I B A S બુકમાર્ક <span style="font-size:12px;font-weight:400;color:#aaa;margin-left:8px;">v2.4</span></h2>
       <span id="saveStatus"></span>
       <div class="header-buttons d-flex gap-2">
         <input type="file" id="importFile" accept=".csv" style="display: none;">
+        <button onclick="showQuickTodoModal()" class="btn btn-primary" style="background:linear-gradient(135deg,#10b981 0%,#059669 100%);">+ Todo</button>
         <button id="importBtn" class="btn btn-warning">Import</button>
         <button id="exportBtn" class="btn btn-success">Export</button>
         <a href="scratchpad.html" class="btn btn-info" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">📝 Scratchpad</a>
@@ -851,6 +852,20 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
         <div class="tab-modal-actions">
           <button class="btn btn-secondary" onclick="hideTabModal()">Cancel</button>
           <button class="btn btn-primary" onclick="saveTab()">Create Tab</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Add Todo Modal -->
+    <div class="tab-modal-overlay" id="quickTodoModal">
+      <div class="tab-modal">
+        <h3>Quick Add Todo</h3>
+        <div class="mb-2">
+          <input type="text" class="form-control" id="quickTodoInput" placeholder="What needs to be done?" autocomplete="off">
+        </div>
+        <div class="tab-modal-actions">
+          <button class="btn btn-secondary" onclick="hideQuickTodoModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="addQuickTodo()">Add Todo</button>
         </div>
       </div>
     </div>
@@ -933,6 +948,15 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
       initializeTabs();
       loadBookmarks();
       updateCategorySuggestions();
+
+      document.getElementById('quickTodoInput').addEventListener('keydown', e => {
+        if (e.key === 'Enter') addQuickTodo();
+        if (e.key === 'Escape') hideQuickTodoModal();
+      });
+      document.getElementById('tabNameInput').addEventListener('keydown', e => {
+        if (e.key === 'Enter') saveTab();
+        if (e.key === 'Escape') hideTabModal();
+      });
     });
 
     // ==================== TAB MANAGEMENT ====================
@@ -1001,6 +1025,28 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
      */
     function hideTabModal() {
       document.getElementById('tabModal').classList.remove('show');
+    }
+
+    function showQuickTodoModal() {
+      document.getElementById('quickTodoModal').classList.add('show');
+      const input = document.getElementById('quickTodoInput');
+      input.value = '';
+      input.focus();
+    }
+
+    function hideQuickTodoModal() {
+      document.getElementById('quickTodoModal').classList.remove('show');
+    }
+
+    function addQuickTodo() {
+      const title = document.getElementById('quickTodoInput').value.trim();
+      if (!title) return;
+      const newBookmark = { title: title, url: '', category: 'ToDo', notes: '', isDone: false };
+      appState.bookmarks.push(newBookmark);
+      saveToFile().catch(console.error);
+      hideQuickTodoModal();
+      renderBookmarks(appState.bookmarks);
+      updateCategorySuggestions();
     }
 
     /**
@@ -1190,6 +1236,9 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
           cats[bm.category].push(bookmarkWithIndex);
       });
 
+      // Always keep ToDo present even when empty
+      cats['ToDo'] = cats['ToDo'] || [];
+
       // Sort 'ToDo' category bookmarks: incomplete tasks first, then completed tasks
       if (cats['ToDo']) {
           cats['ToDo'].sort((a, b) => {
@@ -1203,6 +1252,11 @@ if (!isset($_COOKIE[$COOKIE]) || $_COOKIE[$COOKIE] !== $SECRET) { ?>
       const existingCategories = storedOrder.filter(cat => cats[cat]);
       const newCategories = Object.keys(cats).filter(cat => !existingCategories.includes(cat));
       let sortedCategories = [...existingCategories, ...newCategories];
+
+      // ToDo is always pinned — ensure it's present regardless of item count
+      if (!sortedCategories.includes('ToDo')) {
+        sortedCategories.unshift('ToDo');
+      }
 
       // Filter categories by current tab (ToDo always shown on every tab)
       const categoryAssignments = getCategoryTabAssignments();
