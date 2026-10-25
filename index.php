@@ -1,4 +1,6 @@
 <?php
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
 require __DIR__ . '/db-config.php';
 $SECRET = hash('sha256', $PASS . 'bm_v1');
 $COOKIE = 'bm_auth';
